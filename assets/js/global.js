@@ -8,6 +8,16 @@
   const loader = document.getElementById('loader');
   document.body.classList.add('loading');
 
+  /* animated gold mark overlay — CSS mask handles the visuals; injected
+     here so the loader markup stays identical across every page. */
+  const loaderMark = document.querySelector('.loader-mark');
+  if (loaderMark && !loaderMark.querySelector('.loader-gold')){
+    const gold = document.createElement('span');
+    gold.className = 'loader-gold';
+    gold.setAttribute('aria-hidden', 'true');
+    loaderMark.appendChild(gold);
+  }
+
   const pctEl = document.querySelector('.loader-pct');
   if (pctEl){
     let p = 0;
