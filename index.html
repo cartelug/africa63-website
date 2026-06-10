@@ -8,7 +8,8 @@
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/images/africa1.png">
 <link rel="stylesheet" href="assets/css/global.css">
 <link rel="icon" href="assets/logo/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
@@ -19,7 +20,7 @@
 
 <!-- ═══ PRELOADER ═══ -->
 <div id="loader">
-  <div class="loader-mark"><img src="assets/logo/a63-logo.png" alt="Africa 63"></div>
+  <div class="loader-mark"><img src="assets/logo/africa63-word-logo-white.png" alt="Africa 63"></div>
   <div class="loader-sub">Public Affairs &amp; Strategic Advisory</div>
   <div class="loader-track"><div class="loader-bar"></div></div>
   <div class="loader-pct">000</div>
@@ -27,9 +28,9 @@
 
 <!-- ═══ NAV ═══ -->
 <nav class="nav" id="nav">
-  <a href="index.html" class="nav-logo"><img src="assets/logo/a63-logo.png" alt="Africa 63"></a>
+  <a href="index.html" class="nav-logo"><img src="assets/logo/africa63-word-logo-white.png" alt="Africa 63 — Home"></a>
   <ul class="nav-links">
-    <li><a href="about/" >About</a></li>
+    <li><a href="about/">About</a></li>
     <li><a href="services/">Services</a></li>
     <li><a href="work/">Work</a></li>
     <li><a href="contact/">Contact</a></li>
@@ -51,75 +52,31 @@
   </div>
 </div>
 
-<!-- ═══ HERO ═══ -->
-<header class="hero">
-  <div class="hero-watermark" aria-hidden="true">63</div>
+<main class="site-main">
 
-  <div class="hero-left">
-    <div class="hero-eyebrow hero-anim a1">Public Affairs &amp; Strategic Advisory</div>
-    <h1 class="hero-title">
-      <span class="hero-anim a2" style="display:block">The Africa</span>
-      <span class="hero-anim a3" style="display:block">We Want<span class="dot">.</span></span>
-    </h1>
-    <p class="hero-sub hero-anim a4">A63 is a public affairs firm partnering with governments, institutions, and international development actors — mobilising resources, structuring public projects, and building the trust on which lasting progress depends.</p>
+<!-- ═══ SECTION 1 · HERO — theme-black, parallax image, melts to white ═══ -->
+<header class="hero theme-black" id="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <img class="hero-logo hero-anim a1" src="assets/logo/africa63-word-logo.png" alt="Africa 63">
+    <p class="hero-eyebrow hero-anim a2">Public Affairs &amp; Strategic Advisory</p>
+    <h1 class="hero-title kinetic-header" data-splitting>The Africa We Want<span class="dot">.</span></h1>
+    <p class="hero-sub hero-anim a3">A63 is a public affairs firm partnering with governments, institutions, and international development actors — mobilising resources, structuring public projects, and building the trust on which lasting progress depends.</p>
     <div class="hero-actions hero-anim a4">
       <a href="work/" class="btn btn-solid"><span>Our Work</span><span class="arrow">→</span></a>
       <a href="services/" class="btn btn-ghost"><span>What We Do</span></a>
     </div>
-    <div class="hero-cred hero-anim a5">
-      <span class="lbl">In partnership with</span>
-      <span class="name">Embassy of Sweden</span>
-      <span class="name">United States Government</span>
-      <span class="name">International Development Partners</span>
-    </div>
   </div>
-
-  <div class="hero-right hero-anim a3">
-    <figure class="hero-figure">
-      <div class="frame"><img src="assets/images/africa2.png" alt="Africa 63 at the Embassy of Sweden, Kinshasa"></div>
-      <div class="hero-flag" title="Democratic Republic of the Congo">
-        <svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
-          <rect width="180" height="120" fill="#007FFF"/>
-          <polygon points="0,120 180,0 180,16 0,136" fill="#F7D618"/>
-          <polygon points="0,120 0,104 180,0 180,0" fill="#F7D618"/>
-          <polygon points="0,120 0,107 180,2 180,15" fill="#CE1020"/>
-          <polygon points="22,14 25.5,25 37,25 27.5,32 31,43 22,36 13,43 16.5,32 7,25 18.5,25" fill="#F7D618"/>
-        </svg>
-      </div>
-      <figcaption class="hero-cap">
-        <div class="t">Embassy of Sweden · Kinshasa</div>
-        <div class="s">Strategic Engagement · 2022</div>
-      </figcaption>
-    </figure>
-  </div>
-
-  <div class="hero-scroll">Scroll</div>
+  <div class="hero-scroll" aria-hidden="true">Scroll</div>
 </header>
 
-<!-- ═══ MARQUEE ═══ -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-item">Public Affairs <span class="dot"></span></span>
-    <span class="marquee-item">Resource Mobilisation <span class="dot"></span></span>
-    <span class="marquee-item">Public–Private Partnerships <span class="dot"></span></span>
-    <span class="marquee-item">Governance &amp; Leadership <span class="dot"></span></span>
-    <span class="marquee-item">Institutional Capacity <span class="dot"></span></span>
-    <span class="marquee-item">The Africa We Want <span class="dot"></span></span>
-    <span class="marquee-item">Public Affairs <span class="dot"></span></span>
-    <span class="marquee-item">Resource Mobilisation <span class="dot"></span></span>
-    <span class="marquee-item">Public–Private Partnerships <span class="dot"></span></span>
-    <span class="marquee-item">Governance &amp; Leadership <span class="dot"></span></span>
-    <span class="marquee-item">Institutional Capacity <span class="dot"></span></span>
-    <span class="marquee-item">The Africa We Want <span class="dot"></span></span>
-  </div>
-</div>
-
-<!-- ═══ INTRO / STATEMENT ═══ -->
-<section class="section">
+<!-- ═══ SECTION 2 · WHO WE ARE — theme-white ═══ -->
+<section class="section theme-white">
   <div class="container split">
     <div class="split-sticky">
       <div class="eyebrow reveal"><span class="eyebrow-num">01</span><span class="eyebrow-line"></span><span>Who We Are</span></div>
-      <h2 class="h-section reveal d1">A consulting office<br>for Africa's<br><span class="gold">public future.</span></h2>
+      <h2 class="h-section kinetic-header" data-splitting>A consulting office for Africa's <span class="gold">public future.</span></h2>
     </div>
     <div>
       <p class="statement reveal">A63 supports public and private sector development across the continent. <span class="muted">We mobilise sustainable investment, structure public projects, advance public–private partnerships, and strengthen the institutions that carry nations forward.</span></p>
@@ -132,29 +89,66 @@
   </div>
 </section>
 
-<!-- ═══ PARTNERS ═══ -->
-<section class="section alt">
-  <div class="container">
-    <div class="partners-head">
-      <div class="eyebrow reveal" style="justify-content:center"><span class="eyebrow-num">02</span><span class="eyebrow-line"></span><span>Trusted Across Borders</span></div>
-      <h2 class="h-section reveal d1">Partners &amp; institutions<br>we have worked with</h2>
+<!-- ═══ SECTION 3 · IN PARTNERSHIP — theme-black, infinite marquee ═══ -->
+<section class="section theme-black" style="padding-left:0; padding-right:0">
+  <div class="container" style="padding:0 var(--pad-x)">
+    <div class="partners-head" style="text-align:center; margin-bottom:60px">
+      <div class="eyebrow reveal" style="justify-content:center"><span class="eyebrow-num">02</span><span class="eyebrow-line"></span><span>In Partnership</span></div>
+      <h2 class="h-section kinetic-header" data-splitting>Trusted across borders</h2>
     </div>
-    <div class="partners-row reveal d1">
-      <div class="partner"><div class="p-name">Embassy of Sweden</div><div class="p-role">Bilateral Cooperation</div></div>
-      <div class="partner"><div class="p-name">U.S. Government</div><div class="p-role">Agencies &amp; Programmes</div></div>
-      <div class="partner"><div class="p-name">LSU — Sweden</div><div class="p-role">National Youth Council</div></div>
-      <div class="partner"><div class="p-name">Development Partners</div><div class="p-role">International &amp; Multilateral</div></div>
+  </div>
+  <div class="partner-marquee reveal d1">
+    <div class="partner-track">
+      <div class="pt-item"><span class="pt-name">Embassy of Sweden</span><span class="pt-role">Bilateral Cooperation</span><span class="pt-dot"></span></div>
+      <div class="pt-item"><span class="pt-name">U.S. Government</span><span class="pt-role">Agencies &amp; Programmes</span><span class="pt-dot"></span></div>
+      <div class="pt-item"><span class="pt-name">LSU — Sweden</span><span class="pt-role">National Youth Council</span><span class="pt-dot"></span></div>
+      <div class="pt-item"><span class="pt-name">Development Partners</span><span class="pt-role">International &amp; Multilateral</span><span class="pt-dot"></span></div>
+      <div class="pt-item" aria-hidden="true"><span class="pt-name">Embassy of Sweden</span><span class="pt-role">Bilateral Cooperation</span><span class="pt-dot"></span></div>
+      <div class="pt-item" aria-hidden="true"><span class="pt-name">U.S. Government</span><span class="pt-role">Agencies &amp; Programmes</span><span class="pt-dot"></span></div>
+      <div class="pt-item" aria-hidden="true"><span class="pt-name">LSU — Sweden</span><span class="pt-role">National Youth Council</span><span class="pt-dot"></span></div>
+      <div class="pt-item" aria-hidden="true"><span class="pt-name">Development Partners</span><span class="pt-role">International &amp; Multilateral</span><span class="pt-dot"></span></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ SERVICES ═══ -->
-<section class="section">
+<!-- ═══ SECTION 4 · OUR WORK — theme-white, premium grid ═══ -->
+<section class="section theme-white">
+  <div class="container">
+    <div class="work-head">
+      <div>
+        <div class="eyebrow reveal"><span class="eyebrow-num">03</span><span class="eyebrow-line"></span><span>Our Work</span></div>
+        <h2 class="h-section kinetic-header" data-splitting>Outcomes, not noise</h2>
+      </div>
+      <div class="reveal d2"><a href="work/" class="text-link"><span>All engagements</span><span class="arrow">→</span></a></div>
+    </div>
+    <div class="work-grid">
+      <a href="work/" class="work-card wc-a reveal">
+        <img src="assets/images/africa2.png" alt="Formal session at the Embassy of Sweden with DR Congo, Sweden and EU flags" loading="lazy" decoding="async">
+        <div class="wc-meta"><div><div class="t">Embassy of Sweden × LYREC</div><div class="s">Kinshasa · 2022</div></div><span class="wc-arrow" aria-hidden="true">↗</span></div>
+      </a>
+      <a href="work/" class="work-card wc-b reveal d1">
+        <img src="assets/images/africa3.png" alt="Africa 63 representative in conversation during the engagement" loading="lazy" decoding="async">
+        <div class="wc-meta"><div><div class="t">Strategic Engagement</div><div class="s">In Conversation</div></div><span class="wc-arrow" aria-hidden="true">↗</span></div>
+      </a>
+      <a href="work/" class="work-card wc-c reveal">
+        <img src="assets/images/africa4.png" alt="Partnership delegation at the vehicle handover" loading="lazy" decoding="async">
+        <div class="wc-meta"><div><div class="t">The Delegation</div><div class="s">Vehicle Handover</div></div><span class="wc-arrow" aria-hidden="true">↗</span></div>
+      </a>
+      <a href="work/" class="work-card wc-d reveal d1">
+        <img src="assets/images/africa1.png" alt="Delegation arriving at the Embassy of Sweden, Kinshasa" loading="lazy" decoding="async">
+        <div class="wc-meta"><div><div class="t">Youth · Governance · Democracy</div><div class="s">DR Congo Programme</div></div><span class="wc-arrow" aria-hidden="true">↗</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 5 · SERVICES — theme-black ═══ -->
+<section class="section theme-black">
   <div class="container">
     <div class="svc-head">
       <div>
-        <div class="eyebrow reveal"><span class="eyebrow-num">03</span><span class="eyebrow-line"></span><span>What We Do</span></div>
-        <h2 class="h-section reveal d1">Capabilities built<br>for public impact</h2>
+        <div class="eyebrow reveal"><span class="eyebrow-num">04</span><span class="eyebrow-line"></span><span>What We Do</span></div>
+        <h2 class="h-section kinetic-header" data-splitting>Capabilities built for public impact</h2>
       </div>
       <div class="reveal d2"><a href="services/" class="text-link"><span>All services</span><span class="arrow">→</span></a></div>
     </div>
@@ -163,57 +157,32 @@
         <div class="svc-num">01</div>
         <h3 class="svc-name">Fundraising &amp; Resource Mobilisation</h3>
         <p class="svc-desc">We support public fundraising and mobilise sustainable investment for structured, high-impact projects.</p>
-        <span class="svc-arrow">↗</span>
+        <span class="svc-arrow" aria-hidden="true">↗</span>
       </article>
       <article class="svc-card reveal d1">
         <div class="svc-num">02</div>
         <h3 class="svc-name">Public–Private Partnerships</h3>
         <p class="svc-desc">We design and advance PPP initiatives that align public objectives with private capability and capital.</p>
-        <span class="svc-arrow">↗</span>
+        <span class="svc-arrow" aria-hidden="true">↗</span>
       </article>
       <article class="svc-card reveal">
         <div class="svc-num">03</div>
         <h3 class="svc-name">Governance &amp; Leadership</h3>
         <p class="svc-desc">We promote good governance in public management and strengthen leadership across institutions.</p>
-        <span class="svc-arrow">↗</span>
+        <span class="svc-arrow" aria-hidden="true">↗</span>
       </article>
       <article class="svc-card reveal d1">
         <div class="svc-num">04</div>
         <h3 class="svc-name">Institutional Capacity</h3>
         <p class="svc-desc">Through training and advisory, we build institutional and operational capacity that endures.</p>
-        <span class="svc-arrow">↗</span>
+        <span class="svc-arrow" aria-hidden="true">↗</span>
       </article>
     </div>
   </div>
 </section>
 
-<!-- ═══ FEATURED ENGAGEMENT ═══ -->
-<section class="section dark">
-  <div class="container">
-    <div class="eyebrow on-dark reveal" style="margin-bottom:48px"><span class="eyebrow-num">04</span><span class="eyebrow-line"></span><span>Featured Engagement</span></div>
-    <div class="case-grid">
-      <div class="case-media reveal">
-        <div class="case-tag">Kinshasa · 2022</div>
-        <div class="big"><img src="assets/images/africa1.png" alt="Embassy of Sweden engagement, Kinshasa" loading="lazy" decoding="async"></div>
-        <div class="small"><img src="assets/images/africa4.png" alt="Partnership delegation at the Embassy of Sweden" loading="lazy" decoding="async"></div>
-      </div>
-      <div class="reveal d1">
-        <h2 class="h-section" style="color:var(--paper)">Embassy of Sweden<br><span class="gold">× LYREC</span></h2>
-        <p class="body-text" style="margin-top:28px">A63 supported the partnership between the Embassy of Sweden and LYREC — a platform of civil-society youth organisations in the Democratic Republic of the Congo — strengthening youth participation in governance for sustainable development.</p>
-        <p class="body-text">Delivered under the LYREC–LSU partnership, the engagement equipped the platform to extend its work across Central Congo, Kwilu, and Central Kasaï — advancing citizen engagement in public governance on the ground.</p>
-        <div class="case-meta">
-          <div class="m"><div class="k">Partner</div><div class="v">Embassy of Sweden</div></div>
-          <div class="m"><div class="k">Programme</div><div class="v">Youth · Governance · Democracy</div></div>
-          <div class="m"><div class="k">Location</div><div class="v">Kinshasa, DR Congo</div></div>
-        </div>
-        <div style="margin-top:40px"><a href="work/" class="text-link on-dark"><span>View our work</span><span class="arrow">→</span></a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ STATS ═══ -->
-<section class="section">
+<!-- ═══ SECTION 6 · STATS — theme-white ═══ -->
+<section class="section theme-white">
   <div class="container">
     <div class="eyebrow reveal" style="margin-bottom:46px"><span class="eyebrow-num">05</span><span class="eyebrow-line"></span><span>At a Glance</span></div>
     <div class="stats reveal d1">
@@ -225,21 +194,21 @@
   </div>
 </section>
 
-<!-- ═══ MANIFESTO ═══ -->
-<section class="section dark">
+<!-- ═══ SECTION 7 · MANIFESTO — theme-black ═══ -->
+<section class="section theme-black">
   <div class="container manifesto reveal">
-    <span class="mark">“</span>
+    <span class="mark" aria-hidden="true">“</span>
     <p class="manifesto-quote">Africa does not need permission to rise. It needs <span class="gold">partners who build with trust</span> — and the patience to see progress through.</p>
     <p class="manifesto-attr">— Africa 63 · Founding Principle</p>
   </div>
 </section>
 
-<!-- ═══ CTA ═══ -->
-<section class="section">
+<!-- ═══ SECTION 8 · CTA — theme-white ═══ -->
+<section class="section theme-white">
   <div class="container cta">
     <div class="eyebrow reveal" style="justify-content:center"><span class="eyebrow-line"></span><span>Let's Begin</span><span class="eyebrow-line"></span></div>
-    <h2 class="cta-title reveal d1" style="color:var(--ink); margin-top:24px">Build the Africa<br>we <span style="color:var(--gold)">want</span>, together.</h2>
-    <p class="cta-sub reveal d2" style="color:var(--ink-soft)">Whether you are mobilising resources, structuring a public project, or strengthening an institution — let's start the conversation.</p>
+    <h2 class="cta-title kinetic-header" data-splitting style="margin-top:24px">Build the Africa we <span class="gold">want</span>, together.</h2>
+    <p class="cta-sub reveal d2">Whether you are mobilising resources, structuring a public project, or strengthening an institution — let's start the conversation.</p>
     <div class="cta-actions reveal d2">
       <a href="contact/" class="btn btn-solid"><span>Begin a Conversation</span><span class="arrow">→</span></a>
       <a href="services/" class="btn btn-ghost"><span>Explore Services</span></a>
@@ -247,17 +216,22 @@
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
+</main>
+
+<!-- ═══ FOOTER — curtain reveal, edge-to-edge wordmark ═══ -->
 <footer class="footer">
-  <div class="container">
+  <div class="footer-shell container">
+    <div class="footer-head">
+      <p class="footer-kicker">Next Step</p>
+      <a href="contact/" class="footer-cta">Let's build it together <span class="arrow">→</span></a>
+    </div>
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="assets/logo/a63-logo-white.png" alt="Africa 63">
         <p class="footer-tag">The Africa we want — built on trust, structured for impact.</p>
         <div class="footer-socials">
-          <a href="#" class="f-soc">IN</a>
-          <a href="#" class="f-soc">LI</a>
-          <a href="#" class="f-soc">X</a>
+          <a href="#" class="f-soc" aria-label="Instagram">IN</a>
+          <a href="#" class="f-soc" aria-label="LinkedIn">LI</a>
+          <a href="#" class="f-soc" aria-label="X (Twitter)">X</a>
         </div>
       </div>
       <div class="footer-col">
@@ -294,10 +268,15 @@
       <div class="footer-built">Designed by <a href="#">NS Creative</a> · Uganda</div>
     </div>
   </div>
+  <div class="footer-logo-band"><img src="assets/logo/africa63-word-logo-white.png" alt="Africa 63 wordmark"></div>
 </footer>
 
 <a href="#" class="to-top" id="toTop" aria-label="Back to top">↑</a>
 
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js"></script>
 <script src="assets/js/global.js"></script>
 </body>
 </html>

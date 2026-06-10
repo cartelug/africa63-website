@@ -8,7 +8,7 @@
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Averia+Gruesa+Libre&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/global.css">
 <link rel="icon" href="../assets/logo/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/logo/favicon-32.png">
@@ -18,14 +18,14 @@
 <body class="loading">
 
 <div id="loader">
-  <div class="loader-mark"><img src="../assets/logo/a63-logo.png" alt="Africa 63"></div>
+  <div class="loader-mark"><img src="../assets/logo/africa63-word-logo-white.png" alt="Africa 63"></div>
   <div class="loader-sub">Public Affairs &amp; Strategic Advisory</div>
   <div class="loader-track"><div class="loader-bar"></div></div>
   <div class="loader-pct">000</div>
 </div>
 
 <nav class="nav" id="nav">
-  <a href="../index.html" class="nav-logo"><img src="../assets/logo/a63-logo.png" alt="Africa 63"></a>
+  <a href="../index.html" class="nav-logo"><img src="../assets/logo/africa63-word-logo-white.png" alt="Africa 63"></a>
   <ul class="nav-links">
     <li><a href="../about/">About</a></li>
     <li><a href="../services/">Services</a></li>
@@ -46,22 +46,24 @@
   <div class="mn-foot">Kinshasa, DR Congo · <a href="mailto:hello@theafrica63.com">hello@theafrica63.com</a></div>
 </div>
 
+<main class="site-main">
+
 <!-- PAGE HERO -->
 <header class="page-hero">
   <div class="page-hero-watermark" aria-hidden="true">→</div>
   <div class="container">
     <div class="page-hero-eyebrow hero-anim a1">Contact</div>
-    <h1 class="page-hero-title hero-anim a2">Let's <span class="gold">begin.</span></h1>
+    <h1 class="page-hero-title kinetic-header" data-splitting>Let's <span class="gold">begin.</span></h1>
     <p class="page-hero-sub hero-anim a3">Tell us what you're building — a project to fund, a partnership to structure, an institution to strengthen. We read every message, and we reply.</p>
   </div>
 </header>
 
 <!-- CONTACT -->
-<section class="section" style="padding-top:clamp(50px,7vh,90px)">
+<section class="section theme-white" style="padding-top:clamp(50px,7vh,90px)">
   <div class="container contact-grid">
     <div class="reveal">
       <div class="eyebrow"><span class="eyebrow-num">01</span><span class="eyebrow-line"></span><span>Reach Us</span></div>
-      <h2 class="h-section" style="margin-top:24px">Start the<br>conversation.</h2>
+      <h2 class="h-section kinetic-header" data-splitting style="margin-top:24px">Start the<br>conversation.</h2>
       <div class="contact-info">
         <div class="ci-item">
           <div class="ci-icon">✉</div>
@@ -115,13 +117,19 @@
   </div>
 </section>
 
+</main>
+
+<!-- ═══ FOOTER — curtain reveal, edge-to-edge wordmark ═══ -->
 <footer class="footer">
-  <div class="container">
+  <div class="footer-shell container">
+    <div class="footer-head">
+      <p class="footer-kicker">Next Step</p>
+      <a href="../contact/" class="footer-cta">Let's build it together <span class="arrow">→</span></a>
+    </div>
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="../assets/logo/a63-logo-white.png" alt="Africa 63">
         <p class="footer-tag">The Africa we want — built on trust, structured for impact.</p>
-        <div class="footer-socials"><a href="#" class="f-soc">IN</a><a href="#" class="f-soc">LI</a><a href="#" class="f-soc">X</a></div>
+        <div class="footer-socials"><a href="#" class="f-soc" aria-label="Instagram">IN</a><a href="#" class="f-soc" aria-label="LinkedIn">LI</a><a href="#" class="f-soc" aria-label="X (Twitter)">X</a></div>
       </div>
       <div class="footer-col"><h5>Navigate</h5><ul>
         <li><a href="../index.html">Home</a></li><li><a href="../about/">About</a></li><li><a href="../services/">Services</a></li><li><a href="../work/">Work</a></li><li><a href="../contact/">Contact</a></li>
@@ -138,9 +146,14 @@
       <div class="footer-built">Designed by <a href="#">NS Creative</a> · Uganda</div>
     </div>
   </div>
+  <div class="footer-logo-band"><img src="../assets/logo/africa63-word-logo-white.png" alt="Africa 63 wordmark"></div>
 </footer>
 
 <a href="#" class="to-top" id="toTop" aria-label="Back to top">↑</a>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js"></script>
 <script src="../assets/js/global.js"></script>
 </body>
 </html>
