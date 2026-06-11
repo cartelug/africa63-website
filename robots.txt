@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://theafrica63.com/sitemap.xml

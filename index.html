@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" class="js">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Africa 63 — Public Affairs &amp; Strategic Advisory</title>
 <meta name="description" content="Africa 63 is a public affairs firm partnering with governments, institutions, and international development actors across Africa — mobilising resources, structuring public projects, and building the trust on which lasting progress depends.">
+<link rel="canonical" href="https://theafrica63.com/">
+<meta property="og:url" content="https://theafrica63.com/">
+<meta property="og:site_name" content="Africa 63">
+<meta property="og:image" content="https://theafrica63.com/assets/logo/africa63-full-logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Africa 63 — Public Affairs &amp; Strategic Advisory">
+<meta name="twitter:description" content="Africa 63 is a public affairs firm partnering with governments, institutions, and international development actors across Africa — mobilising resources, structuring public projects, and building the trust on which lasting progress depends.">
+<meta name="twitter:image" content="https://theafrica63.com/assets/logo/africa63-full-logo.png">
 <meta name="theme-color" content="#0a0a0a">
 <meta property="og:title" content="Africa 63 — Public Affairs &amp; Strategic Advisory">
 <meta property="og:description" content="Africa 63 — building the Africa we want, on trust, structured for impact.">
@@ -19,13 +28,32 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/apple-touch-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Africa 63",
+  "alternateName": "A63",
+  "url": "https://theafrica63.com/",
+  "logo": "https://theafrica63.com/assets/logo/africa63-full-logo.png",
+  "description": "Africa 63 is a public affairs firm partnering with governments, institutions, and international development actors across Africa.",
+  "email": "hello@theafrica63.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Kinshasa",
+    "addressCountry": "CD"
+  },
+  "knowsAbout": ["Public Affairs", "Resource Mobilisation", "Public-Private Partnerships", "Governance", "Institutional Capacity"]
+}
+</script>
 </head>
 <body class="loading">
+<a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ═══ PRELOADER — AFRICA63 wordmark ═══ -->
 <div id="loader">
   <div class="loader-tag">Public Affairs &amp; Strategic Advisory</div>
-  <div class="loader-logo"><img src="assets/logo/africa63-word-logo.png" alt="Africa 63"></div>
+  <div class="loader-logo"><img src="assets/logo/africa63-full-logo.png" alt="Africa 63"></div>
   <div class="loader-pct">000</div>
 </div>
 
@@ -57,7 +85,7 @@
 </div>
 
 <!-- ═══ MAIN ═══ -->
-<main class="site-main">
+<main class="site-main" id="main">
 
   <!-- ═══ HERO — designed eyebrow + wordmark open animation ═══ -->
   <header class="hero theme-black melt-wave-white">
@@ -77,7 +105,7 @@
 
       <div class="hero-brand-wrap">
         <div class="hero-brand-mask">
-          <img src="assets/logo/africa63-word-logo.png" alt="Africa 63">
+          <img src="assets/logo/africa63-full-logo.png" alt="Africa 63">
         </div>
       </div>
 
@@ -116,13 +144,20 @@
       <div class="eyebrow"><span class="num">02</span><span>In Partnership With</span></div>
     </div>
     <div class="partner-marquee">
-      <div class="partner-track" data-dur="42">
+      <div class="partner-track" data-dur="42" data-cloned="1">
         <span class="partner-item">Embassy of Sweden <span class="dot"></span></span>
         <span class="partner-item outline">U.S. Government <span class="dot"></span></span>
         <span class="partner-item">LSU · Sweden <span class="dot"></span></span>
         <span class="partner-item outline">Development Partners <span class="dot"></span></span>
         <span class="partner-item">LYREC · DR Congo <span class="dot"></span></span>
         <span class="partner-item outline">Multilateral Agencies <span class="dot"></span></span>
+      
+        <span aria-hidden="true" class="partner-item">Embassy of Sweden <span class="dot"></span></span>
+        <span aria-hidden="true" class="partner-item outline">U.S. Government <span class="dot"></span></span>
+        <span aria-hidden="true" class="partner-item">LSU · Sweden <span class="dot"></span></span>
+        <span aria-hidden="true" class="partner-item outline">Development Partners <span class="dot"></span></span>
+        <span aria-hidden="true" class="partner-item">LYREC · DR Congo <span class="dot"></span></span>
+        <span aria-hidden="true" class="partner-item outline">Multilateral Agencies <span class="dot"></span></span>
       </div>
     </div>
   </section>
@@ -307,11 +342,13 @@
     </div>
   </div>
   <div class="footer-logo">
-    <img src="assets/logo/africa63-word-logo.png" alt="Africa 63">
+    <img src="assets/logo/africa63-full-logo.png" alt="Africa 63">
   </div>
 </footer>
 
 <!-- ═══ ENGINE — Lenis · GSAP · ScrollTrigger · Splitting ═══ -->
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
 <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>

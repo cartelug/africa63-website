@@ -27,7 +27,7 @@
 
   /* ──────────────── PRELOADER ──────────────── */
   const loader = document.getElementById('loader');
-  document.body.classList.add('loading');
+  if (loader) document.body.classList.add('loading');   // pages without a loader (404) never lock scroll
 
   const pctEl = document.querySelector('.loader-pct');
   if (pctEl){
@@ -88,14 +88,23 @@
     }
   }
 
-  /* ──────────────── NAV SCROLL STATE ──────────────── */
+  /* ──────────────── NAV SCROLL STATE + BACK TO TOP ──────────────── */
   const nav = document.getElementById('nav');
+  const toTop = document.getElementById('toTop');
   function onScroll(){
     const y = window.scrollY;
     if (nav) nav.classList.toggle('scrolled', y > 36);
+    if (toTop) toTop.classList.toggle('show', y > 700);
   }
   window.addEventListener('scroll', onScroll, { passive:true });
   onScroll();
+
+  if (toTop){
+    toTop.addEventListener('click', ()=>{
+      if (lenis) lenis.scrollTo(0, { duration: 1.2 });
+      else window.scrollTo({ top:0, behavior:'smooth' });
+    });
+  }
 
   /* ──────────────── MOBILE NAV ──────────────── */
   const toggle = document.getElementById('navToggle');
@@ -265,8 +274,13 @@
   function setupMarquee(){
     document.querySelectorAll('.partner-track').forEach(track => {
       // ensure duplicates exist — clone once for a seamless loop
+      // (clones are aria-hidden so screen readers hear each partner once)
       if (!track.dataset.cloned){
-        track.innerHTML += track.innerHTML;
+        Array.from(track.children).forEach(item => {
+          const c = item.cloneNode(true);
+          c.setAttribute('aria-hidden', 'true');
+          track.appendChild(c);
+        });
         track.dataset.cloned = '1';
       }
       if (!hasGSAP || reduced){
