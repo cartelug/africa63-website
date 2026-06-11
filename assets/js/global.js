@@ -133,13 +133,22 @@
   if (hasSplitting){
     Splitting({ target: '[data-splitting], .kinetic-header', by: 'chars' });
   } else {
-    // graceful fallback: wrap each word in a .word span
+    // graceful fallback that mirrors Splitting's output: split on <br>,
+    // then on whitespace, then per character. Words become atomic .word
+    // wrappers; spaces become real .whitespace; chars get .char for rise.
     document.querySelectorAll('.kinetic-header').forEach(el=>{
-      const words = el.innerHTML.split(/(\s+)/).map(t=>{
-        if (/^\s+$/.test(t)) return '<span class="whitespace">' + t + '</span>';
-        return '<span class="word"><span class="char">' + t + '</span></span>';
+      const html = el.innerHTML.split(/(<br\s*\/?>)/i).map(seg=>{
+        if (/<br/i.test(seg)) return seg;
+        return seg.split(/(\s+)/).map(tok=>{
+          if (tok === '') return '';
+          if (/^\s+$/.test(tok)) return '<span class="whitespace"> </span>';
+          const chars = tok.split('').map(c=>
+            '<span class="char">' + (c === '&' ? '&amp;' : c === '<' ? '&lt;' : c) + '</span>'
+          ).join('');
+          return '<span class="word">' + chars + '</span>';
+        }).join('');
       }).join('');
-      el.innerHTML = words;
+      el.innerHTML = html;
     });
   }
 
