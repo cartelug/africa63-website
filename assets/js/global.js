@@ -25,19 +25,11 @@
   if (hasST) gsap.registerPlugin(ScrollTrigger);
   if (!hasGSAP) document.body.classList.add('no-motion');
 
-  /* ──────────────── PRELOADER ──────────────── */
+  /* ──────────────── PRELOADER ────────────────
+     Real eased progress: the bar/counter glide toward 86% while
+     assets load, then sprint to 100 on window.load and exit. */
   const loader = document.getElementById('loader');
   if (loader) document.body.classList.add('loading');   // pages without a loader (404) never lock scroll
-
-  const pctEl = document.querySelector('.loader-pct');
-  if (pctEl){
-    let p = 0;
-    const iv = setInterval(()=>{
-      p += Math.floor(Math.random()*9) + 4;
-      if (p >= 100){ p = 100; clearInterval(iv); }
-      pctEl.textContent = String(p).padStart(3, '0');
-    }, 55);
-  }
 
   function endLoader(){
     if (!loader){
@@ -48,20 +40,48 @@
     loader.classList.add('done');
     document.body.classList.remove('loading');
     startHero();
-    setTimeout(()=>{ loader.style.display = 'none'; }, 1300);
+    setTimeout(()=>{ loader.style.display = 'none'; }, 1400);
   }
   function startHero(){
     const hero = document.querySelector('.hero, .page-hero');
     if (hero) document.body.classList.add('hero-ready');
     if (hasST) ScrollTrigger.refresh();
   }
-  let loaded = false;
-  function trigger(){
-    if (loaded) return; loaded = true;
-    setTimeout(endLoader, 1700);
+
+  if (loader){
+    const pctEl = loader.querySelector('.loader-pct');
+    const barEl = loader.querySelector('.loader-bar');
+    let p = 0, target = 86, finished = false;
+    let last = performance.now();
+
+    function renderLoad(){
+      if (pctEl) pctEl.textContent = String(Math.round(p)).padStart(3, '0');
+      if (barEl) barEl.style.transform = 'scaleX(' + (p / 100) + ')';
+    }
+    // time-based easing so the pace is identical at any frame rate
+    function step(now){
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+      p = Math.min(p + (target - p) * (1 - Math.exp(-3.2 * dt)) + 9 * dt, target);
+      renderLoad();
+      if (target === 100 && p >= 99.4){
+        p = 100; renderLoad(); finishLoad();
+        return;
+      }
+      requestAnimationFrame(step);
+    }
+    function finishLoad(){
+      if (finished) return; finished = true;
+      setTimeout(endLoader, 420);     // let 100% land before the curtain lifts
+    }
+    requestAnimationFrame(step);
+    if (document.readyState === 'complete'){ target = 100; }
+    else window.addEventListener('load', ()=>{ target = 100; });
+    setTimeout(()=>{ target = 100; }, 4200);   // safety: never trap the visitor
+  } else {
+    window.addEventListener('load', endLoader);
+    setTimeout(endLoader, 2500);
   }
-  window.addEventListener('load', trigger);
-  setTimeout(trigger, 3800);
 
   /* ──────────────── LENIS SMOOTH SCROLL ──────────────── */
   let lenis = null;
@@ -111,6 +131,7 @@
   const drawer = document.getElementById('mobileNav');
   function setToggle(open){
     if (!toggle) return;
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     const s = toggle.querySelectorAll('span');
     if (open){
       s[0].style.transform = 'translateY(9px) rotate(45deg)';

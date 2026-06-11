@@ -9,11 +9,11 @@
 <link rel="canonical" href="https://theafrica63.com/">
 <meta property="og:url" content="https://theafrica63.com/">
 <meta property="og:site_name" content="Africa 63">
-<meta property="og:image" content="https://theafrica63.com/assets/logo/africa63-full-logo.png">
+<meta property="og:image" content="https://theafrica63.com/assets/logo/africa63-full-logo.PNG">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Africa 63 — Public Affairs &amp; Strategic Advisory">
 <meta name="twitter:description" content="Africa 63 is a public affairs firm partnering with governments, institutions, and international development actors across Africa — mobilising resources, structuring public projects, and building the trust on which lasting progress depends.">
-<meta name="twitter:image" content="https://theafrica63.com/assets/logo/africa63-full-logo.png">
+<meta name="twitter:image" content="https://theafrica63.com/assets/logo/africa63-full-logo.PNG">
 <meta name="theme-color" content="#0a0a0a">
 <meta property="og:title" content="Africa 63 — Public Affairs &amp; Strategic Advisory">
 <meta property="og:description" content="Africa 63 — building the Africa we want, on trust, structured for impact.">
@@ -35,7 +35,7 @@
   "name": "Africa 63",
   "alternateName": "A63",
   "url": "https://theafrica63.com/",
-  "logo": "https://theafrica63.com/assets/logo/africa63-full-logo.png",
+  "logo": "https://theafrica63.com/assets/logo/africa63-full-logo.PNG",
   "description": "Africa 63 is a public affairs firm partnering with governments, institutions, and international development actors across Africa.",
   "email": "hello@theafrica63.com",
   "address": {
@@ -50,16 +50,29 @@
 <body class="loading">
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- ═══ PRELOADER — AFRICA63 wordmark ═══ -->
-<div id="loader">
-  <div class="loader-tag">Public Affairs &amp; Strategic Advisory</div>
-  <div class="loader-logo"><img src="assets/logo/africa63-full-logo.png" alt="Africa 63"></div>
+<!-- ═══ PRELOADER — AFRICA63 wordmark on a dark gold-lit stage ═══ -->
+<div id="loader" role="status" aria-label="Loading Africa 63">
+  <div class="loader-core">
+    <div class="loader-tag">
+      <span class="lt-line" aria-hidden="true"></span>
+      <span>Public Affairs</span>
+      <span class="lt-dot" aria-hidden="true"></span>
+      <span>Strategic Advisory</span>
+      <span class="lt-line" aria-hidden="true"></span>
+    </div>
+    <div class="loader-logo"><img src="assets/logo/africa63-full-logo.PNG" alt="Africa 63"></div>
+    <div class="loader-track"><span class="loader-bar"></span></div>
+  </div>
+  <div class="loader-note">The Africa We Want — Built on Trust</div>
   <div class="loader-pct">000</div>
 </div>
 
-<!-- ═══ NAV — menu + CTA on the left, A63 mark on the top-right ═══ -->
-<nav class="nav nav-right-mark" id="nav">
-  <div class="nav-left">
+<!-- ═══ NAV — A63 mark top-left, menu + CTA / hamburger on the right ═══ -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo" aria-label="Africa 63 home">
+    <img src="assets/logo/a63-logo.png" alt="Africa 63">
+  </a>
+  <div class="nav-right">
     <ul class="nav-links">
       <li><a href="about/">About</a></li>
       <li><a href="services/">Services</a></li>
@@ -67,11 +80,8 @@
       <li><a href="contact/">Contact</a></li>
     </ul>
     <a href="contact/" class="nav-cta"><span>Begin a Conversation</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
-  <a href="index.html" class="nav-logo" aria-label="Africa 63 home">
-    <img src="assets/logo/a63-logo.png" alt="Africa 63">
-  </a>
-  <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
 <div class="mobile-nav" id="mobileNav">
@@ -88,7 +98,7 @@
 <main class="site-main" id="main">
 
   <!-- ═══ HERO — designed eyebrow + wordmark open animation ═══ -->
-  <header class="hero theme-black melt-wave-white">
+  <header class="hero theme-black fade-white">
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="hero-shade" aria-hidden="true"></div>
 
@@ -105,7 +115,7 @@
 
       <div class="hero-brand-wrap">
         <div class="hero-brand-mask">
-          <img src="assets/logo/africa63-full-logo.png" alt="Africa 63">
+          <img src="assets/logo/africa63-full-logo.PNG" alt="Africa 63">
         </div>
       </div>
 
@@ -120,8 +130,8 @@
     <div class="hero-scroll">Scroll</div>
   </header>
 
-  <!-- ═══ STATEMENT — white ═══ -->
-  <section class="section theme-white melt-drip-black">
+  <!-- ═══ STATEMENT — white, gold seam into the marquee ═══ -->
+  <section class="section theme-white seam-gold">
     <div class="container split">
       <div class="split-sticky">
         <div class="eyebrow"><span class="num">01</span><span>Who We Are</span></div>
@@ -138,8 +148,8 @@
     </div>
   </section>
 
-  <!-- ═══ IN PARTNERSHIP — black marquee, melts via slash to white ═══ -->
-  <section class="theme-black melt-slash-white" style="padding:clamp(70px,10vh,120px) 0 clamp(80px,12vh,140px)">
+  <!-- ═══ IN PARTNERSHIP — black marquee, gold seam into engagements ═══ -->
+  <section class="theme-black seam-gold" style="padding:clamp(70px,10vh,120px) 0 clamp(80px,12vh,140px)">
     <div style="padding:0 var(--pad-x); margin-bottom:clamp(30px,5vh,52px)">
       <div class="eyebrow"><span class="num">02</span><span>In Partnership With</span></div>
     </div>
@@ -162,55 +172,72 @@
     </div>
   </section>
 
-  <!-- ═══ OUR WORK — white grid, melts via stripes to black ═══ -->
-  <section class="section theme-white melt-stripes-black">
+  <!-- ═══ OUR ENGAGEMENTS — full-colour cards, gold seam into services ═══ -->
+  <section class="section theme-white seam-gold">
     <div class="container">
       <div class="work-head">
         <div>
           <div class="eyebrow"><span class="num">03</span><span>Selected Work</span></div>
           <h2 class="kinetic-header reveal" data-splitting>Our Engagements.</h2>
+          <p class="work-lead reveal">A snapshot of partnerships we have helped convene, structure, and deliver — across diplomacy, governance, and institutional capacity.</p>
         </div>
-        <div class="reveal"><a href="work/" class="text-link"><span>View All</span><span class="arrow">→</span></a></div>
+        <div class="reveal"><a href="work/" class="text-link"><span>View All Engagements</span><span class="arrow">→</span></a></div>
       </div>
 
       <div class="work-grid">
-        <article class="work-card span-7 reveal">
+        <a href="work/" class="work-card span-7 reveal">
           <div class="work-media">
             <span class="work-tag">Featured</span>
             <img src="assets/images/africa1.jpg" alt="Embassy of Sweden engagement, Kinshasa" loading="lazy" decoding="async">
           </div>
           <div class="work-meta">
-            <div class="t">Embassy of Sweden × LYREC</div>
-            <div class="y">Kinshasa · 2022</div>
+            <div class="wm-info">
+              <span class="work-chip">Diplomacy</span><span class="work-chip">Partnership</span>
+              <div class="t">Embassy of Sweden × LYREC</div>
+              <div class="y">Kinshasa · 2022</div>
+            </div>
+            <span class="wm-arrow" aria-hidden="true">→</span>
           </div>
-        </article>
-        <article class="work-card span-5 reveal" data-delay="0.08">
+        </a>
+        <a href="work/" class="work-card span-5 reveal" data-delay="0.08">
           <div class="work-media">
             <img src="assets/images/africa3.jpg" alt="Africa 63 representative in conversation" loading="lazy" decoding="async">
           </div>
           <div class="work-meta">
-            <div class="t">Youth Governance</div>
-            <div class="y">DR Congo · 2022</div>
+            <div class="wm-info">
+              <span class="work-chip">Youth &amp; Governance</span>
+              <div class="t">Youth Governance</div>
+              <div class="y">DR Congo · 2022</div>
+            </div>
+            <span class="wm-arrow" aria-hidden="true">→</span>
           </div>
-        </article>
-        <article class="work-card span-5 reveal">
+        </a>
+        <a href="work/" class="work-card span-5 reveal">
           <div class="work-media">
             <img src="assets/images/africa2.jpg" alt="Formal session with DR Congo, Sweden and EU flags" loading="lazy" decoding="async">
           </div>
           <div class="work-meta">
-            <div class="t">Multilateral Session</div>
-            <div class="y">Kinshasa · 2022</div>
+            <div class="wm-info">
+              <span class="work-chip">Multilateral</span>
+              <div class="t">Multilateral Session</div>
+              <div class="y">Kinshasa · 2022</div>
+            </div>
+            <span class="wm-arrow" aria-hidden="true">→</span>
           </div>
-        </article>
-        <article class="work-card span-7 reveal" data-delay="0.08">
+        </a>
+        <a href="work/" class="work-card span-7 reveal" data-delay="0.08">
           <div class="work-media">
             <img src="assets/images/africa4.jpg" alt="Partnership delegation and vehicle handover" loading="lazy" decoding="async">
           </div>
           <div class="work-meta">
-            <div class="t">Capacity Delivery</div>
-            <div class="y">Central Congo · 2022</div>
+            <div class="wm-info">
+              <span class="work-chip">Capacity</span><span class="work-chip">Delivery</span>
+              <div class="t">Capacity Delivery</div>
+              <div class="y">Central Congo · 2022</div>
+            </div>
+            <span class="wm-arrow" aria-hidden="true">→</span>
           </div>
-        </article>
+        </a>
       </div>
     </div>
   </section>
@@ -255,8 +282,8 @@
     </div>
   </section>
 
-  <!-- ═══ APPROACH — white trio, melts via wave to black ═══ -->
-  <section class="section theme-white melt-wave-black">
+  <!-- ═══ APPROACH — white trio, eased fade to black ═══ -->
+  <section class="section theme-white fade-black">
     <div class="container">
       <div class="eyebrow reveal"><span class="num">05</span><span>How We Engage</span></div>
       <h2 class="kinetic-header reveal" data-splitting style="margin-bottom:60px">Deliberate. Evidence-led. Partnership First.</h2>
@@ -342,7 +369,7 @@
     </div>
   </div>
   <div class="footer-logo">
-    <img src="assets/logo/africa63-full-logo.png" alt="Africa 63">
+    <img src="assets/logo/africa63-full-logo.PNG" alt="Africa 63">
   </div>
 </footer>
 
