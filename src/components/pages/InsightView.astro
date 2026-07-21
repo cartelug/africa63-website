@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import CtaTex from '../CtaTex.astro';
+import { img } from '../../lib/images';
+import { bareSlug } from '../../lib/content';
+import { localizePath, type Lang } from '../../i18n/ui';
+import { site } from '../../config/site';
+
+interface Props { lang: Lang; entry: CollectionEntry<'insights'>; }
+const { lang, entry } = Astro.props;
+const L = (p: string) => localizePath(p, lang);
+const d = entry.data;
+const { Content } = await render(entry);
+const slug = bareSlug(entry.id);
+const dateFmt = new Date(d.date).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+const back = lang === 'fr' ? 'Toutes les analyses' : 'All insights';
+
+const jsonld = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: d.title, description: d.excerpt,
+  image: `${site.domain}/assets/images/generated/og-share.jpg`, datePublished: d.date,
+  author: { '@type': 'Organization', name: d.author }, publisher: { '@type': 'Organization', name: site.name },
+};
+const ctaEye = lang === 'fr' ? 'Restons en lien' : 'Stay in Touch';
+const ctaHead = lang === 'fr' ? 'Parlons de votre défi.' : 'Let’s talk about your challenge.';
+const ctaSub = lang === 'fr' ? 'Un projet, un partenariat, un mandat — entamons l’échange.' : 'A project, a partnership, a mandate — let’s start the conversation.';
+---
+<BaseLayout lang={lang} path={`/insights/${slug}`} navPath="/insights" title={`${d.title} — Africa 63`} description={d.excerpt} type="article" jsonld={jsonld}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-media" aria-hidden="true"><Image src={img(d.cover)} alt="" widths={[900,1600]} sizes="100vw" loading="eager" fetchpriority="high" /></div>
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container">
+      <Eyebrow>{d.category} · {dateFmt}</Eyebrow>
+      <h1 class="kinetic-header lower" data-splitting>{d.title}</h1>
+    </div>
+  </header>
+
+  <section class="section theme-white seam-gold">
+    <div class="container-narrow">
+      <div class="reveal flow body-text" style="font-size:var(--fs-lead)"><Content /></div>
+      <div class="mt-6"><a href={L('/insights')} class="text-link"><span>← {back}</span></a></div>
+    </div>
+  </section>
+
+  <CtaTex lang={lang} eyebrow={ctaEye} heading={ctaHead} sub={ctaSub} />
+</BaseLayout>

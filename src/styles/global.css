@@ -1,0 +1,16 @@
+/* ════════════════════════════════════════════════════════════
+   AFRICA 63 — GLOBAL STYLE ENTRY
+   Establishes the cascade layer order, then imports each layer.
+   ════════════════════════════════════════════════════════════ */
+@layer reset, tokens, base, components, utilities, motion;
+
+/* self-hosted variable fonts */
+@import '@fontsource-variable/fraunces/index.css';
+@import '@fontsource-variable/montserrat/index.css';
+
+@import './tokens.css';
+@import './base.css';
+@import './components.css';
+@import './components2.css';
+@import './utilities.css';
+@import './motion.css';

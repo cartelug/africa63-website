@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizePath } from '../i18n/ui';
+---
+<BaseLayout
+  lang="en" path="/404" navPath="/"
+  title="Page Not Found — Africa 63"
+  description="The page you were looking for has moved or never existed."
+  showPreloader={false}
+>
+  <section class="err-hero theme-black">
+    <div class="err-code">404</div>
+    <h1 class="err-title">This page wandered off the map.</h1>
+    <p class="err-sub">The address you followed has moved, changed, or never existed. The work, however, is exactly where we left it.</p>
+    <div class="cta-actions" style="margin-top:44px">
+      <a href={localizePath('/', 'en')} class="btn-glow"><span>Back to Home</span><span class="arrow">→</span></a>
+      <a href={localizePath('/contact', 'en')} class="btn btn-ghost"><span>Contact Us</span></a>
+    </div>
+  </section>
+</BaseLayout>

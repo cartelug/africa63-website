@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import TeamCard from '../TeamCard.astro';
+import CtaTex from '../CtaTex.astro';
+import { getTeam } from '../../lib/content';
+import { type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const team = await getTeam(lang);
+
+const c = lang === 'fr' ? {
+  eyebrow: 'Notre équipe', h1: 'Les personnes derrière le travail.',
+  sub: 'Africa 63 réunit une expertise en affaires publiques, gouvernance, financement et développement institutionnel — au service des institutions prêtes à faire avancer le continent.',
+  note: 'Profils de l’équipe à compléter par Africa 63.',
+  ctaEye: 'Rejoignez-nous', ctaHead: 'Travaillons ensemble.', ctaSub: 'Un projet, un partenariat, un mandat — entamons l’échange.',
+} : {
+  eyebrow: 'Our Team', h1: 'The people behind the work.',
+  sub: 'Africa 63 brings together expertise across public affairs, governance, fundraising, and institutional development — in service of institutions ready to move the continent forward.',
+  note: 'Team profiles to be completed by Africa 63.',
+  ctaEye: 'Join Us', ctaHead: 'Let’s work together.', ctaSub: 'A project, a partnership, a mandate — let’s start the conversation.',
+};
+---
+<BaseLayout lang={lang} path="/team" title={`${c.eyebrow} — Africa 63`} description={c.sub}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container">
+      <Eyebrow>{c.eyebrow}</Eyebrow>
+      <h1 class="kinetic-header lower" data-splitting>{c.h1}</h1>
+      <p class="hero-sub">{c.sub}</p>
+    </div>
+  </header>
+
+  <section class="section theme-white seam-gold">
+    <div class="container">
+      <div class="card-grid">
+        {team.map((m) => (<TeamCard name={m.data.name} role={m.data.role} photo={m.data.photo} />))}
+      </div>
+      <p class="body-text reveal mt-6" style="opacity:0.6;font-size:var(--fs-small)">{c.note}</p>
+    </div>
+  </section>
+
+  <CtaTex lang={lang} eyebrow={c.ctaEye} heading={c.ctaHead} sub={c.ctaSub} />
+</BaseLayout>

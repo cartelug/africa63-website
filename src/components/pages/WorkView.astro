@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import WorkCard from '../WorkCard.astro';
+import PartnerMarquee from '../PartnerMarquee.astro';
+import CtaTex from '../CtaTex.astro';
+import { getCaseStudies, bareSlug } from '../../lib/content';
+import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const L = (p: string) => localizePath(p, lang);
+const cases = await getCaseStudies(lang);
+
+const c = lang === 'fr' ? {
+  eyebrow: 'Réalisations choisies', h1: 'Nos réalisations.',
+  sub: 'Africa 63 mesure son travail non au bruit, mais aux résultats — partenariats bâtis, institutions renforcées, confiance gagnée dans les secteurs public et privé.',
+  allEye: 'Le portefeuille', quote: 'Le meilleur travail en affaires publiques est souvent le plus discret — <strong>un partenariat qui tient, une institution qui se renforce,</strong> une communauté enfin entendue.',
+  ctaEye: 'Votre prochain engagement', ctaHead: 'Ajoutons votre nom<br>à nos réalisations.',
+  ctaSub: 'Apportez à Africa 63 un projet, un partenariat ou un mandat. Nous apportons la structure, les relations et la discipline pour le livrer.',
+} : {
+  eyebrow: 'Selected Engagements', h1: 'Our work.',
+  sub: 'Africa 63 measures its work not in noise, but in outcomes — partnerships built, institutions strengthened, and trust earned across the public and private sectors.',
+  allEye: 'The Portfolio', quote: 'The best work in public affairs is often the quietest — <strong>a partnership that holds, an institution that grows stronger,</strong> a community that is finally heard.',
+  ctaEye: 'Your Engagement Next', ctaHead: 'Let’s add your name<br>to the work.',
+  ctaSub: 'Bring Africa 63 a project, a partnership, or a mandate. We’ll bring the structure, the relationships, and the discipline to deliver it.',
+};
+---
+<BaseLayout lang={lang} path="/work" title={`${t('nav.work')} — Africa 63`} description={c.sub}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container">
+      <Eyebrow>{c.eyebrow}</Eyebrow>
+      <h1 class="kinetic-header lower" data-splitting>{c.h1}</h1>
+      <p class="hero-sub">{c.sub}</p>
+    </div>
+  </header>
+
+  <section class="section theme-white seam-gold">
+    <div class="container">
+      <Eyebrow num="01" class="reveal mb-6">{c.allEye}</Eyebrow>
+      <div class="work-grid">
+        {cases.map((cs, i) => (
+          <WorkCard href={L(`/work/${bareSlug(cs.id)}`)} cover={cs.data.cover} title={cs.data.title}
+            year={`${cs.data.location} · ${cs.data.date}`} chips={cs.data.tags}
+            tag={cs.data.featured ? 'Featured' : undefined} span={i % 3 === 0 ? 7 : 5} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="theme-black melt-blur-white" style="padding:clamp(60px,8vh,100px) 0 clamp(80px,12vh,140px)">
+    <div style="padding:0 var(--pad-x); margin-bottom:clamp(30px,5vh,52px)"><Eyebrow num="02">{t('footer.capabilities')}</Eyebrow></div>
+    <PartnerMarquee />
+  </section>
+
+  <section class="section theme-white seam-gold">
+    <div class="container-narrow center">
+      <p class="statement reveal pull-quote" set:html={`<span class="q">${c.quote}</span>`}></p>
+      <div class="reveal mt-5" style="font-size:0.6rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--on-light-50)">— Africa 63</div>
+    </div>
+  </section>
+
+  <CtaTex lang={lang} eyebrow={c.ctaEye} heading={c.ctaHead} sub={c.ctaSub} />
+</BaseLayout>

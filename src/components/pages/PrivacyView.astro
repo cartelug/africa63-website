@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import { site } from '../../config/site';
+import { type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = lang === 'fr' ? {
+  eyebrow: 'Confidentialité', h1: 'Politique de confidentialité.',
+  intro: 'Africa 63 respecte votre vie privée. Cette page décrit comment nous traitons les informations que vous nous confiez via ce site.',
+  sections: [
+    ['Informations que nous collectons', 'Lorsque vous utilisez notre formulaire de contact, nous collectons les informations que vous fournissez — nom, e-mail, organisation et message — afin de répondre à votre demande.'],
+    ['Utilisation des informations', 'Nous utilisons ces informations uniquement pour répondre à votre demande et entretenir notre relation. Nous ne vendons ni ne louons vos données.'],
+    ['Conservation', 'Nous conservons les demandes le temps nécessaire pour y répondre et maintenir un historique raisonnable de nos échanges.'],
+    ['Vos droits', 'Vous pouvez demander l’accès, la correction ou la suppression de vos données à tout moment en nous écrivant.'],
+    ['Contact', `Pour toute question relative à cette politique, écrivez-nous à ${site.email}.`],
+  ],
+  note: 'Ce texte est un modèle de départ à faire valider par un conseil juridique.',
+} : {
+  eyebrow: 'Privacy', h1: 'Privacy policy.',
+  intro: 'Africa 63 respects your privacy. This page describes how we handle the information you share with us through this site.',
+  sections: [
+    ['Information we collect', 'When you use our contact form, we collect the information you provide — name, email, organisation, and message — in order to respond to your enquiry.'],
+    ['How we use it', 'We use this information solely to respond to your enquiry and maintain our relationship with you. We do not sell or rent your data.'],
+    ['Retention', 'We keep enquiries for as long as needed to respond and to maintain a reasonable record of our correspondence.'],
+    ['Your rights', 'You may request access to, correction of, or deletion of your data at any time by writing to us.'],
+    ['Contact', `For any question about this policy, email us at ${site.email}.`],
+  ],
+  note: 'This is a starting template to be reviewed by legal counsel.',
+};
+---
+<BaseLayout lang={lang} path="/privacy" title={`${c.eyebrow} — Africa 63`} description={c.intro} showPreloader={false}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container"><Eyebrow>{c.eyebrow}</Eyebrow><h1 class="kinetic-header lower" data-splitting>{c.h1}</h1></div>
+  </header>
+  <section class="section theme-white">
+    <div class="container-narrow">
+      <p class="statement reveal">{c.intro}</p>
+      <div class="reveal mt-6 flow">
+        {c.sections.map(([h, p]) => (<div><h3 style="font-family:var(--serif);font-size:1.4rem;margin-bottom:10px">{h}</h3><p class="body-text">{p}</p></div>))}
+      </div>
+      <p class="body-text reveal mt-6" style="opacity:0.55;font-size:var(--fs-small)">{c.note}</p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import { img } from '../lib/images';
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+interface Props { lang: Lang; eyebrow: string; heading: string; sub: string; }
+const { lang, eyebrow, heading, sub } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="section theme-black cta-tex">
+  <div class="cta-tex-media" aria-hidden="true">
+    <Image src={img('texture-glow')} alt="" widths={[900, 1600, 2400]} sizes="100vw" loading="lazy" />
+  </div>
+  <div class="cta-tex-shade" aria-hidden="true"></div>
+  <div class="container cta">
+    <div class="eyebrow reveal"><span>{eyebrow}</span></div>
+    <h2 class="kinetic-header reveal" data-splitting set:html={heading}></h2>
+    <p class="cta-sub reveal">{sub}</p>
+    <div class="cta-actions reveal">
+      <a href={localizePath('/contact', lang)} class="btn-glow"><span>{t('nav.cta')}</span><span class="arrow">→</span></a>
+      <a href={localizePath('/services', lang)} class="btn btn-ghost"><span>{t('cta.explore')}</span></a>
+    </div>
+  </div>
+</section>

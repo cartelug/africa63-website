@@ -1,0 +1,109 @@
+/* ════════════════════════════════════════════════════════════
+   AFRICA 63 — DESIGN TOKENS · v6 "EDITORIAL LUXURY"
+   Serif display (Fraunces) + Montserrat body · black / paper / gold
+   All colour via rgb-channel tokens so opacity variants derive cleanly.
+   ════════════════════════════════════════════════════════════ */
+@layer tokens {
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  :root {
+    /* ── RAW COLOUR CHANNELS (compose with rgb() / rgba()) ── */
+    --ink-rgb: 12, 11, 9;        /* near-black, faintly warm */
+    --paper-rgb: 244, 241, 234;  /* warm editorial off-white */
+    --bone-rgb: 233, 227, 214;   /* deeper paper for panels */
+    --gold-rgb: 201, 165, 105;   /* brand gold */
+    --gold-deep-rgb: 138, 103, 42;
+    --gold-light-rgb: 216, 190, 132;
+
+    /* ── SEMANTIC SURFACES ── */
+    --ink:        rgb(var(--ink-rgb));
+    --paper:      rgb(var(--paper-rgb));
+    --bone:       rgb(var(--bone-rgb));
+    --bg-black:   rgb(var(--ink-rgb));
+    --bg-white:   rgb(var(--paper-rgb));
+
+    --gold:       rgb(var(--gold-rgb));
+    --gold-deep:  rgb(var(--gold-deep-rgb));
+    --gold-light: rgb(var(--gold-light-rgb));
+
+    /* text on dark (paper ink) */
+    --on-dark:    rgb(var(--paper-rgb));
+    --on-dark-70: rgba(var(--paper-rgb), 0.70);
+    --on-dark-50: rgba(var(--paper-rgb), 0.50);
+    --on-dark-30: rgba(var(--paper-rgb), 0.30);
+    --on-dark-14: rgba(var(--paper-rgb), 0.14);
+    --on-dark-08: rgba(var(--paper-rgb), 0.08);
+
+    /* text on light (dark ink) */
+    --on-light:    rgb(var(--ink-rgb));
+    --on-light-70: rgba(var(--ink-rgb), 0.72);
+    --on-light-50: rgba(var(--ink-rgb), 0.52);
+    --on-light-30: rgba(var(--ink-rgb), 0.30);
+    --on-light-14: rgba(var(--ink-rgb), 0.14);
+    --on-light-08: rgba(var(--ink-rgb), 0.07);
+
+    /* legacy aliases kept so ported markup doesn't break */
+    --grey-70: var(--on-dark-70);
+    --grey-50: var(--on-dark-50);
+    --grey-30: var(--on-dark-30);
+    --grey-12: var(--on-dark-14);
+    --grey-06: var(--on-dark-08);
+    --ink-70: var(--on-light-70);
+    --ink-50: var(--on-light-50);
+    --ink-30: var(--on-light-30);
+    --ink-12: var(--on-light-14);
+    --ink-06: var(--on-light-08);
+    --gold-1: var(--gold);
+    --gold-2: rgb(181, 147, 78);
+    --gold-3: var(--gold-light);
+    --gold-4: rgb(163, 123, 51);
+
+    /* ── TYPE FAMILIES ── */
+    --serif: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
+    --sans:  'Montserrat Variable', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* ── FLUID TYPE SCALE (editorial ramp) ── */
+    --fs-display: clamp(3.2rem, 9.5vw, 9rem);   /* serif hero */
+    --fs-h1:      clamp(2.6rem, 6.6vw, 5.4rem);
+    --fs-h2:      clamp(2rem, 4.4vw, 3.9rem);
+    --fs-h3:      clamp(1.35rem, 2.1vw, 2.1rem);
+    --fs-state:   clamp(1.4rem, 2.5vw, 2.35rem);
+    --fs-marquee: clamp(2rem, 5.4vw, 4.8rem);
+    --fs-lead:    clamp(1.05rem, 1.35vw, 1.28rem);
+    --fs-body:    clamp(0.98rem, 1.05vw, 1.08rem);
+    --fs-small:   clamp(0.82rem, 0.92vw, 0.9rem);
+    --fs-eyebrow: clamp(0.6rem, 0.75vw, 0.72rem);
+    --fs-micro:   clamp(0.54rem, 0.62vw, 0.6rem);
+
+    /* ── MOTION ── */
+    --ease:        cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --dur-fast: 0.35s;
+    --dur-base: 0.6s;
+    --dur-slow: 1.05s;
+
+    /* ── SPACING SCALE ── */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 14px;
+    --space-4: 22px;
+    --space-5: 34px;
+    --space-6: 52px;
+    --space-7: 76px;
+    --space-8: 110px;
+
+    /* ── RHYTHM / LAYOUT ── */
+    --pad-x: clamp(20px, 5.5vw, 128px);
+    --pad-y: clamp(88px, 13vh, 200px);
+    --max:   1480px;
+    --measure: 66ch;
+    --nav-h: 82px;
+    --footer-h: clamp(640px, 90vh, 920px);
+    --radius: 3px;
+  }
+}

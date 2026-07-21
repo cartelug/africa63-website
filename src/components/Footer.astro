@@ -1,0 +1,66 @@
+---
+import { navItems, site } from '../config/site';
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import { getCollection } from 'astro:content';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Capabilities pulled from the canonical services collection (top 5).
+let capabilities: { title: string }[] = [];
+try {
+  const services = await getCollection('services', (e: { id: string }) => e.id.startsWith(`${lang}/`));
+  capabilities = services
+    .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
+    .slice(0, 5)
+    .map((e) => ({ title: e.data.title }));
+} catch {
+  capabilities = [];
+}
+const year = 2026;
+---
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-anim reveal">
+        <h3 class="footer-tagline">{t('footer.tagline.pre')} <em>{t('footer.tagline.em')}</em> {t('footer.tagline.post')}</h3>
+        <div class="footer-socials">
+          {site.socials.map((s) => (
+            <a href={s.href} class="f-soc" aria-label={s.label} target="_blank" rel="noopener">{s.short}</a>
+          ))}
+        </div>
+      </div>
+      <div class="footer-col footer-anim reveal">
+        <h5>{t('footer.navigate')}</h5>
+        <ul>
+          <li><a href={localizePath('/', lang)}>{t('nav.home')}</a></li>
+          {navItems.map((i) => <li><a href={localizePath(i.path, lang)}>{t(i.key as any)}</a></li>)}
+        </ul>
+      </div>
+      <div class="footer-col footer-anim reveal">
+        <h5>{t('footer.capabilities')}</h5>
+        <ul>
+          {capabilities.length
+            ? capabilities.map((c) => <li><a href={localizePath('/services', lang)}>{c.title}</a></li>)
+            : <li><a href={localizePath('/services', lang)}>{t('nav.services')}</a></li>}
+        </ul>
+      </div>
+      <div class="footer-col footer-anim reveal">
+        <h5>{t('footer.contact')}</h5>
+        <ul>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><a href={localizePath('/contact', lang)}>{t('footer.office')}</a></li>
+          <li><a href={site.domain}>theafrica63.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar footer-anim reveal">
+      <div>© {site.name} · {year} · {t('footer.rights')}</div>
+      <div>{t('footer.designed')}</div>
+    </div>
+  </div>
+  <div class="footer-logo">
+    <img src="/assets/logo/africa63-full-logo.PNG" alt="Africa 63" width="1600" height="300" loading="lazy" />
+  </div>
+</footer>

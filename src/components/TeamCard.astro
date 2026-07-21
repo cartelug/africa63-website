@@ -1,0 +1,15 @@
+---
+import { Image } from 'astro:assets';
+import { img } from '../lib/images';
+interface Props { name: string; role: string; photo: string; }
+const { name, role, photo } = Astro.props;
+---
+<div class="team-card reveal">
+  <div class="photo">
+    <Image src={img(photo)} alt={name} widths={[400, 700]} sizes="(max-width: 700px) 100vw, 300px" loading="lazy" />
+  </div>
+  <div>
+    <div class="name">{name}</div>
+    <div class="role">{role}</div>
+  </div>
+</div>

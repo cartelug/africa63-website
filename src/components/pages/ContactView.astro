@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import { getServices } from '../../lib/content';
+import { site } from '../../config/site';
+import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const L = (p: string) => localizePath(p, lang);
+const services = await getServices(lang);
+
+const c = lang === 'fr' ? {
+  eyebrow: 'Contact', h1: 'Commençons.',
+  sub: 'Dites à Africa 63 ce que vous bâtissez — un projet à financer, un partenariat à structurer, une institution à renforcer. Nous lisons chaque message, et nous répondons.',
+  reachEye: 'Nous joindre', reachHead: 'Entamons l’échange.',
+  email: 'E-mail', office: 'Bureau', officeVal: 'Kinshasa, République démocratique du Congo', response: 'Réponse', responseVal: 'Sous deux jours ouvrés',
+  fName: 'Nom complet', fNameP: 'Votre nom', fEmail: 'E-mail', fEmailP: 'vous@organisation.com',
+  fOrg: 'Organisation', fOrgP: 'Organisme public, entreprise ou institution', fHelp: 'Comment pouvons-nous aider ?',
+  fSelect: 'Choisir un domaine', fOther: 'Autre chose', fMsg: 'Votre message', fMsgP: 'Parlez-nous du projet, du partenariat ou du mandat.',
+  send: 'Envoyer', noteA: 'Nous répondons sous', noteB: 'deux jours ouvrés',
+  successH: 'Message reçu', successP: 'Merci. Africa 63 vous recontactera sous peu.',
+  errorMsg: 'Un problème est survenu. Réessayez ou écrivez-nous directement.', privacy: 'Politique de confidentialité',
+} : {
+  eyebrow: 'Contact', h1: 'Let’s begin.',
+  sub: 'Tell Africa 63 what you’re building — a project to fund, a partnership to structure, an institution to strengthen. We read every message, and we reply.',
+  reachEye: 'Reach Us', reachHead: 'Start the conversation.',
+  email: 'Email', office: 'Office', officeVal: 'Kinshasa, Democratic Republic of the Congo', response: 'Response', responseVal: 'Within two business days',
+  fName: 'Full Name', fNameP: 'Your name', fEmail: 'Email', fEmailP: 'you@organisation.com',
+  fOrg: 'Organisation', fOrgP: 'Government body, company, or institution', fHelp: 'How can we help?',
+  fSelect: 'Select an area', fOther: 'Something else', fMsg: 'Your message', fMsgP: 'Tell us about the project, partnership, or mandate.',
+  send: 'Send Message', noteA: 'We reply within', noteB: 'two business days',
+  successH: 'Message received', successP: 'Thank you. Africa 63 will be in touch shortly.',
+  errorMsg: 'Something went wrong. Please try again or email us directly.', privacy: 'Privacy Policy',
+};
+---
+<BaseLayout lang={lang} path="/contact" title={`${c.eyebrow} — Africa 63`} description={c.sub}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container">
+      <Eyebrow>{c.eyebrow}</Eyebrow>
+      <h1 class="kinetic-header lower" data-splitting>{c.h1}</h1>
+      <p class="hero-sub">{c.sub}</p>
+    </div>
+  </header>
+
+  <section class="section theme-white" style="padding-top:clamp(60px,9vh,110px)">
+    <div class="container contact-grid">
+      <div class="reveal">
+        <Eyebrow num="01">{c.reachEye}</Eyebrow>
+        <h2 class="kinetic-header mt-3" data-splitting>{c.reachHead}</h2>
+        <div class="contact-info">
+          <div class="ci-item"><div class="ci-icon">✉</div><div><div class="ci-k">{c.email}</div><div class="ci-v"><a href={`mailto:${site.email}`}>{site.email}</a></div></div></div>
+          <div class="ci-item"><div class="ci-icon">◎</div><div><div class="ci-k">{c.office}</div><div class="ci-v">{c.officeVal}</div></div></div>
+          <div class="ci-item"><div class="ci-icon">◷</div><div><div class="ci-k">{c.response}</div><div class="ci-v">{c.responseVal}</div></div></div>
+        </div>
+      </div>
+
+      <div class="reveal" data-delay="0.08">
+        <div class="form">
+          <form id="contactForm">
+            <!-- Web3Forms: replace access_key with your key from https://web3forms.com -->
+            <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
+            <input type="hidden" name="subject" value="New enquiry — theafrica63.com" />
+            <input type="hidden" name="from_name" value="Africa 63 Website" />
+            <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" />
+            <div class="form-row">
+              <div class="field"><label for="cName">{c.fName}</label><input type="text" id="cName" name="name" placeholder={c.fNameP} autocomplete="name" required /></div>
+              <div class="field"><label for="cEmail">{c.fEmail}</label><input type="email" id="cEmail" name="email" placeholder={c.fEmailP} autocomplete="email" required /></div>
+            </div>
+            <div class="field"><label for="cOrg">{c.fOrg}</label><input type="text" id="cOrg" name="organisation" placeholder={c.fOrgP} /></div>
+            <div class="field"><label for="cService">{c.fHelp}</label>
+              <select id="cService" name="area">
+                <option value="" disabled selected>{c.fSelect}</option>
+                {services.map((s) => <option>{s.data.title}</option>)}
+                <option>{c.fOther}</option>
+              </select>
+            </div>
+            <div class="field"><label for="cMsg">{c.fMsg}</label><textarea id="cMsg" name="message" placeholder={c.fMsgP} required></textarea></div>
+            <div class="form-foot">
+              <span class="form-note">{c.noteA} <span>{c.noteB}</span></span>
+              <button class="btn-glow" id="cSubmit" type="submit"><span>{c.send}</span><span class="arrow">→</span></button>
+            </div>
+            <p class="form-note" id="formError" style="display:none;color:#e0736b;margin-top:14px">{c.errorMsg}</p>
+          </form>
+          <div class="form-success" id="formSuccess">
+            <div class="fs-icon">✓</div><h4>{c.successH}</h4><p>{c.successP}</p>
+          </div>
+        </div>
+        <p class="form-note mt-4" style="color:var(--on-light-50)"><a href={L('/privacy')} style="text-decoration:underline">{c.privacy}</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    function bind() {
+      var form = document.getElementById('contactForm');
+      if (!form || form.dataset.bound) return;
+      form.dataset.bound = '1';
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var btn = document.getElementById('cSubmit');
+        var err = document.getElementById('formError');
+        if (form.querySelector('[name="botcheck"]').checked) return;
+        var key = form.querySelector('[name="access_key"]').value;
+        btn.style.opacity = '0.7'; btn.style.pointerEvents = 'none';
+        try {
+          if (!key || key === 'YOUR_WEB3FORMS_ACCESS_KEY') throw new Error('no-key');
+          var res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(form))),
+          });
+          var data = await res.json();
+          if (!data.success) throw new Error('failed');
+          document.getElementById('formSuccess').classList.add('show');
+          form.style.display = 'none';
+        } catch (ex) {
+          if (err) err.style.display = 'block';
+          btn.style.opacity = ''; btn.style.pointerEvents = '';
+        }
+      });
+    }
+    document.addEventListener('astro:page-load', bind);
+    if (document.readyState !== 'loading') bind();
+    else document.addEventListener('DOMContentLoaded', bind);
+  })();
+</script>

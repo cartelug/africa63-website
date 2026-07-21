@@ -1,0 +1,19 @@
+---
+const partners = [
+  { name: 'Embassy of Sweden', outline: false },
+  { name: 'U.S. Government', outline: true },
+  { name: 'LSU · Sweden', outline: false },
+  { name: 'Development Partners', outline: true },
+  { name: 'LYREC · DR Congo', outline: false },
+  { name: 'Multilateral Agencies', outline: true },
+];
+interface Props { dur?: number; }
+const { dur = 42 } = Astro.props;
+---
+<div class="partner-marquee">
+  <div class="partner-track" data-dur={dur}>
+    {partners.map((p) => (
+      <span class={`partner-item ${p.outline ? 'outline' : ''}`}>{p.name}<span class="dot" aria-hidden="true"></span></span>
+    ))}
+  </div>
+</div>

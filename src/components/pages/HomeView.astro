@@ -1,0 +1,199 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import ServiceRow from '../ServiceRow.astro';
+import WorkCard from '../WorkCard.astro';
+import PartnerMarquee from '../PartnerMarquee.astro';
+import InsightCard from '../InsightCard.astro';
+import CtaTex from '../CtaTex.astro';
+import { img } from '../../lib/images';
+import { getServices, getCaseStudies, getInsights, bareSlug } from '../../lib/content';
+import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+import { site } from '../../config/site';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const services = (await getServices(lang)).filter((s) => s.data.featured).slice(0, 4);
+const cases = await getCaseStudies(lang);
+const featured = cases.slice(0, 4);
+const insights = (await getInsights(lang)).slice(0, 3);
+
+const L = (p: string) => localizePath(p, lang);
+const copy = lang === 'fr' ? {
+  heroSub: "Africa 63 est un cabinet d’affaires publiques qui accompagne gouvernements, institutions et acteurs du développement — en mobilisant des ressources, en structurant des projets publics et en bâtissant la confiance dont dépend tout progrès durable.",
+  ourWork: 'Nos réalisations', whatWeDo: 'Ce que nous faisons',
+  whoWeAre: 'Qui nous sommes', whoHead: 'Un cabinet de conseil<br>pour l’avenir public de l’Afrique.',
+  statement: 'Africa 63 accompagne le développement des secteurs public et privé à travers le continent.',
+  statementFaint: 'Nous mobilisons l’investissement durable, structurons les projets publics, faisons avancer les partenariats public–privé et renforçons les institutions.',
+  body1: 'Fondé sur une conviction — que le progrès de l’Afrique se bâtit par la confiance entre gouvernements, entreprises, partenaires et communautés — Africa 63 agit là où la stratégie rencontre l’exécution.',
+  body2: 'Notre approche est délibérée, fondée sur les faits et centrée sur le partenariat. Nous ne cherchons pas les gros titres. Nous bâtissons les relations, les structures et la crédibilité dont dépendent les résultats durables.',
+  inPartnership: 'En partenariat avec', selectedWork: 'Réalisations choisies', ourEngagements: 'Nos engagements.',
+  workLead: 'Un aperçu des partenariats que nous avons contribué à convoquer, structurer et livrer — diplomatie, gouvernance et capacité institutionnelle.',
+  whatHead: 'Des compétences au<br>service de l’impact public.',
+  approach: 'Notre manière d’agir', approachHead: 'Délibérée. Fondée sur les faits. Partenariat d’abord.',
+  ap: [ ['Écouter & Cartographier', 'Nous commençons par comprendre l’institution, le mandat et les parties prenantes — tout le paysage avant toute recommandation.'],
+        ['Structurer & Conseiller', 'Nous concevons la stratégie, la structure et les partenariats — fondés sur les faits et bâtis pour la responsabilité.'],
+        ['Livrer & Pérenniser', 'Nous accompagnons l’exécution et renforçons la capacité — pour que les résultats tiennent bien après la mission.'] ],
+  insightsEye: 'Analyses & Perspectives', insightsHead: 'Réflexions sur les affaires publiques.',
+  ctaEye: 'Commençons', ctaHead: 'Bâtir l’Afrique<br>que nous voulons, ensemble.',
+  ctaSub: 'Que vous mobilisiez des ressources, structuriez un projet public ou renforciez une institution — entamons l’échange.',
+} : {
+  heroSub: 'Africa 63 is a public affairs firm partnering with governments, institutions, and international development actors — mobilising resources, structuring public projects, and building the trust on which lasting progress depends.',
+  ourWork: 'Our Work', whatWeDo: 'What We Do',
+  whoWeAre: 'Who We Are', whoHead: 'A Consulting Office<br>for Africa’s Public Future.',
+  statement: 'Africa 63 supports public and private sector development across the continent.',
+  statementFaint: 'We mobilise sustainable investment, structure public projects, advance public–private partnerships, and strengthen the institutions that carry nations forward.',
+  body1: 'Founded on a single conviction — that Africa’s progress is built through trust between governments, businesses, development partners, and the communities they serve — Africa 63 works where strategy meets execution.',
+  body2: 'Our approach is deliberate, evidence-led, and partnership-first. We do not chase headlines. We build the relationships, structures, and credibility on which lasting outcomes depend.',
+  inPartnership: 'In Partnership With', selectedWork: 'Selected Work', ourEngagements: 'Our Engagements.',
+  workLead: 'A snapshot of partnerships we have helped convene, structure, and deliver — across diplomacy, governance, and institutional capacity.',
+  whatHead: 'Capabilities Built<br>for Public Impact.',
+  approach: 'How We Engage', approachHead: 'Deliberate. Evidence-led. Partnership First.',
+  ap: [ ['Listen & Map', 'We begin by understanding the institution, the mandate, and the stakeholders — the full landscape before any recommendation lands.'],
+        ['Structure & Advise', 'We design the strategy, the structure, and the partnerships — grounded in evidence and built for accountability from day one.'],
+        ['Deliver & Sustain', 'We support execution and strengthen capacity — so outcomes hold long after the engagement ends.'] ],
+  insightsEye: 'Insights & Perspectives', insightsHead: 'Thinking on public affairs.',
+  ctaEye: 'Let’s Begin', ctaHead: 'Build the Africa<br>We Want, Together.',
+  ctaSub: 'Whether you are mobilising resources, structuring a public project, or strengthening an institution — let’s start the conversation.',
+};
+
+const jsonld = {
+  '@context': 'https://schema.org', '@type': 'Organization', name: site.name, alternateName: 'A63',
+  url: site.domain + L('/'), logo: `${site.domain}/assets/logo/africa63-full-logo.PNG`,
+  email: site.email, address: { '@type': 'PostalAddress', addressLocality: 'Kinshasa', addressCountry: 'CD' },
+  knowsAbout: ['Public Affairs', 'Resource Mobilisation', 'Public-Private Partnerships', 'Governance', 'Institutional Capacity'],
+};
+---
+<BaseLayout
+  lang={lang} path="/" navPath="/"
+  title="Africa 63 — Public Affairs & Strategic Advisory"
+  description={copy.heroSub}
+  jsonld={jsonld}
+>
+  <!-- HERO -->
+  <header class="hero theme-black fade-white">
+    <div class="hero-media" aria-hidden="true">
+      <Image src={img('hero-boardroom')} alt="" widths={[900, 1600, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+    </div>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <span class="he-line"></span><span>{t('tag.public')}</span>
+        <span class="he-divider"></span><span>{t('tag.strategic')}</span><span class="he-line"></span>
+      </div>
+      <h1 class="hero-title display-heading hero-scale kinetic-header" data-splitting>Africa 63</h1>
+      <p class="hero-sub">{copy.heroSub}</p>
+      <div class="hero-actions">
+        <a href={L('/work')} class="btn-glow"><span>{copy.ourWork}</span><span class="arrow">→</span></a>
+        <a href={L('/services')} class="btn btn-ghost"><span>{copy.whatWeDo}</span></a>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </header>
+
+  <!-- STATEMENT -->
+  <section class="section theme-white seam-gold">
+    <div class="container split">
+      <div class="split-sticky">
+        <Eyebrow num="01">{copy.whoWeAre}</Eyebrow>
+        <h2 class="kinetic-header reveal mt-4" data-splitting set:html={copy.whoHead}></h2>
+      </div>
+      <div>
+        <p class="statement reveal">{copy.statement} <span class="t-faint">{copy.statementFaint}</span></p>
+        <div class="reveal mt-6">
+          <p class="body-text">{copy.body1}</p>
+          <p class="body-text">{copy.body2}</p>
+          <div class="mt-5"><a href={L('/about')} class="text-link"><span>{t('common.readStory')}</span><span class="arrow">→</span></a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="theme-black seam-gold" style="padding:clamp(70px,10vh,120px) 0 clamp(80px,12vh,140px)">
+    <div style="padding:0 var(--pad-x); margin-bottom:clamp(30px,5vh,52px)"><Eyebrow num="02">{copy.inPartnership}</Eyebrow></div>
+    <PartnerMarquee />
+  </section>
+
+  <!-- ENGAGEMENTS -->
+  <section class="section theme-white seam-gold">
+    <div class="container">
+      <div class="work-head">
+        <div>
+          <Eyebrow num="03">{copy.selectedWork}</Eyebrow>
+          <h2 class="kinetic-header reveal mt-4" data-splitting>{copy.ourEngagements}</h2>
+          <p class="work-lead reveal">{copy.workLead}</p>
+        </div>
+        <div class="reveal"><a href={L('/work')} class="text-link"><span>{t('common.viewAll')}</span><span class="arrow">→</span></a></div>
+      </div>
+      <div class="work-grid">
+        {featured.map((c, i) => (
+          <WorkCard href={L(`/work/${bareSlug(c.id)}`)} cover={c.data.cover} title={c.data.title}
+            year={`${c.data.location} · ${c.data.date}`} chips={c.data.tags} tag={i === 0 ? 'Featured' : undefined}
+            span={i % 3 === 0 ? 7 : 5} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section theme-black melt-blur-white">
+    <div class="container">
+      <div class="work-head">
+        <div>
+          <Eyebrow num="04">{copy.whatWeDo}</Eyebrow>
+          <h2 class="kinetic-header reveal mt-4" data-splitting set:html={copy.whatHead}></h2>
+        </div>
+        <div class="reveal"><a href={L('/services')} class="text-link"><span>{t('common.allServices')}</span><span class="arrow">→</span></a></div>
+      </div>
+      <div class="svc-rows mt-5">
+        {services.map((s, i) => (
+          <ServiceRow num={`0${i + 1}`} title={s.data.title} summary={s.data.short ?? s.data.summary}
+            icon={s.data.icon} href={L('/services')} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section class="section theme-white fade-black">
+    <div class="container">
+      <Eyebrow num="05" class="reveal">{copy.approach}</Eyebrow>
+      <h2 class="kinetic-header reveal mb-6 mt-4" data-splitting>{copy.approachHead}</h2>
+      <div class="trio">
+        {copy.ap.map(([h, p], i) => (
+          <div class="trio-item reveal" data-delay={(i * 0.08).toString()}>
+            <div class="num">0{i + 1}</div><h4>{h}</h4><p>{p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  {insights.length > 0 && (
+    <section class="section theme-black seam-gold">
+      <div class="container">
+        <div class="work-head">
+          <div>
+            <Eyebrow num="06">{copy.insightsEye}</Eyebrow>
+            <h2 class="kinetic-header reveal mt-4" data-splitting>{copy.insightsHead}</h2>
+          </div>
+          <div class="reveal"><a href={L('/insights')} class="text-link"><span>{t('common.allInsights')}</span><span class="arrow">→</span></a></div>
+        </div>
+        <div class="card-grid mt-6">
+          {insights.map((n) => (
+            <InsightCard href={L(`/insights/${bareSlug(n.id)}`)} cover={n.data.cover} category={n.data.category}
+              title={n.data.title} excerpt={n.data.excerpt} date={n.data.date} lang={lang} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <CtaTex lang={lang} eyebrow={copy.ctaEye} heading={copy.ctaHead} sub={copy.ctaSub} />
+</BaseLayout>

@@ -1,0 +1,51 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import SEO from '../components/SEO.astro';
+import Preloader from '../components/Preloader.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  path: string;          // canonical path w/o locale prefix
+  navPath?: string;      // which nav item is active (defaults to path)
+  ogImage?: string;
+  type?: 'website' | 'article';
+  jsonld?: object;
+  showPreloader?: boolean;
+}
+const {
+  title, description, lang, path, navPath = path,
+  ogImage, type = 'website', jsonld, showPreloader = true,
+} = Astro.props;
+const t = useTranslations(lang);
+---
+<!doctype html>
+<html lang={lang} class="js">
+  <head>
+    <SEO {title} {description} {lang} {path} {ogImage} {type} {jsonld} />
+    <ClientRouter />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+  </head>
+  <body class={showPreloader ? 'loading' : ''}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {showPreloader && <Preloader {lang} />}
+    <Nav {lang} path={navPath} />
+
+    <main class="site-main" id="main">
+      <slot />
+    </main>
+
+    <Footer {lang} />
+
+    <button class="to-top" id="toTop" aria-label={t('common.backToTop')}>↑</button>
+
+    <script>
+      import '../scripts/motion.ts';
+    </script>
+  </body>
+</html>

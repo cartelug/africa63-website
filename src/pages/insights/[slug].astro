@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import InsightView from '../../components/pages/InsightView.astro';
+import { bareSlug } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const all = await getCollection('insights', (e) => e.id.startsWith('en/') && !e.data.draft);
+  return all.map((entry) => ({ params: { slug: bareSlug(entry.id) }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<InsightView lang="en" entry={entry} />

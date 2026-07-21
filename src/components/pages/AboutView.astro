@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import CtaTex from '../CtaTex.astro';
+import { img } from '../../lib/images';
+import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const L = (p: string) => localizePath(p, lang);
+
+const c = lang === 'fr' ? {
+  eyebrow: 'À propos d’Africa 63', h1: 'Bâti sur la confiance. Enraciné en Afrique.',
+  sub: "Africa 63 est un cabinet d’affaires publiques à l’intersection du gouvernement, de l’entreprise et du développement international — aidant les institutions à mobiliser des ressources, structurer des projets publics et bâtir la crédibilité qu’exige le progrès.",
+  purposeEye: 'Notre raison d’être', purposeHead: 'Un cabinet d’affaires publiques<br>pour le développement de l’Afrique.',
+  statement: 'Africa 63 accompagne les initiatives de développement des secteurs public et privé.',
+  statementFaint: 'Du financement à la mobilisation des ressources, des partenariats public–privé à la réforme de la gouvernance, nous aidons les institutions à remplir leur mandat.',
+  body: [
+    'Africa 63 facilite la mobilisation d’investissements durables et le développement de projets publics structurés. Nous fournissons un conseil juridique aux entreprises, promouvons le leadership et la bonne gouvernance, et livrons des programmes de formation qui renforcent la capacité institutionnelle et opérationnelle.',
+    'Surtout, nous facilitons la collaboration — entre gouvernements, entreprises, partenaires au développement et communautés. Nous croyons que les résultats les plus durables se bâtissent non sur une transaction unique, mais sur des relations de confiance entretenues dans le temps.',
+  ],
+  believeEye: 'Ce que nous croyons', believeHead: 'Des principes qui guident le travail.',
+  values: [
+    ['Confiance d’abord', 'La crédibilité se gagne — par les preuves, la discrétion et la constance. Nous laissons parler la qualité du travail et la force des relations.'],
+    ['Partenariat', 'Nous travaillons aux côtés des gouvernements, des entreprises et des communautés — jamais au-dessus d’eux. Le progrès durable est un progrès partagé.'],
+    ['Durabilité', 'Nous bâtissons pour la performance, l’efficacité et le long terme — pour que les résultats perdurent au-delà de nous.'],
+  ],
+  trackEye: 'Expérience & Partenariats', trackHead: 'Un parcours à travers les secteurs.',
+  timeline: [
+    ['2019 — 23', 'Coopération bilatérale & multilatérale', 'Soutien de l’Ambassade de Suède et d’agences du gouvernement des États-Unis, aux côtés de divers partenaires internationaux du développement.'],
+    ['Public · Privé', 'Institutions & Entreprises', 'Travail avec des institutions publiques, des organisations du secteur privé et des acteurs internationaux sur des initiatives de développement.'],
+    ['2022', 'Ambassade de Suède × LYREC', 'Appui au partenariat renforçant la participation des jeunes à la gouvernance pour le développement durable en RD Congo.'],
+    ['En cours', 'Développement durable', 'Contribution à des projets de développement durable, de renforcement de capacités et de consolidation institutionnelle.'],
+  ],
+  ctaEye: 'Travailler avec nous', ctaHead: 'Bâtissons quelque chose<br>de durable.',
+  ctaSub: 'Du premier échange à la livraison, Africa 63 s’associe aux institutions prêtes à faire avancer le continent.',
+} : {
+  eyebrow: 'About Africa 63', h1: 'Built on trust. Rooted in Africa.',
+  sub: 'Africa 63 is a public affairs firm working at the intersection of government, business, and international development — helping institutions mobilise resources, structure public projects, and build the credibility that progress requires.',
+  purposeEye: 'Our Purpose', purposeHead: 'A Public Affairs Firm<br>for Africa’s Development.',
+  statement: 'Africa 63 supports public and private sector development initiatives.',
+  statementFaint: 'From fundraising and resource mobilisation to public–private partnerships and governance reform, we help institutions deliver on their mandate.',
+  body: [
+    'Africa 63 facilitates the mobilisation of sustainable investments and the development of structured public projects. We provide legal advisory to commercial companies, promote leadership and good governance in public management, and deliver training programmes that strengthen institutional and operational capacity.',
+    'Above all, we facilitate collaboration — between governments, businesses, development partners, and the communities they serve. We believe the most durable outcomes are built not on a single transaction, but on relationships of trust maintained over time.',
+  ],
+  believeEye: 'What We Believe', believeHead: 'Principles that guide the work.',
+  values: [
+    ['Trust First', 'Credibility is earned — through evidence, discretion, and consistency. We let the quality of the work, and the strength of our relationships, speak.'],
+    ['Partnership', 'We work alongside governments, businesses, and communities — never above them. Lasting progress is shared progress, built with the people it serves.'],
+    ['Sustainability', 'We build for performance, efficiency, and the long term — structuring projects and strengthening institutions so outcomes endure beyond us.'],
+  ],
+  trackEye: 'Experience & Partnerships', trackHead: 'A Track Record Across Sectors.',
+  timeline: [
+    ['2019 — 23', 'Bilateral & Multilateral Cooperation', 'Received support from the Embassy of Sweden and from agencies and programmes of the United States Government, working alongside a range of international development partners.'],
+    ['Public · Private', 'Institutions & Enterprise', 'Worked with public institutions, private sector organisations, and international stakeholders on development initiatives spanning policy, investment, and capacity.'],
+    ['2022', 'Embassy of Sweden × LYREC', 'Supported the partnership strengthening youth participation in governance for sustainable development in DR Congo — extending civil-society reach across Central Congo, Kwilu, and Central Kasaï.'],
+    ['Ongoing', 'Sustainable Development', 'Contributed to projects focused on sustainable development, capacity building, and institutional strengthening — the foundations of long-term public value.'],
+  ],
+  ctaEye: 'Work With Us', ctaHead: 'Let’s Build Something Lasting.',
+  ctaSub: 'From the first conversation to delivery, Africa 63 partners with institutions ready to move the continent forward.',
+};
+---
+<BaseLayout lang={lang} path="/about" title={`${c.eyebrow} — Africa 63`} description={c.sub}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-media" aria-hidden="true"><Image src={img('headshot-02')} alt="" widths={[900,1600]} sizes="100vw" loading="eager" fetchpriority="high" /></div>
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container">
+      <Eyebrow>{c.eyebrow}</Eyebrow>
+      <h1 class="kinetic-header lower" data-splitting>{c.h1}</h1>
+      <p class="hero-sub">{c.sub}</p>
+    </div>
+  </header>
+
+  <section class="section theme-white seam-gold">
+    <div class="container split">
+      <div class="split-sticky">
+        <Eyebrow num="01">{c.purposeEye}</Eyebrow>
+        <h2 class="kinetic-header reveal mt-4" data-splitting set:html={c.purposeHead}></h2>
+      </div>
+      <div>
+        <p class="statement reveal">{c.statement} <span class="t-faint">{c.statementFaint}</span></p>
+        <div class="reveal mt-6">
+          {c.body.map((p) => <p class="body-text">{p}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="theme-black" style="padding:clamp(70px,10vh,120px) var(--pad-x)">
+    <div class="container">
+      <figure class="img-band reveal" style="aspect-ratio:16/8">
+        <Image src={img('africa1')} alt="Africa 63 engagement in Kinshasa, DR Congo" widths={[900,1600,2400]} sizes="100vw" loading="lazy" />
+        <figcaption class="cap">Kinshasa · Embassy of Sweden Engagement</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section theme-black seam-gold">
+    <div class="container">
+      <Eyebrow num="02" class="reveal">{c.believeEye}</Eyebrow>
+      <h2 class="kinetic-header reveal mb-6 mt-4" data-splitting>{c.believeHead}</h2>
+      <div class="trio">
+        {c.values.map(([h, p], i) => (
+          <div class="trio-item reveal" data-delay={(i * 0.08).toString()}><div class="num">0{i + 1}</div><h4>{h}</h4><p>{p}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section theme-white melt-blur-black">
+    <div class="container">
+      <Eyebrow num="03" class="reveal">{c.trackEye}</Eyebrow>
+      <h2 class="kinetic-header reveal mt-4" data-splitting style="margin-bottom:56px">{c.trackHead}</h2>
+      <div class="timeline">
+        {c.timeline.map(([y, h, p]) => (
+          <div class="tl-item reveal"><div class="tl-year">{y}</div><div class="tl-body"><h4>{h}</h4><p>{p}</p></div></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaTex lang={lang} eyebrow={c.ctaEye} heading={c.ctaHead} sub={c.ctaSub} />
+</BaseLayout>

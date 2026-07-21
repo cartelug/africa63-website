@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import CtaTex from '../CtaTex.astro';
+import { img } from '../../lib/images';
+import { bareSlug } from '../../lib/content';
+import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+import { site } from '../../config/site';
+
+interface Props { lang: Lang; entry: CollectionEntry<'caseStudies'>; }
+const { lang, entry } = Astro.props;
+const t = useTranslations(lang);
+const L = (p: string) => localizePath(p, lang);
+const d = entry.data;
+const { Content } = await render(entry);
+const slug = bareSlug(entry.id);
+
+const meta = lang === 'fr'
+  ? { partner: 'Partenaire', beneficiary: 'Bénéficiaire', programme: 'Programme', location: 'Lieu', outcomes: 'Résultats', back: 'Toutes les réalisations', discuss: 'Discuter d’un partenariat' }
+  : { partner: 'Partner', beneficiary: 'Beneficiary', programme: 'Programme', location: 'Location', outcomes: 'Outcomes', back: 'All engagements', discuss: 'Discuss a partnership' };
+
+const jsonld = {
+  '@context': 'https://schema.org', '@type': 'Article', headline: d.title,
+  description: d.excerpt, image: `${site.domain}/assets/images/generated/og-share.jpg`,
+  author: { '@type': 'Organization', name: site.name }, datePublished: d.date,
+};
+const ctaEye = lang === 'fr' ? 'Votre prochain engagement' : 'Your Engagement Next';
+const ctaHead = lang === 'fr' ? 'Bâtissons la suite,<br>ensemble.' : 'Let’s build what<br>comes next, together.';
+const ctaSub = lang === 'fr' ? 'Apportez à Africa 63 un projet, un partenariat ou un mandat.' : 'Bring Africa 63 a project, a partnership, or a mandate.';
+---
+<BaseLayout lang={lang} path={`/work/${slug}`} navPath="/work" title={`${d.title} — Africa 63`} description={d.excerpt} type="article" jsonld={jsonld}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-media" aria-hidden="true"><Image src={img(d.cover)} alt="" widths={[900,1600,2400]} sizes="100vw" loading="eager" fetchpriority="high" /></div>
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container">
+      <Eyebrow>{d.tags.join(' · ')}</Eyebrow>
+      <h1 class="kinetic-header lower" data-splitting>{d.title}</h1>
+      <p class="hero-sub">{d.excerpt}</p>
+    </div>
+  </header>
+
+  {d.outcomes.length > 0 && (
+    <section class="section-tight theme-black seam-gold">
+      <div class="container stat-row">
+        {d.outcomes.map((o) => (<div class="stat reveal"><div class="n">{o.n}</div><div class="l">{o.l}</div></div>))}
+      </div>
+    </section>
+  )}
+
+  <section class="section theme-white seam-gold">
+    <div class="container split" style="align-items:start">
+      <div class="split-sticky">
+        <div style="display:flex;flex-direction:column;gap:22px">
+          <div><div class="ci-k">{meta.partner}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{d.partner}</div></div>
+          {d.beneficiary && <div><div class="ci-k">{meta.beneficiary}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{d.beneficiary}</div></div>}
+          {d.programme && <div><div class="ci-k">{meta.programme}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{d.programme}</div></div>}
+          <div><div class="ci-k">{meta.location}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{d.location} · {d.date}</div></div>
+        </div>
+      </div>
+      <div class="reveal flow body-text"><Content /></div>
+    </div>
+  </section>
+
+  {d.gallery.length > 0 && (
+    <section class="section theme-black">
+      <div class="container work-grid">
+        {d.gallery.map((g, i) => (
+          <article class={`work-card span-${i % 3 === 0 ? 7 : 5}`}>
+            <div class="work-media"><Image src={img(g)} alt={d.title} widths={[480,800,1200]} sizes="(max-width:1080px) 100vw, 55vw" loading="lazy" /></div>
+          </article>
+        ))}
+      </div>
+      <div class="container mt-6"><a href={L('/work')} class="text-link"><span>← {meta.back}</span></a></div>
+    </section>
+  )}
+
+  <CtaTex lang={lang} eyebrow={ctaEye} heading={ctaHead} sub={ctaSub} />
+</BaseLayout>

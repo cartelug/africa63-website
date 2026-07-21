@@ -1,0 +1,57 @@
+/* ════════════════════════════════════════════════════════════
+   MOTION — preloader, reveal states, reduced-motion
+   ════════════════════════════════════════════════════════════ */
+@layer motion {
+
+  /* ── PRELOADER ──────────────────────────────────────────── */
+  #loader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--ink); color: var(--on-dark);
+    display: grid; place-items: center;
+    transition: transform 1.2s var(--ease);
+  }
+  #loader.done { transform: translateY(-101%); }
+  #loader::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb), 0.6), transparent); }
+  .loader-core { display: flex; flex-direction: column; align-items: center; gap: 26px; width: min(420px, 76vw); }
+  .loader-tag { display: flex; align-items: center; gap: 12px; font-size: var(--fs-micro); font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--on-dark-50); }
+  .loader-tag .lt-line { width: 30px; height: 1px; background: var(--on-dark-30); }
+  .loader-tag .lt-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+  .loader-logo img { width: clamp(180px, 40vw, 300px); height: auto; }
+  .loader-track { width: 100%; height: 2px; background: var(--on-dark-14); overflow: hidden; }
+  .loader-bar { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transform: scaleX(0); transform-origin: left; }
+  .loader-note { position: absolute; bottom: 40px; font-size: var(--fs-micro); letter-spacing: 0.24em; text-transform: uppercase; color: var(--on-dark-50); }
+  .loader-pct { position: absolute; bottom: 40px; right: 40px; font-family: var(--serif); font-size: 2rem; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+
+  /* ── REVEAL STATES (JS toggles via GSAP; CSS is the resting state) ── */
+  .reveal { will-change: transform, opacity; }
+
+  /* When JS is present but GSAP is not, or before hydration, keep content visible.
+     GSAP sets initial hidden state inline only when it will animate it. */
+  .no-motion .reveal, html:not(.js) .reveal { opacity: 1 !important; transform: none !important; }
+
+  /* CSS-only marquee fallback (no GSAP) */
+  .no-motion .partner-track { animation: cssMarquee 32s linear infinite; }
+  @keyframes cssMarquee { to { transform: translateX(-50%); } }
+
+  /* hero content entrance when ready */
+  .hero-inner > * { opacity: 0; transform: translateY(24px); }
+  .hero-ready .hero-inner > * { opacity: 1; transform: none; transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .hero-ready .hero-inner > *:nth-child(1) { transition-delay: 0.05s; }
+  .hero-ready .hero-inner > *:nth-child(2) { transition-delay: 0.15s; }
+  .hero-ready .hero-inner > *:nth-child(3) { transition-delay: 0.25s; }
+  .hero-ready .hero-inner > *:nth-child(4) { transition-delay: 0.35s; }
+  html:not(.js) .hero-inner > * { opacity: 1; transform: none; }
+
+  /* ── REDUCED MOTION ─────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal, .hero-inner > *, .kinetic-header .char { opacity: 1 !important; transform: none !important; }
+    .no-motion .partner-track { animation: none !important; }
+    #loader { display: none !important; }
+  }
+}

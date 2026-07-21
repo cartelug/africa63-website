@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import InsightCard from '../InsightCard.astro';
+import CtaTex from '../CtaTex.astro';
+import { getInsights, bareSlug } from '../../lib/content';
+import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const L = (p: string) => localizePath(p, lang);
+const insights = await getInsights(lang);
+
+const c = lang === 'fr' ? {
+  eyebrow: 'Analyses & Perspectives', h1: 'Analyses.',
+  sub: 'Réflexions sur les affaires publiques, la gouvernance et le développement durable — depuis notre travail à travers le continent.',
+  ctaEye: 'Restons en lien', ctaHead: 'Parlons de votre défi.', ctaSub: 'Un projet à financer, un partenariat à structurer, une institution à renforcer.',
+} : {
+  eyebrow: 'Insights & Perspectives', h1: 'Insights.',
+  sub: 'Thinking on public affairs, governance, and sustainable development — drawn from our work across the continent.',
+  ctaEye: 'Stay in Touch', ctaHead: 'Let’s talk about your challenge.', ctaSub: 'A project to fund, a partnership to structure, an institution to strengthen.',
+};
+---
+<BaseLayout lang={lang} path="/insights" title={`${c.eyebrow} — Africa 63`} description={c.sub}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container">
+      <Eyebrow>{c.eyebrow}</Eyebrow>
+      <h1 class="kinetic-header lower" data-splitting>{c.h1}</h1>
+      <p class="hero-sub">{c.sub}</p>
+    </div>
+  </header>
+
+  <section class="section theme-white seam-gold">
+    <div class="container">
+      <div class="card-grid">
+        {insights.map((n) => (
+          <InsightCard href={L(`/insights/${bareSlug(n.id)}`)} cover={n.data.cover} category={n.data.category}
+            title={n.data.title} excerpt={n.data.excerpt} date={n.data.date} lang={lang} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaTex lang={lang} eyebrow={c.ctaEye} heading={c.ctaHead} sub={c.ctaSub} />
+</BaseLayout>

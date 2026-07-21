@@ -1,0 +1,8 @@
+---
+interface Props { num?: string; class?: string; }
+const { num, class: cls = '' } = Astro.props;
+---
+<div class={`eyebrow ${cls}`}>
+  {num && <span class="num">{num}</span>}
+  <slot />
+</div>

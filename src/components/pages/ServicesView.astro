@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../Eyebrow.astro';
+import ServiceRow from '../ServiceRow.astro';
+import CtaTex from '../CtaTex.astro';
+import { img } from '../../lib/images';
+import { getServices } from '../../lib/content';
+import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const L = (p: string) => localizePath(p, lang);
+const services = await getServices(lang);
+
+const c = lang === 'fr' ? {
+  eyebrow: 'Nos compétences', h1: 'Ce que nous faisons.',
+  sub: 'Sept compétences, une discipline : Africa 63 transforme l’ambition publique en résultats structurés, crédibles et durables — au gouvernement, à l’entreprise et au développement international.',
+  disciplineEye: 'La discipline',
+  discipline: 'Chaque engagement commence par une question — <strong>comment faire avancer cela, durablement ?</strong> De cette question découlent nos compétences.',
+  engageEye: 'Notre manière d’agir', engageHead: 'Délibérée. Fondée sur les faits. Partenariat d’abord.',
+  steps: [
+    ['Écouter & Cartographier', 'Nous commençons par comprendre l’institution, le mandat et les parties prenantes — tout le paysage avant toute recommandation.'],
+    ['Structurer & Conseiller', 'Nous concevons la stratégie, la structure et les partenariats — fondés sur les faits et bâtis pour la responsabilité.'],
+    ['Livrer & Pérenniser', 'Nous accompagnons l’exécution et renforçons la capacité — pour que les résultats tiennent bien après la mission.'],
+  ],
+  ctaEye: 'Commencer ici', ctaHead: 'Dites-nous ce que vous bâtissez.',
+  ctaSub: 'Apportez à Africa 63 le défi — un projet à financer, un partenariat à structurer, une institution à renforcer. Nous apportons la discipline.',
+} : {
+  eyebrow: 'Our Capabilities', h1: 'What we do.',
+  sub: 'Seven capabilities, one discipline: Africa 63 turns public ambition into structured, credible, and sustainable outcomes — across government, enterprise, and international development.',
+  disciplineEye: 'The Discipline',
+  discipline: 'Every engagement begins with one question — <strong>how do we move this forward, sustainably?</strong> From that question, our capabilities follow.',
+  engageEye: 'How We Engage', engageHead: 'Deliberate. Evidence-led. Partnership First.',
+  steps: [
+    ['Listen & Map', 'We begin by understanding the institution, the mandate, and the stakeholders — the full landscape before any recommendation.'],
+    ['Structure & Advise', 'We design the strategy, the structure, and the partnerships — grounded in evidence and built for accountability.'],
+    ['Deliver & Sustain', 'We support execution and strengthen capacity — so outcomes hold long after the engagement ends.'],
+  ],
+  ctaEye: 'Start Here', ctaHead: 'Tell us what you’re building.',
+  ctaSub: 'Bring Africa 63 the challenge — a project to fund, a partnership to structure, an institution to strengthen. We’ll bring the discipline.',
+};
+---
+<BaseLayout lang={lang} path="/services" title={`${c.eyebrow} — Africa 63`} description={c.sub}>
+  <header class="page-hero theme-black fade-white">
+    <div class="page-hero-media" aria-hidden="true"><Image src={img('hero-boardroom')} alt="" widths={[900,1600,2400]} sizes="100vw" loading="eager" fetchpriority="high" /></div>
+    <div class="page-hero-shade" aria-hidden="true"></div>
+    <div class="container">
+      <Eyebrow>{c.eyebrow}</Eyebrow>
+      <h1 class="kinetic-header lower" data-splitting>{c.h1}</h1>
+      <p class="hero-sub">{c.sub}</p>
+    </div>
+  </header>
+
+  <section class="section theme-white" style="padding-bottom:clamp(40px,6vh,72px)">
+    <div class="container split">
+      <div class="split-sticky"><Eyebrow num="01">{c.disciplineEye}</Eyebrow></div>
+      <div>
+        <p class="statement reveal" set:html={c.discipline}></p>
+        <div class="support-photo reveal mt-6" style="max-width:420px">
+          <Image src={img('hero-cutout-exec')} alt="" widths={[500,900]} sizes="420px" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="theme-white seam-gold" style="padding:0 var(--pad-x) clamp(80px,12vh,140px)">
+    <div class="container">
+      <div class="svc-rows">
+        {services.map((s, i) => (
+          <ServiceRow num={`0${i + 1}`} title={s.data.title} summary={s.data.summary} icon={s.data.icon} href={L('/contact')} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section theme-black seam-gold">
+    <div class="container">
+      <Eyebrow num="02" class="reveal">{c.engageEye}</Eyebrow>
+      <h2 class="kinetic-header reveal mb-6 mt-4" data-splitting>{c.engageHead}</h2>
+      <div class="trio">
+        {c.steps.map(([h, p], i) => (
+          <div class="trio-item reveal" data-delay={(i * 0.08).toString()}><div class="num">0{i + 1}</div><h4>{h}</h4><p>{p}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaTex lang={lang} eyebrow={c.ctaEye} heading={c.ctaHead} sub={c.ctaSub} />
+</BaseLayout>

@@ -1,0 +1,14 @@
+---
+import { serviceIcon } from '../lib/images';
+interface Props { num: string; title: string; summary: string; icon: string; href: string; }
+const { num, title, summary, icon, href } = Astro.props;
+---
+<a href={href} class="svc-row reveal">
+  <div class="svc-num-col">
+    <img class="svc-icon" src={serviceIcon(icon)} alt="" width="46" height="46" loading="lazy" decoding="async" />
+    <span class="num">{num}</span>
+  </div>
+  <h3>{title}</h3>
+  <div class="arr">↗</div>
+  <p>{summary}</p>
+</a>

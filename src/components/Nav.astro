@@ -1,0 +1,50 @@
+---
+import { navItems, site, otherLang } from '../config/site';
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang; path: string; }
+const { lang, path } = Astro.props;
+const t = useTranslations(lang);
+const other = otherLang(lang);
+---
+<nav class="nav" id="nav">
+  <a href={localizePath('/', lang)} class="nav-logo" aria-label={`${site.name} home`}>
+    <img src="/assets/logo/a63-logo-white.png" alt={site.name} width="120" height="30" />
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={localizePath(item.path, lang)}
+            class={path === item.path ? 'active' : ''}
+            aria-current={path === item.path ? 'page' : undefined}
+          >{t(item.key as any)}</a>
+        </li>
+      ))}
+    </ul>
+    <div class="lang-switch" aria-label="Language">
+      <a href={localizePath(path, 'en')} class={lang === 'en' ? 'active' : ''}>EN</a>
+      <span class="sep">/</span>
+      <a href={localizePath(path, 'fr')} class={lang === 'fr' ? 'active' : ''}>FR</a>
+    </div>
+    <a href={localizePath('/contact', lang)} class="nav-cta"><span>{t('nav.cta')}</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <ul>
+    {navItems.map((item) => (
+      <li><a href={localizePath(item.path, lang)}>{t(item.key as any)}</a></li>
+    ))}
+  </ul>
+  <div class="mn-foot">
+    {t('footer.office')} · <a href={`mailto:${site.email}`}>{site.email}</a>
+    <span style="display:block;margin-top:10px">
+      <a href={localizePath(path, other)}>{other === 'fr' ? 'Français' : 'English'} →</a>
+    </span>
+  </div>
+</div>
