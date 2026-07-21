@@ -1503,6 +1503,84 @@ body.cursor-hidden .cursor-ring{ opacity:0; }
   .nav-logo img{ height:22px; }
 }
 
+/* ════════════════════════════════════════════════════════════
+   GENERATED IMAGERY — v5 "PHOTO + ICON LAYER"
+   Service pictograms, photographic page-hero backgrounds,
+   textured CTA panels, and generic supporting portraits.
+   ════════════════════════════════════════════════════════════ */
+
+/* service pictograms — sit in the num column, above the number */
+.svc-row{ position:relative; }
+.svc-icon{
+  width:clamp(34px, 3vw, 44px); height:clamp(34px, 3vw, 44px);
+  object-fit:contain; opacity:0.92;
+  margin-bottom:10px;
+}
+
+/* photographic page-hero background (Services) — same shade recipe as the home hero */
+.page-hero{ position:relative; overflow:hidden; isolation:isolate; }
+.page-hero-bg{
+  position:absolute; inset:-8% 0 0;
+  background-size:cover; background-position:50% 38%;
+  z-index:-2;
+}
+.page-hero-shade{
+  position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(to bottom,
+    rgba(10,10,10,0.90) 0%,
+    rgba(10,10,10,0.62) 45%,
+    rgba(10,10,10,0.72) 75%,
+    rgba(10,10,10,0.96) 100%);
+}
+
+/* full-bleed textured CTA panel */
+.cta-tex{ position:relative; overflow:hidden; isolation:isolate; }
+.cta-tex-bg{
+  position:absolute; inset:0; z-index:-2;
+  background-image:url('../images/generated/texture-glow-bg.webp');
+  background-size:cover; background-position:60% 50%;
+}
+.cta-tex-shade{
+  position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(to bottom, rgba(10,10,10,0.55), rgba(10,10,10,0.86));
+}
+
+/* subtle warm texture wash behind marquee sections */
+.marquee-tex{ position:relative; }
+.marquee-tex-bg{
+  position:absolute; inset:0; z-index:0; opacity:0.55;
+  background-image:url('../images/generated/texture-warm-bg.webp');
+  background-size:cover; background-position:70% 50%;
+}
+.marquee-tex > *{ position:relative; z-index:1; }
+
+/* symbolic partnership visual — transparent-background cutout, softened at
+   the base with a fade so it settles into the CTA rather than hard-cropping */
+.cta-visual{
+  position:absolute; right:clamp(-20px, 2vw, 60px); bottom:0;
+  width:clamp(240px, 32vw, 460px); pointer-events:none;
+  opacity:0.94; z-index:0;
+  -webkit-mask-image:linear-gradient(to top, transparent 0%, #000 14%);
+  mask-image:linear-gradient(to top, transparent 0%, #000 14%);
+}
+.cta-visual img{ width:100%; display:block; }
+.cta > *{ position:relative; z-index:1; }
+
+/* generic supporting photography on white sections — bg already ~site white,
+   so it sits flush with no visible edge */
+.support-photo{ position:relative; }
+.support-photo img{
+  width:100%; display:block; border-radius:2px;
+}
+.support-photo .cap{
+  margin-top:14px; font-size:0.62rem; font-weight:700;
+  letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-50);
+}
+
+@media (max-width: 820px){
+  .cta-visual{ display:none; }
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.001ms !important;
