@@ -254,13 +254,14 @@ function initFooter() {
     });
   }
 
-  // grand monogram sign-off: clip-path wipe up + settle
+  // grand monogram sign-off: clip-path wipe up (opacity stays as CSS sets it —
+  // faint watermark on desktop, bold sign-off on mobile).
   const logo = footer.querySelector<HTMLElement>('.footer-logo img');
   if (logo) {
     gsap.fromTo(logo,
-      { clipPath: 'inset(0 0 100% 0)', yPercent: 6, scale: 1.03, opacity: 0.45 },
+      { clipPath: 'inset(0 0 100% 0)', yPercent: 6, scale: 1.03 },
       {
-        clipPath: 'inset(0 0 0% 0)', yPercent: 0, scale: 1, opacity: 0.92,
+        clipPath: 'inset(0 0 0% 0)', yPercent: 0, scale: 1,
         duration: 1.5, ease: 'expo.out',
         scrollTrigger: { trigger: footer, start: 'top 62%', once: true },
       });
