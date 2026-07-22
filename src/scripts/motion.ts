@@ -19,22 +19,22 @@ interface MotionState {
   lenis: Lenis | null;
   tickerFn: ((t: number) => void) | null;
   cleanup: Array<() => void>;
-  loaderDone: boolean;
 }
-let S: MotionState = { lenis: null, tickerFn: null, cleanup: [], loaderDone: false };
+let S: MotionState = { lenis: null, tickerFn: null, cleanup: [] };
 
 function teardown() {
   ScrollTrigger.getAll().forEach((st) => st.kill());
   if (S.tickerFn) gsap.ticker.remove(S.tickerFn);
   if (S.lenis) S.lenis.destroy();
   S.cleanup.forEach((fn) => fn());
-  S = { lenis: null, tickerFn: null, cleanup: [], loaderDone: S.loaderDone };
+  S = { lenis: null, tickerFn: null, cleanup: [] };
 }
 
 // ── PRELOADER (runs once, first paint) ──────────────────────
 function runPreloader() {
   const loader = document.getElementById('loader');
   const start = () => {
+    document.documentElement.classList.add('a63-loaded');
     const hero = document.querySelector('.hero, .page-hero');
     if (hero) document.body.classList.add('hero-ready');
     ScrollTrigger.refresh();
@@ -312,8 +312,12 @@ function initAnchors() {
 // ── BOOT ────────────────────────────────────────────────────
 function init() {
   document.documentElement.classList.add('js');
-  if (!S.loaderDone) { runPreloader(); S.loaderDone = true; }
-  else { const hero = document.querySelector('.hero, .page-hero'); if (hero) document.body.classList.add('hero-ready'); }
+  // The preloader (first load only) reveals the hero when it finishes. On any
+  // page without an active loader, reveal the hero immediately.
+  if (!document.getElementById('loader') || document.documentElement.classList.contains('a63-loaded')) {
+    const hero = document.querySelector('.hero, .page-hero');
+    if (hero) document.body.classList.add('hero-ready');
+  }
   initLenis();
   initChrome();
   initKinetic();
@@ -329,10 +333,24 @@ function init() {
   requestAnimationFrame(() => ScrollTrigger.refresh());
 }
 
-// First load + every View-Transition navigation.
+// ── PRELOADER: first genuine page load only ─────────────────
+if (!(window as any).__a63Pre) {
+  (window as any).__a63Pre = true;
+  if (document.readyState !== 'loading') runPreloader();
+  else document.addEventListener('DOMContentLoaded', runPreloader, { once: true });
+}
+
+// ── MOTION: (re)init on first load + every View-Transition nav ──
 let started = false;
 const boot = () => { if (started) teardown(); started = true; init(); };
 document.addEventListener('astro:page-load', boot);
-// Fallback if the router never fires (defer a tick so page-load wins the race).
-setTimeout(() => { if (!started) boot(); }, 0);
 document.addEventListener('astro:before-swap', () => { if (started) teardown(); });
+// After every navigation swap, guarantee no leftover preloader is shown.
+// Runs before the browser paints the new page, so there is never a flash.
+document.addEventListener('astro:after-swap', () => {
+  document.documentElement.classList.add('a63-loaded');
+  document.getElementById('loader')?.remove();
+  document.body.classList.remove('loading');
+});
+// Fallback if the view-transition router never fires.
+setTimeout(() => { if (!started) boot(); }, 0);

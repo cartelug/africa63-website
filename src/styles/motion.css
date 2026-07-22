@@ -12,6 +12,9 @@
     transition: transform 1.15s var(--ease-expo);
   }
   #loader.done { transform: translateY(-101%); }
+  /* Once the site has loaded once, never show the preloader again (e.g. on
+     View-Transition navigation, where a fresh #loader ships with each page). */
+  html.a63-loaded #loader { display: none !important; }
   /* soft radial gold glow behind the mark */
   .loader-stage {
     position: absolute; inset: 0; pointer-events: none;
