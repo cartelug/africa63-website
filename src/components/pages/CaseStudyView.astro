@@ -18,8 +18,9 @@ const { Content } = await render(entry);
 const slug = bareSlug(entry.id);
 
 const meta = lang === 'fr'
-  ? { partner: 'Partenaire', beneficiary: 'Bénéficiaire', programme: 'Programme', location: 'Lieu', outcomes: 'Résultats', back: 'Toutes les réalisations', discuss: 'Discuter d’un partenariat' }
-  : { partner: 'Partner', beneficiary: 'Beneficiary', programme: 'Programme', location: 'Location', outcomes: 'Outcomes', back: 'All engagements', discuss: 'Discuss a partnership' };
+  ? { partner: 'Partenaire', beneficiary: 'Bénéficiaire', programme: 'Programme', location: 'Lieu', outcomes: 'Résultats', back: 'Toutes les réalisations', discuss: 'Discuter d’un partenariat', mediaReaction: 'Réaction des médias' }
+  : { partner: 'Partner', beneficiary: 'Beneficiary', programme: 'Programme', location: 'Location', outcomes: 'Outcomes', back: 'All engagements', discuss: 'Discuss a partnership', mediaReaction: 'Media Reaction' };
+const locDate = d.date ? `${d.location} · ${d.date}` : d.location;
 
 const jsonld = {
   '@context': 'https://schema.org', '@type': 'Article', headline: d.title,
@@ -56,12 +57,19 @@ const ctaSub = lang === 'fr' ? 'Apportez à Africa 63 un projet, un partenariat 
           <div><div class="ci-k">{meta.partner}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{d.partner}</div></div>
           {d.beneficiary && <div><div class="ci-k">{meta.beneficiary}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{d.beneficiary}</div></div>}
           {d.programme && <div><div class="ci-k">{meta.programme}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{d.programme}</div></div>}
-          <div><div class="ci-k">{meta.location}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{d.location} · {d.date}</div></div>
+          <div><div class="ci-k">{meta.location}</div><div style="font-family:var(--serif);font-size:1.2rem;margin-top:7px">{locDate}</div></div>
         </div>
       </div>
       <div class="reveal flow body-text"><Content /></div>
     </div>
   </section>
+
+  {d.feature && (
+    <section class="feature-band">
+      <Image src={img(d.feature)} alt={d.featureCaption ?? d.title} widths={[900,1600,2400]} sizes="100vw" loading="lazy" />
+      {d.featureCaption && <div class="cap">{d.featureCaption}</div>}
+    </section>
+  )}
 
   {d.gallery.length > 0 && (
     <section class="section theme-black">
@@ -73,6 +81,23 @@ const ctaSub = lang === 'fr' ? 'Apportez à Africa 63 un projet, un partenariat 
         ))}
       </div>
       <div class="container mt-6"><a href={L('/work')} class="text-link"><span>← {meta.back}</span></a></div>
+    </section>
+  )}
+
+  {d.mediaReaction && (
+    <section class="section theme-black seam-gold">
+      <div class="container">
+        <Eyebrow num="·" class="reveal mb-6">{meta.mediaReaction}</Eyebrow>
+        <div class="media-reaction reveal">
+          <div>
+            <p class="mr-quote">{d.mediaReaction.quote}</p>
+            {d.mediaReaction.caption && <div class="mr-cap">{d.mediaReaction.caption}</div>}
+          </div>
+          {d.mediaReaction.image && (
+            <figure class="mr-shot"><Image src={img(d.mediaReaction.image)} alt={d.mediaReaction.caption ?? 'Media reaction'} widths={[380,760]} sizes="380px" loading="lazy" /></figure>
+          )}
+        </div>
+      </div>
     </section>
   )}
 

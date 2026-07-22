@@ -22,12 +22,18 @@ const caseStudies = defineCollection({
     beneficiary: z.string().optional(),
     programme: z.string().optional(),
     location: z.string(),
-    date: z.string(),
+    date: z.string().optional().default(''),
     order: z.number().default(0),
     featured: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
     cover: z.string(),          // key into imported image map
     gallery: z.array(z.string()).default([]),
+    // optional richer editorial layout
+    feature: z.string().optional(),          // full-width banner image key
+    featureCaption: z.string().optional(),
+    mediaReaction: z
+      .object({ quote: z.string(), image: z.string().optional(), caption: z.string().optional() })
+      .optional(),
     outcomes: z.array(z.object({ n: z.string(), l: z.string() })).default([]),
     excerpt: z.string(),
   }),

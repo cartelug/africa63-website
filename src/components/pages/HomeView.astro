@@ -132,7 +132,7 @@ const jsonld = {
       <div class="work-grid">
         {featured.map((c, i) => (
           <WorkCard href={L(`/work/${bareSlug(c.id)}`)} cover={c.data.cover} title={c.data.title}
-            year={`${c.data.location} · ${c.data.date}`} chips={c.data.tags} tag={i === 0 ? 'Featured' : undefined}
+            year={c.data.date ? `${c.data.location} · ${c.data.date}` : c.data.location} chips={c.data.tags} tag={i === 0 ? 'Featured' : undefined}
             span={i % 3 === 0 ? 7 : 5} />
         ))}
       </div>

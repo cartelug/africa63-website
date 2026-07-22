@@ -43,7 +43,7 @@ const c = lang === 'fr' ? {
       <div class="work-grid">
         {cases.map((cs, i) => (
           <WorkCard href={L(`/work/${bareSlug(cs.id)}`)} cover={cs.data.cover} title={cs.data.title}
-            year={`${cs.data.location} · ${cs.data.date}`} chips={cs.data.tags}
+            year={cs.data.date ? `${cs.data.location} · ${cs.data.date}` : cs.data.location} chips={cs.data.tags}
             tag={cs.data.featured ? 'Featured' : undefined} span={i % 3 === 0 ? 7 : 5} />
         ))}
       </div>

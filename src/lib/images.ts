@@ -16,6 +16,17 @@ import textureGlow from '../assets/images/generated/texture-glow-bg.jpg';
 import textureWarm from '../assets/images/generated/texture-warm-bg.jpg';
 import textureLinework from '../assets/images/generated/texture-linework.jpg';
 
+// Fally Ipupa — Kampala press conference event photography
+import fallyHero from '../assets/images/events/fally-hero.jpg';
+import fallyOverview from '../assets/images/events/fally-overview.jpg';
+import fally01 from '../assets/images/events/fally-01.jpg';
+import fally02 from '../assets/images/events/fally-02.jpg';
+import fally04 from '../assets/images/events/fally-04.jpg';
+import fallyAudience from '../assets/images/events/fally-audience.jpg';
+import fally07 from '../assets/images/events/fally-07.jpg';
+import fally08 from '../assets/images/events/fally-08.jpg';
+import fallyMedia from '../assets/images/events/fally-media.jpg';
+
 export const images: Record<string, ImageMetadata> = {
   africa1, africa2, africa3, africa4,
   'hero-boardroom': heroBoardroom,
@@ -27,6 +38,15 @@ export const images: Record<string, ImageMetadata> = {
   'texture-glow': textureGlow,
   'texture-warm': textureWarm,
   'texture-linework': textureLinework,
+  'fally-hero': fallyHero,
+  'fally-overview': fallyOverview,
+  'fally-01': fally01,
+  'fally-02': fally02,
+  'fally-04': fally04,
+  'fally-audience': fallyAudience,
+  'fally-07': fally07,
+  'fally-08': fally08,
+  'fally-media': fallyMedia,
 };
 
 export function img(key: string): ImageMetadata {
