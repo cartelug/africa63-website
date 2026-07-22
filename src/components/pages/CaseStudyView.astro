@@ -6,7 +6,7 @@ import Eyebrow from '../Eyebrow.astro';
 import CtaTex from '../CtaTex.astro';
 import { img } from '../../lib/images';
 import { bareSlug } from '../../lib/content';
-import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+import { useTranslations, localizePath, asset, type Lang } from '../../i18n/ui';
 import { site } from '../../config/site';
 
 interface Props { lang: Lang; entry: CollectionEntry<'caseStudies'>; }
@@ -23,7 +23,7 @@ const meta = lang === 'fr'
 
 const jsonld = {
   '@context': 'https://schema.org', '@type': 'Article', headline: d.title,
-  description: d.excerpt, image: `${site.domain}/assets/images/generated/og-share.jpg`,
+  description: d.excerpt, image: `${site.domain}${asset('/assets/images/generated/og-share.jpg')}`,
   author: { '@type': 'Organization', name: site.name }, datePublished: d.date,
 };
 const ctaEye = lang === 'fr' ? 'Votre prochain engagement' : 'Your Engagement Next';

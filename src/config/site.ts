@@ -3,7 +3,10 @@ import type { Lang } from '../i18n/ui';
 
 export const site = {
   name: 'Africa 63',
-  domain: 'https://theafrica63.com',
+  // Deployment origin (GitHub Pages project site). Used for canonical/OG/sitemap.
+  domain: 'https://cartelug.github.io',
+  // Brand/display URL shown in the footer.
+  brandUrl: 'https://theafrica63.com',
   email: 'hello@theafrica63.com',
   locality: 'Kinshasa',
   country: 'CD',

@@ -33,5 +33,6 @@ export function img(key: string): ImageMetadata {
   return images[key] ?? africa1;
 }
 
-// Service icon PNG paths (served static from /public via source copy) — used as <img>.
-export const serviceIcon = (icon: string) => `/assets/images/generated/icon-${icon}.png`;
+// Service icon PNG paths (served static from /public) — base-aware, used as <img>.
+export const serviceIcon = (icon: string) =>
+  `${import.meta.env.BASE_URL}assets/images/generated/icon-${icon}.png`;

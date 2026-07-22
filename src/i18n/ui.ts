@@ -80,9 +80,18 @@ export function useTranslations(lang: Lang) {
   };
 }
 
-/** Locale-aware path: en → "/about", fr → "/fr/about". Home → "/" or "/fr". */
+// Deploy base (e.g. "/africa63-website"); "" when served from root.
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+/** Locale- and base-aware path: en → "{base}/about", fr → "{base}/fr/about". */
 export function localizePath(path: string, lang: Lang): string {
   const clean = path === '/' ? '' : path.replace(/^\/+/, '/');
-  if (lang === 'en') return clean === '' ? '/' : clean;
-  return clean === '' ? '/fr' : `/fr${clean}`;
+  const locale = lang === 'en' ? '' : '/fr';
+  const full = `${locale}${clean}`;
+  return `${BASE}${full === '' ? '/' : full}`;
+}
+
+/** Base-aware static asset path, e.g. asset("/assets/logo/x.png"). */
+export function asset(p: string): string {
+  return `${BASE}${p.startsWith('/') ? p : `/${p}`}`;
 }

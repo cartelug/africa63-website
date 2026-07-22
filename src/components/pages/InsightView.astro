@@ -6,7 +6,7 @@ import Eyebrow from '../Eyebrow.astro';
 import CtaTex from '../CtaTex.astro';
 import { img } from '../../lib/images';
 import { bareSlug } from '../../lib/content';
-import { localizePath, type Lang } from '../../i18n/ui';
+import { localizePath, asset, type Lang } from '../../i18n/ui';
 import { site } from '../../config/site';
 
 interface Props { lang: Lang; entry: CollectionEntry<'insights'>; }
@@ -20,7 +20,7 @@ const back = lang === 'fr' ? 'Toutes les analyses' : 'All insights';
 
 const jsonld = {
   '@context': 'https://schema.org', '@type': 'BlogPosting', headline: d.title, description: d.excerpt,
-  image: `${site.domain}/assets/images/generated/og-share.jpg`, datePublished: d.date,
+  image: `${site.domain}${asset('/assets/images/generated/og-share.jpg')}`, datePublished: d.date,
   author: { '@type': 'Organization', name: d.author }, publisher: { '@type': 'Organization', name: site.name },
 };
 const ctaEye = lang === 'fr' ? 'Restons en lien' : 'Stay in Touch';

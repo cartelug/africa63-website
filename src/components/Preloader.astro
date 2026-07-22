@@ -1,5 +1,5 @@
 ---
-import { useTranslations, type Lang } from '../i18n/ui';
+import { useTranslations, asset, type Lang } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
@@ -13,7 +13,7 @@ const t = useTranslations(lang);
       <span>{t('tag.strategic')}</span>
       <span class="lt-line" aria-hidden="true"></span>
     </div>
-    <div class="loader-logo"><img src="/assets/logo/africa63-full-logo.PNG" alt="Africa 63" width="300" height="120" /></div>
+    <div class="loader-logo"><img src={asset('/assets/logo/africa63-full-logo.PNG')} alt="Africa 63" width="300" height="120" /></div>
     <div class="loader-track"><span class="loader-bar"></span></div>
   </div>
   <div class="loader-note">{t('loader.note')}</div>

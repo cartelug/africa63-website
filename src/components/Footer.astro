@@ -1,6 +1,6 @@
 ---
 import { navItems, site } from '../config/site';
-import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import { useTranslations, localizePath, asset, type Lang } from '../i18n/ui';
 import { getCollection } from 'astro:content';
 
 interface Props { lang: Lang; }
@@ -51,7 +51,7 @@ const year = 2026;
         <ul>
           <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
           <li><a href={localizePath('/contact', lang)}>{t('footer.office')}</a></li>
-          <li><a href={site.domain}>theafrica63.com</a></li>
+          <li><a href={site.brandUrl}>theafrica63.com</a></li>
         </ul>
       </div>
     </div>
@@ -61,6 +61,6 @@ const year = 2026;
     </div>
   </div>
   <div class="footer-logo">
-    <img src="/assets/logo/africa63-full-logo.PNG" alt="Africa 63" width="1600" height="300" loading="lazy" />
+    <img src={asset('/assets/logo/africa63-full-logo.PNG')} alt="Africa 63" width="1600" height="300" loading="lazy" />
   </div>
 </footer>

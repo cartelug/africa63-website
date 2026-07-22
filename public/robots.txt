@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://theafrica63.com/sitemap-index.xml
+Sitemap: https://cartelug.github.io/africa63-website/sitemap-index.xml

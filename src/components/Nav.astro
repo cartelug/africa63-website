@@ -1,6 +1,6 @@
 ---
 import { navItems, site, otherLang } from '../config/site';
-import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import { useTranslations, localizePath, asset, type Lang } from '../i18n/ui';
 
 interface Props { lang: Lang; path: string; }
 const { lang, path } = Astro.props;
@@ -9,7 +9,7 @@ const other = otherLang(lang);
 ---
 <nav class="nav" id="nav">
   <a href={localizePath('/', lang)} class="nav-logo" aria-label={`${site.name} home`}>
-    <img src="/assets/logo/a63-logo-white.png" alt={site.name} width="120" height="30" />
+    <img src={asset('/assets/logo/a63-logo-white.png')} alt={site.name} width="120" height="30" />
   </a>
   <div class="nav-right">
     <ul class="nav-links">

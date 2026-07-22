@@ -5,7 +5,8 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build
 export default defineConfig({
-  site: 'https://theafrica63.com',
+  site: 'https://cartelug.github.io',
+  base: '/africa63-website',
   output: 'static',
   trailingSlash: 'ignore',
   i18n: {

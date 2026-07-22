@@ -9,7 +9,7 @@ import InsightCard from '../InsightCard.astro';
 import CtaTex from '../CtaTex.astro';
 import { img } from '../../lib/images';
 import { getServices, getCaseStudies, getInsights, bareSlug } from '../../lib/content';
-import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
+import { useTranslations, localizePath, asset, type Lang } from '../../i18n/ui';
 import { site } from '../../config/site';
 
 interface Props { lang: Lang; }
@@ -62,7 +62,7 @@ const copy = lang === 'fr' ? {
 
 const jsonld = {
   '@context': 'https://schema.org', '@type': 'Organization', name: site.name, alternateName: 'A63',
-  url: site.domain + L('/'), logo: `${site.domain}/assets/logo/africa63-full-logo.PNG`,
+  url: site.domain + L('/'), logo: `${site.domain}${asset('/assets/logo/africa63-full-logo.PNG')}`,
   email: site.email, address: { '@type': 'PostalAddress', addressLocality: 'Kinshasa', addressCountry: 'CD' },
   knowsAbout: ['Public Affairs', 'Resource Mobilisation', 'Public-Private Partnerships', 'Governance', 'Institutional Capacity'],
 };

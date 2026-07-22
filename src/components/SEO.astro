@@ -1,6 +1,6 @@
 ---
 import { site } from '../config/site';
-import { localizePath, type Lang } from '../i18n/ui';
+import { localizePath, asset, type Lang } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -11,12 +11,13 @@ interface Props {
   type?: 'website' | 'article';
   jsonld?: object;
 }
-const { title, description, lang, path, ogImage = '/assets/images/generated/og-share.jpg', type = 'website', jsonld } = Astro.props;
+const { title, description, lang, path, ogImage, type = 'website', jsonld } = Astro.props;
 
 const url = site.domain + localizePath(path, lang);
 const enUrl = site.domain + localizePath(path, 'en');
 const frUrl = site.domain + localizePath(path, 'fr');
-const ogAbs = ogImage.startsWith('http') ? ogImage : site.domain + ogImage;
+const ogPath = ogImage ?? asset('/assets/images/generated/og-share.jpg');
+const ogAbs = ogPath.startsWith('http') ? ogPath : site.domain + ogPath;
 ---
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -41,9 +42,9 @@ const ogAbs = ogImage.startsWith('http') ? ogImage : site.domain + ogImage;
 <meta name="twitter:image" content={ogAbs} />
 
 <meta name="theme-color" content="#0c0b09" />
-<link rel="icon" href="/assets/logo/favicon.ico" sizes="any" />
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png" />
+<link rel="icon" href={asset('/assets/logo/favicon.ico')} sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href={asset('/assets/logo/favicon-32.png')} />
+<link rel="icon" type="image/png" sizes="16x16" href={asset('/assets/logo/favicon-16.png')} />
+<link rel="apple-touch-icon" sizes="180x180" href={asset('/assets/logo/apple-touch-icon.png')} />
 
 {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
