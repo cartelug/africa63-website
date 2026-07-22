@@ -242,12 +242,28 @@ function initMarquee() {
 // ── FOOTER CURTAIN ──────────────────────────────────────────
 function initFooter() {
   if (reduced) return;
-  const logo = document.querySelector<HTMLElement>('.footer-logo img');
-  if (logo) {
-    gsap.fromTo(logo, { scale: 0.94, opacity: 0.4, y: 40 }, {
-      scale: 1, opacity: 1, y: 0, ease: 'expo.out', duration: 1.4,
-      scrollTrigger: { trigger: '.site-footer', start: 'top 70%', end: 'bottom bottom', scrub: 1.2 },
+  const footer = document.querySelector('.site-footer');
+  if (!footer) return;
+
+  // staggered rise of statement + columns + bar
+  const items = footer.querySelectorAll<HTMLElement>('.footer-anim');
+  if (items.length) {
+    gsap.fromTo(items, { y: 42, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 1, ease: 'expo.out', stagger: 0.07,
+      scrollTrigger: { trigger: footer, start: 'top 80%', once: true },
     });
+  }
+
+  // grand monogram sign-off: clip-path wipe up + settle
+  const logo = footer.querySelector<HTMLElement>('.footer-logo img');
+  if (logo) {
+    gsap.fromTo(logo,
+      { clipPath: 'inset(0 0 100% 0)', yPercent: 6, scale: 1.03, opacity: 0.45 },
+      {
+        clipPath: 'inset(0 0 0% 0)', yPercent: 0, scale: 1, opacity: 0.92,
+        duration: 1.5, ease: 'expo.out',
+        scrollTrigger: { trigger: footer, start: 'top 62%', once: true },
+      });
   }
 }
 

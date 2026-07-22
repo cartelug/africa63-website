@@ -18,8 +18,7 @@
     .split { grid-template-columns: 1fr; gap: 40px; }
     .split-sticky { position: static; }
     .contact-grid { grid-template-columns: 1fr; gap: 50px; }
-    .footer-top { grid-template-columns: 1fr 1fr; gap: 42px 32px; }
-    .footer-tagline { grid-column: 1 / -1; max-width: 24ch; }
+    .footer-top-row { grid-template-columns: 1fr; gap: clamp(36px, 6vh, 60px); }
     .trio { grid-template-columns: 1fr; gap: 30px; }
     .work-card, .work-card.span-7, .work-card.span-5 { grid-column: span 12; }
     .work-card.span-5 .work-media { aspect-ratio: 16/10; }
@@ -36,13 +35,13 @@
     .form-row { grid-template-columns: 1fr; gap: 0; }
     .cta-visual { display: none; }
     .seam-gold::after { width: min(420px, 80vw); }
-    .footer-top { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px 32px; }
     .to-top { width: 44px; height: 44px; right: 18px; bottom: 18px; }
   }
 
   @media (max-width: 560px) {
     :root { --pad-y: clamp(60px, 9vh, 100px); --footer-h: auto; }
-    .footer-top { grid-template-columns: 1fr; gap: 36px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 34px; }
     .hero-actions, .cta-actions { width: 100%; }
     .hero-actions .btn, .hero-actions .btn-glow,
     .cta-actions .btn, .cta-actions .btn-glow { flex: 1 1 100%; justify-content: center; }

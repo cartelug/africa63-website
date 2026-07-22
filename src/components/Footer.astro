@@ -1,65 +1,72 @@
 ---
 import { navItems, site } from '../config/site';
 import { useTranslations, localizePath, asset, type Lang } from '../i18n/ui';
-import { getCollection } from 'astro:content';
+import { getServices } from '../lib/content';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const L = (p: string) => localizePath(p, lang);
 
-// Capabilities pulled from the canonical services collection (top 5).
-let capabilities: { title: string }[] = [];
+let capabilities: string[] = [];
 try {
-  const services = await getCollection('services', (e: { id: string }) => e.id.startsWith(`${lang}/`));
-  capabilities = services
-    .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
-    .slice(0, 5)
-    .map((e) => ({ title: e.data.title }));
-} catch {
-  capabilities = [];
-}
+  const services = await getServices(lang);
+  capabilities = services.slice(0, 5).map((e) => e.data.short ?? e.data.title);
+} catch { capabilities = []; }
 const year = 2026;
 ---
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-anim reveal">
-        <h3 class="footer-tagline">{t('footer.tagline.pre')} <em>{t('footer.tagline.em')}</em> {t('footer.tagline.post')}</h3>
+   <div class="footer-top-row">
+    <!-- grand statement -->
+    <div class="footer-lead">
+      <div class="eyebrow gold footer-anim">{site.name}</div>
+      <h2 class="footer-statement footer-anim">
+        {t('footer.tagline.pre')} <em>{t('footer.tagline.em')}</em> {t('footer.tagline.post')}
+      </h2>
+      <a href={L('/contact')} class="footer-cta footer-anim"><span>{t('nav.cta')}</span><span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+
+    <!-- columns -->
+    <div class="footer-grid">
+      <div class="footer-col footer-anim">
+        <h5>{t('footer.navigate')}</h5>
+        <ul>
+          <li><a href={L('/')}>{t('nav.home')}</a></li>
+          {navItems.map((i) => <li><a href={L(i.path)}>{t(i.key as any)}</a></li>)}
+        </ul>
+      </div>
+      <div class="footer-col footer-anim">
+        <h5>{t('footer.capabilities')}</h5>
+        <ul>
+          {capabilities.length
+            ? capabilities.map((c) => <li><a href={L('/services')}>{c}</a></li>)
+            : <li><a href={L('/services')}>{t('nav.services')}</a></li>}
+        </ul>
+      </div>
+      <div class="footer-col footer-anim">
+        <h5>{t('footer.contact')}</h5>
+        <ul>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><a href={L('/contact')}>{t('footer.office')}</a></li>
+          <li><a href={site.brandUrl}>theafrica63.com</a></li>
+        </ul>
         <div class="footer-socials">
           {site.socials.map((s) => (
             <a href={s.href} class="f-soc" aria-label={s.label} target="_blank" rel="noopener">{s.short}</a>
           ))}
         </div>
       </div>
-      <div class="footer-col footer-anim reveal">
-        <h5>{t('footer.navigate')}</h5>
-        <ul>
-          <li><a href={localizePath('/', lang)}>{t('nav.home')}</a></li>
-          {navItems.map((i) => <li><a href={localizePath(i.path, lang)}>{t(i.key as any)}</a></li>)}
-        </ul>
-      </div>
-      <div class="footer-col footer-anim reveal">
-        <h5>{t('footer.capabilities')}</h5>
-        <ul>
-          {capabilities.length
-            ? capabilities.map((c) => <li><a href={localizePath('/services', lang)}>{c.title}</a></li>)
-            : <li><a href={localizePath('/services', lang)}>{t('nav.services')}</a></li>}
-        </ul>
-      </div>
-      <div class="footer-col footer-anim reveal">
-        <h5>{t('footer.contact')}</h5>
-        <ul>
-          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-          <li><a href={localizePath('/contact', lang)}>{t('footer.office')}</a></li>
-          <li><a href={site.brandUrl}>theafrica63.com</a></li>
-        </ul>
-      </div>
     </div>
-    <div class="footer-bar footer-anim reveal">
+   </div>
+
+    <div class="footer-bar footer-anim">
       <div>© {site.name} · {year} · {t('footer.rights')}</div>
       <div>{t('footer.designed')}</div>
     </div>
   </div>
+
+  <!-- brand sign-off -->
   <div class="footer-logo">
     <img src={asset('/assets/logo/africa63-word-logo-white.png')} alt="Africa 63" width="1140" height="561" loading="lazy" />
   </div>
