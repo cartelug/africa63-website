@@ -114,31 +114,31 @@ function initChrome() {
     else window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // mobile drawer
+  // ── MOBILE DRAWER (CSS-driven, cannot get stuck) ──
   const toggle = document.getElementById('navToggle');
   const drawer = document.getElementById('mobileNav');
-  const spans = toggle ? Array.from(toggle.querySelectorAll('span')) : [];
-  const setToggle = (open: boolean) => {
-    toggle?.setAttribute('aria-expanded', String(open));
-    if (spans.length === 3) {
-      gsap.to(spans[0], { y: open ? 7 : 0, rotate: open ? 45 : 0, duration: 0.4, ease: 'power3.out' });
-      gsap.to(spans[1], { opacity: open ? 0 : 1, duration: 0.3 });
-      gsap.to(spans[2], { y: open ? -7 : 0, rotate: open ? -45 : 0, duration: 0.4, ease: 'power3.out' });
-    }
-  };
-  toggle?.addEventListener('click', () => {
-    const open = !drawer?.classList.contains('open');
+  const setOpen = (open: boolean) => {
     drawer?.classList.toggle('open', open);
-    setToggle(open);
-    if (open) { S.lenis?.stop(); document.body.style.overflow = 'hidden'; }
-    else { S.lenis?.start(); document.body.style.overflow = ''; }
+    toggle?.setAttribute('aria-expanded', String(open));
+    // scroll lock + hamburger→X are both handled in CSS via html.nav-open
+    // and .nav-toggle[aria-expanded]; JS only toggles state + smooth scroll.
+    document.documentElement.classList.toggle('nav-open', open);
+    if (open) S.lenis?.stop(); else S.lenis?.start();
+  };
+  toggle?.addEventListener('click', () => setOpen(!drawer?.classList.contains('open')));
+  drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+
+  const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+  document.addEventListener('keydown', onKey);
+  const onResize = () => { if (window.innerWidth > 820 && drawer?.classList.contains('open')) setOpen(false); };
+  window.addEventListener('resize', onResize);
+  // ensure a clean state on (re)init and after any navigation
+  setOpen(false);
+  S.cleanup.push(() => {
+    document.removeEventListener('keydown', onKey);
+    window.removeEventListener('resize', onResize);
+    document.documentElement.classList.remove('nav-open');
   });
-  drawer?.querySelectorAll('a').forEach((a) =>
-    a.addEventListener('click', () => {
-      drawer.classList.remove('open'); setToggle(false);
-      S.lenis?.start(); document.body.style.overflow = '';
-    })
-  );
 }
 
 // ── SPLITTING + KINETIC HEADERS ─────────────────────────────

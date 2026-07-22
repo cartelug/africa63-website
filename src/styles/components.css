@@ -173,8 +173,12 @@
   .lang-switch a.active, .lang-switch a:hover { color: var(--gold-light); }
   .lang-switch .sep { color: var(--on-dark-30); }
 
-  .nav-toggle { display: none; flex-direction: column; gap: 5px; width: 30px; height: 22px; justify-content: center; }
-  .nav-toggle span { display: block; height: 2px; width: 100%; background: var(--on-dark); transition: transform 0.4s var(--ease), opacity 0.3s var(--ease); }
+  .nav-toggle { display: none; flex-direction: column; gap: 5px; width: 30px; height: 22px; justify-content: center; position: relative; z-index: 5; }
+  .nav-toggle span { display: block; height: 2px; width: 100%; background: var(--on-dark); border-radius: 2px; transform-origin: center; transition: transform 0.4s var(--ease), opacity 0.25s var(--ease); }
+  /* pure-CSS hamburger → X (no JS inline state to get stuck) */
+  .nav-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded='true'] span:nth-child(2) { opacity: 0; transform: scaleX(0.2); }
+  .nav-toggle[aria-expanded='true'] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   .mobile-nav {
     position: fixed; inset: 0; z-index: 890;
@@ -187,6 +191,9 @@
     overflow-y: auto; overscroll-behavior: contain;
   }
   .mobile-nav.open { transform: translateY(0); }
+  /* robust scroll-lock while the drawer is open */
+  html.nav-open, html.nav-open body { overflow: hidden; touch-action: none; }
+  html.nav-open .mobile-nav { touch-action: auto; }
   .mn-inner {
     min-height: 100%; display: flex; flex-direction: column; justify-content: safe center;
     gap: clamp(24px, 4.5vh, 52px);
