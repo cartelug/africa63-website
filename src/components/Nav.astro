@@ -1,11 +1,10 @@
 ---
-import { navItems, site, otherLang } from '../config/site';
+import { navItems, site } from '../config/site';
 import { useTranslations, localizePath, asset, type Lang } from '../i18n/ui';
 
 interface Props { lang: Lang; path: string; }
 const { lang, path } = Astro.props;
 const t = useTranslations(lang);
-const other = otherLang(lang);
 ---
 <nav class="nav" id="nav">
   <a href={localizePath('/', lang)} class="nav-logo" aria-label={`${site.name} home`}>
@@ -36,15 +35,44 @@ const other = otherLang(lang);
 </nav>
 
 <div class="mobile-nav" id="mobileNav">
-  <ul>
-    {navItems.map((item) => (
-      <li><a href={localizePath(item.path, lang)}>{t(item.key as any)}</a></li>
-    ))}
-  </ul>
-  <div class="mn-foot">
-    {t('footer.office')} · <a href={`mailto:${site.email}`}>{site.email}</a>
-    <span style="display:block;margin-top:10px">
-      <a href={localizePath(path, other)}>{other === 'fr' ? 'Français' : 'English'} →</a>
-    </span>
+  <div class="mn-inner">
+    <nav class="mn-links" aria-label="Primary">
+      <ul>
+        {navItems.map((item, i) => (
+          <li>
+            <a href={localizePath(item.path, lang)} class={path === item.path ? 'active' : ''}>
+              <span class="mn-idx">0{i + 1}</span>
+              <span class="mn-label">{t(item.key as any)}</span>
+              <span class="mn-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href={localizePath('/contact', lang)} class="mn-cta"><span>{t('nav.cta')}</span><span class="arrow" aria-hidden="true">→</span></a>
+
+    <div class="mn-foot">
+      <div class="mn-foot-grid">
+        <div class="mn-foot-col">
+          <span class="mn-k">{t('footer.contact')}</span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+        <div class="mn-foot-col">
+          <span class="mn-k">{lang === 'fr' ? 'Bureau' : 'Office'}</span>
+          <span>{site.locality}, DR Congo</span>
+        </div>
+      </div>
+      <div class="mn-foot-row">
+        <div class="mn-socials">
+          {site.socials.map((s) => <a href={s.href} aria-label={s.label} target="_blank" rel="noopener">{s.short}</a>)}
+        </div>
+        <div class="lang-switch mn-lang">
+          <a href={localizePath(path, 'en')} class={lang === 'en' ? 'active' : ''}>EN</a>
+          <span class="sep">/</span>
+          <a href={localizePath(path, 'fr')} class={lang === 'fr' ? 'active' : ''}>FR</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

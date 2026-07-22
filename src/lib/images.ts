@@ -54,5 +54,6 @@ export function img(key: string): ImageMetadata {
 }
 
 // Service icon PNG paths (served static from /public) — base-aware, used as <img>.
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 export const serviceIcon = (icon: string) =>
-  `${import.meta.env.BASE_URL}assets/images/generated/icon-${icon}.png`;
+  `${BASE}/assets/images/generated/icon-${icon}.png`;

@@ -3,19 +3,29 @@ import { useTranslations, asset, type Lang } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const wordmark = asset('/assets/logo/africa63-word-logo-white.png');
 ---
 <div id="loader" role="status" aria-label="Loading Africa 63">
+  <div class="loader-stage" aria-hidden="true"></div>
   <div class="loader-core">
     <div class="loader-tag">
-      <span class="lt-line" aria-hidden="true"></span>
+      <span class="lt-line"></span>
       <span>{t('tag.public')}</span>
-      <span class="lt-dot" aria-hidden="true"></span>
+      <span class="lt-dot"></span>
       <span>{t('tag.strategic')}</span>
-      <span class="lt-line" aria-hidden="true"></span>
+      <span class="lt-line"></span>
     </div>
-    <div class="loader-logo"><img src={asset('/assets/logo/africa63-full-logo.PNG')} alt="Africa 63" width="300" height="120" /></div>
-    <div class="loader-track"><span class="loader-bar"></span></div>
+
+    <div class="loader-logo" style={`--logo-mask:url('${wordmark}')`}>
+      <img src={wordmark} alt="Africa 63" width="1140" height="561" />
+      <span class="loader-sheen"></span>
+    </div>
+    <span class="loader-rule"></span>
+
+    <div class="loader-progress">
+      <div class="loader-track"><span class="loader-bar"></span></div>
+      <div class="loader-pct">000</div>
+    </div>
   </div>
   <div class="loader-note">{t('loader.note')}</div>
-  <div class="loader-pct">000</div>
 </div>
