@@ -22,8 +22,20 @@ const featured = cases.slice(0, 4);
 const insights = (await getInsights(lang)).slice(0, 3);
 
 const L = (p: string) => localizePath(p, lang);
+
+// ── HERO BACKGROUNDS ────────────────────────────────────────────────
+// Cinematic full-bleed backgrounds for the home hero carousel.
+// TO SWAP: drop the real image files into src/assets/images/, register the
+// keys in src/lib/images.ts, then list those keys here (1–5 backgrounds).
+// The slide counter / progress / next button adapt to the array length.
+const heroSlides = ['hero-boardroom', 'engagement-scene', 'africa1', 'africa3'];
+
 const copy = lang === 'fr' ? {
   heroSub: "Africa 63 est un cabinet d’affaires publiques qui accompagne gouvernements, institutions et acteurs du développement — en mobilisant des ressources, en structurant des projets publics et en bâtissant la confiance dont dépend tout progrès durable.",
+  heroEyebrow1: 'Affaires publiques /', heroEyebrow2: 'Conseil stratégique',
+  heroTitle: 'Là où l’ambition publique devient progrès.',
+  heroSubA: 'Bâti sur la confiance.', heroSubB: 'Conçu pour un impact durable.',
+  heroCta: 'Voir notre approche', heroPlay: 'Voir l’histoire', nextLabel: 'Diapositive suivante',
   ourWork: 'Nos réalisations', whatWeDo: 'Ce que nous faisons',
   whoWeAre: 'Qui nous sommes', whoHead: 'Un cabinet de conseil<br>pour l’avenir public de l’Afrique.',
   statement: 'Africa 63 accompagne le développement des secteurs public et privé à travers le continent.',
@@ -42,6 +54,10 @@ const copy = lang === 'fr' ? {
   ctaSub: 'Que vous mobilisiez des ressources, structuriez un projet public ou renforciez une institution — entamons l’échange.',
 } : {
   heroSub: 'Africa 63 is a public affairs firm partnering with governments, institutions, and international development actors — mobilising resources, structuring public projects, and building the trust on which lasting progress depends.',
+  heroEyebrow1: 'Public Affairs /', heroEyebrow2: 'Strategic Advisory',
+  heroTitle: 'Where public ambition becomes progress.',
+  heroSubA: 'Built on trust.', heroSubB: 'Designed for lasting impact.',
+  heroCta: 'See Our Approach', heroPlay: 'Play the Story', nextLabel: 'Next slide',
   ourWork: 'Our Work', whatWeDo: 'What We Do',
   whoWeAre: 'Who We Are', whoHead: 'A Consulting Office<br>for Africa’s Public Future.',
   statement: 'Africa 63 supports public and private sector development across the continent.',
@@ -73,25 +89,35 @@ const jsonld = {
   description={copy.heroSub}
   jsonld={jsonld}
 >
-  <!-- HERO -->
-  <header class="hero theme-black fade-white">
-    <div class="hero-media" aria-hidden="true">
-      <Image src={img('hero-boardroom')} alt="" widths={[900, 1600, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <!-- HERO — cinematic full-bleed carousel -->
+  <header class="hero hero-cine theme-black" data-autoplay="6500">
+    <div class="hero-slides" aria-hidden="true">
+      {heroSlides.map((key, i) => (
+        <div class:list={["hero-slide", i === 0 && "active"]} data-i={i}>
+          <Image src={img(key)} alt="" widths={[900, 1600, 2400]} sizes="100vw" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+        </div>
+      ))}
     </div>
-    <div class="hero-shade" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <div class="hero-eyebrow">
-        <span class="he-line"></span><span>{t('tag.public')}</span>
-        <span class="he-divider"></span><span>{t('tag.strategic')}</span><span class="he-line"></span>
+    <div class="hero-scrim" aria-hidden="true"></div>
+
+    <div class="hero-cine-inner">
+      <div class="hero-eyebrow-2">
+        <span>{copy.heroEyebrow1}</span>
+        <span>{copy.heroEyebrow2}</span>
       </div>
-      <h1 class="hero-title display-heading hero-scale kinetic-header" data-splitting>Africa 63</h1>
-      <p class="hero-sub">{copy.heroSub}</p>
-      <div class="hero-actions">
-        <a href={L('/work')} class="btn-glow"><span>{copy.ourWork}</span><span class="arrow">→</span></a>
-        <a href={L('/services')} class="btn btn-ghost"><span>{copy.whatWeDo}</span></a>
+      <h1 class="hero-cine-title kinetic-header" data-splitting>{copy.heroTitle}</h1>
+      <p class="hero-cine-sub">{copy.heroSubA}<br>{copy.heroSubB}</p>
+      <div class="hero-cine-actions">
+        <a href={L('/about')} class="btn-gold" data-magnetic><span>{copy.heroCta}</span><span class="arrow">→</span></a>
+        <a href={L('/work')} class="hero-play"><span class="hp-tri" aria-hidden="true"></span><span>{copy.heroPlay}</span></a>
       </div>
     </div>
-    <div class="hero-scroll">Scroll</div>
+
+    <div class="hero-cine-foot">
+      <div class="hero-count"><span class="hc-cur">01</span> <span class="hc-sep">/</span> <span class="hc-total">{String(heroSlides.length).padStart(2, '0')}</span></div>
+      <div class="hero-prog"><span class="hero-prog-fill"></span></div>
+      <button class="hero-next" type="button" aria-label={copy.nextLabel}><span aria-hidden="true">→</span></button>
+    </div>
   </header>
 
   <!-- STATEMENT -->
