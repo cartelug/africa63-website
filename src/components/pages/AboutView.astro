@@ -39,14 +39,13 @@ const c = lang === 'fr' ? {
     ['2022', 'Ambassade de Suède × LYREC', 'Appui au partenariat renforçant la participation des jeunes à la gouvernance pour le développement durable en RD Congo.'],
     ['En cours', 'Développement durable', 'Contribution à des projets de développement durable, de renforcement de capacités et de consolidation institutionnelle.'],
   ],
-  engEye: 'Engagements de haut niveau', engHead: 'Le dialogue là où<br>se prennent les décisions.',
-  engIntro: 'Africa 63 dialogue avec les plus hautes autorités diplomatiques et politiques de la région. Les personnalités ci-dessous sont des figures publiques externes, présentées dans le cadre d’engagements institutionnels réels.',
+  engEye: 'Engagements', engHead: 'Sur le terrain.',
+  engIntro: 'Moments des engagements et événements d’Africa 63 à travers la région.',
   engagements: [
-    { photo: 'alyson-king', name: 'Alyson King OBE', desc: 'Ancienne Ambassadrice du Royaume-Uni en République démocratique du Congo (2023–2026)', tag: 'Dialogue diplomatique', caption: 'Engagement de haut niveau avec Alyson King OBE, ancienne Ambassadrice du Royaume-Uni en République démocratique du Congo.' },
-    { photo: 'augustin-kabuya', name: 'Augustin Kabuya Tshilumba', desc: 'Leader politique congolais · Membre de l’Assemblée nationale', tag: 'Dialogue politique', caption: 'Engagement de haut niveau avec Augustin Kabuya Tshilumba, leader politique congolais et membre de l’Assemblée nationale.' },
+    { photo: 'alyson-king', caption: 'Avec Alyson King OBE, ancienne Ambassadrice du Royaume-Uni en RDC — engagement régional.' },
+    { photo: 'augustin-kabuya', caption: 'Avec Augustin Kabuya Tshilumba, Membre de l’Assemblée nationale — engagement politique.' },
   ],
-  engDisclaimer: 'Les portraits présentés sous « Engagements de haut niveau » illustrent des interactions diplomatiques et institutionnelles réelles. Les personnes figurant ici sont des personnalités publiques externes — ni membres du personnel, ni conseillers, ni partenaires, ni soutiens d’Africa 63.',
-  engExternal: 'Personnalité publique externe',
+  prevLabel: 'Précédent', nextLabel: 'Suivant',
   focusLabel: 'Domaines',
   ctaEye: 'Travailler avec nous', ctaHead: 'Bâtissons quelque chose<br>de durable.',
   ctaSub: 'Du premier échange à la livraison, Africa 63 s’associe aux institutions prêtes à faire avancer le continent.',
@@ -75,14 +74,13 @@ const c = lang === 'fr' ? {
     ['2022', 'Embassy of Sweden × LYREC', 'Supported the partnership strengthening youth participation in governance for sustainable development in DR Congo — extending civil-society reach across Central Congo, Kwilu, and Central Kasaï.'],
     ['Ongoing', 'Sustainable Development', 'Contributed to projects focused on sustainable development, capacity building, and institutional strengthening — the foundations of long-term public value.'],
   ],
-  engEye: 'Leadership Engagements', engHead: 'Dialogue at the level<br>where decisions are made.',
-  engIntro: 'Africa 63 engages senior diplomatic and political leadership across the region. The figures below are external public figures, presented in the context of real institutional engagements.',
+  engEye: 'Engagements', engHead: 'On the ground.',
+  engIntro: 'Moments from Africa 63 engagements and events across the region.',
   engagements: [
-    { photo: 'alyson-king', name: 'Alyson King OBE', desc: 'Former British Ambassador to the Democratic Republic of the Congo (2023–2026)', tag: 'Diplomatic Dialogue', caption: 'Leadership engagement with Alyson King OBE, former British Ambassador to the Democratic Republic of the Congo.' },
-    { photo: 'augustin-kabuya', name: 'Augustin Kabuya Tshilumba', desc: 'Congolese political leader · Member of the National Assembly', tag: 'Political Dialogue', caption: 'Leadership engagement with Augustin Kabuya Tshilumba, Congolese political leader and Member of the National Assembly.' },
+    { photo: 'alyson-king', caption: 'With Alyson King OBE, former British Ambassador to the DRC — regional engagement.' },
+    { photo: 'augustin-kabuya', caption: 'With Augustin Kabuya Tshilumba, Member of the National Assembly — political engagement.' },
   ],
-  engDisclaimer: 'Portraits shown under Leadership Engagements represent real diplomatic and institutional interactions. The individuals featured are external public figures — not staff, advisers, partners, or endorsers of Africa 63.',
-  engExternal: 'External Public Figure',
+  prevLabel: 'Previous', nextLabel: 'Next',
   focusLabel: 'Focus',
   ctaEye: 'Work With Us', ctaHead: 'Let’s Build Something Lasting.',
   ctaSub: 'From the first conversation to delivery, Africa 63 partners with institutions ready to move the continent forward.',
@@ -177,23 +175,27 @@ const c = lang === 'fr' ? {
         <h2 class="kinetic-header reveal mt-4" data-splitting set:html={c.engHead}></h2>
         <p class="lead-intro reveal">{c.engIntro}</p>
       </div>
-      <div class="eng-grid">
-        {c.engagements.map((e) => (
-          <figure class="eng-card reveal">
-            <div class="eng-photo">
-              <span class="eng-tag">{e.tag}</span>
-              <Image src={img(e.photo)} alt={`Leadership engagement — ${e.name}`} widths={[520, 900]} sizes="(max-width: 900px) 92vw, 520px" loading="lazy" />
-            </div>
-            <figcaption class="eng-meta">
-              <div class="eng-external">{c.engExternal}</div>
-              <div class="eng-name">{e.name}</div>
-              <div class="eng-desc">{e.desc}</div>
-              <p class="eng-caption">{e.caption}</p>
-            </figcaption>
-          </figure>
-        ))}
+      <div class="engage-slider reveal" data-autoplay="6500">
+        <div class="engage-viewport">
+          <div class="engage-track">
+            {c.engagements.map((e, i) => (
+              <figure class="engage-slide" data-i={i}>
+                <div class="engage-photo">
+                  <Image src={img(e.photo)} alt={e.caption} widths={[640, 1100]} sizes="(max-width: 900px) 92vw, 860px" loading="lazy" />
+                </div>
+                <figcaption class="engage-cap">{e.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+        <button class="engage-arrow prev" type="button" aria-label={c.prevLabel}><span aria-hidden="true">←</span></button>
+        <button class="engage-arrow next" type="button" aria-label={c.nextLabel}><span aria-hidden="true">→</span></button>
+        <div class="engage-dots" role="tablist" aria-label={c.engEye}>
+          {c.engagements.map((_, i) => (
+            <button class="engage-dot" type="button" data-i={i} role="tab" aria-label={`${i + 1}`}></button>
+          ))}
+        </div>
       </div>
-      <p class="eng-disclaimer reveal">{c.engDisclaimer}</p>
     </div>
   </section>
 

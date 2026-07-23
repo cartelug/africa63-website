@@ -275,7 +275,7 @@ function initFooter() {
 
 // ── LEADERSHIP / ENGAGEMENT PORTRAITS (clip-path wipe) ──────
 function initLeadership() {
-  const portraits = document.querySelectorAll<HTMLElement>('.lead-photo img, .eng-photo img');
+  const portraits = document.querySelectorAll<HTMLElement>('.lead-photo img');
   if (reduced) { gsap.set(portraits, { clipPath: 'none' }); return; }
   portraits.forEach((im) => {
     gsap.fromTo(im,
@@ -285,6 +285,67 @@ function initLeadership() {
         duration: 1.35, ease: 'expo.out',
         scrollTrigger: { trigger: im, start: 'top 88%', once: true },
       });
+  });
+}
+
+// ── ENGAGEMENT SLIDESHOW (scroll-snap + dots + arrows + autoplay) ──
+function initEngageSlider() {
+  document.querySelectorAll<HTMLElement>('.engage-slider').forEach((slider) => {
+    const track = slider.querySelector<HTMLElement>('.engage-track');
+    const slides = Array.from(slider.querySelectorAll<HTMLElement>('.engage-slide'));
+    const dots = Array.from(slider.querySelectorAll<HTMLButtonElement>('.engage-dot'));
+    const prev = slider.querySelector<HTMLButtonElement>('.engage-arrow.prev');
+    const next = slider.querySelector<HTMLButtonElement>('.engage-arrow.next');
+    if (!track || slides.length === 0) return;
+
+    let index = 0;
+    const setActive = (i: number) => {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      dots.forEach((d, di) => d.classList.toggle('active', di === index));
+      if (prev) prev.disabled = index === 0;
+      if (next) next.disabled = index === slides.length - 1;
+    };
+    const goTo = (i: number) => {
+      const clamped = Math.max(0, Math.min(slides.length - 1, i));
+      // each slide is exactly the track's width (flex 0 0 100%)
+      track.scrollTo({ left: track.clientWidth * clamped, behavior: reduced ? 'auto' : 'smooth' });
+      setActive(clamped);
+    };
+
+    // keep the active dot in sync while the user swipes
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && e.intersectionRatio > 0.6) {
+          setActive(slides.indexOf(e.target as HTMLElement));
+        }
+      });
+    }, { root: track, threshold: [0.6] });
+    slides.forEach((s) => io.observe(s));
+    S.cleanup.push(() => io.disconnect());
+
+    // gentle autoplay — pauses on hover/focus/touch and resets after manual nav
+    const autoMs = (() => { const m = parseInt(slider.dataset.autoplay || '0', 10); return m > 0 && !reduced && slides.length > 1 ? m : 0; })();
+    let timer = 0;
+    const advance = () => goTo(index >= slides.length - 1 ? 0 : index + 1);
+    const stopAuto = () => { if (timer) { clearInterval(timer); timer = 0; } };
+    const startAuto = () => { if (autoMs && !timer) timer = window.setInterval(advance, autoMs); };
+    const bumpAuto = () => { stopAuto(); startAuto(); };   // restart countdown after a manual move
+
+    const nav = (i: number) => { goTo(i); bumpAuto(); };
+    prev?.addEventListener('click', () => nav(index - 1));
+    next?.addEventListener('click', () => nav(index + 1));
+    dots.forEach((d, di) => d.addEventListener('click', () => nav(di)));
+
+    setActive(0);
+    if (autoMs) {
+      slider.addEventListener('pointerenter', stopAuto);
+      slider.addEventListener('pointerleave', startAuto);
+      slider.addEventListener('focusin', stopAuto);
+      slider.addEventListener('focusout', startAuto);
+      track.addEventListener('touchstart', stopAuto, { passive: true });
+      startAuto();
+      S.cleanup.push(stopAuto);
+    }
   });
 }
 
@@ -365,6 +426,7 @@ function init() {
   initMarquee();
   initFooter();
   initLeadership();
+  initEngageSlider();
   initMagnetic();
   initCursor();
   initAnchors();
