@@ -27,6 +27,10 @@ import fally07 from '../assets/images/events/fally-07.jpg';
 import fally08 from '../assets/images/events/fally-08.jpg';
 import fallyMedia from '../assets/images/events/fally-media.jpg';
 
+// Hero backgrounds — cinematic atrium (art-directed: wide desktop / tall mobile)
+import heroAtriumWide from '../assets/images/hero/hero-atrium-wide.png';
+import heroAtriumTall from '../assets/images/hero/hero-atrium-tall.png';
+
 // Leadership portraits — real A63 team + external engagement figures
 import nathanMubembe from '../assets/images/team/nathan-mubembe.png';
 import mubembeTwaibu from '../assets/images/team/mubembe-twaibu.png';
@@ -54,6 +58,8 @@ export const images: Record<string, ImageMetadata> = {
   'fally-07': fally07,
   'fally-08': fally08,
   'fally-media': fallyMedia,
+  'hero-atrium-wide': heroAtriumWide,
+  'hero-atrium-tall': heroAtriumTall,
   'nathan-mubembe': nathanMubembe,
   'mubembe-twaibu': mubembeTwaibu,
   'neeza-amani': neezaAmani,

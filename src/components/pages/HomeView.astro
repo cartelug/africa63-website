@@ -24,11 +24,14 @@ const insights = (await getInsights(lang)).slice(0, 3);
 const L = (p: string) => localizePath(p, lang);
 
 // ── HERO BACKGROUNDS ────────────────────────────────────────────────
-// Cinematic full-bleed backgrounds for the home hero carousel.
-// TO SWAP: drop the real image files into src/assets/images/, register the
-// keys in src/lib/images.ts, then list those keys here (1–5 backgrounds).
-// The slide counter / progress / next button adapt to the array length.
-const heroSlides = ['hero-boardroom', 'engagement-scene', 'africa1', 'africa3'];
+// Cinematic full-bleed backgrounds for the home hero. Each entry is
+// art-directed: `wide` renders on desktop, `tall` on mobile.
+// Add more entries to turn the hero into a rotating carousel — the slide
+// counter / progress / next button appear automatically when length > 1.
+const heroSlides = [
+  { wide: 'hero-atrium-wide', tall: 'hero-atrium-tall' },
+];
+const heroMulti = heroSlides.length > 1;
 
 const copy = lang === 'fr' ? {
   heroSub: "Africa 63 est un cabinet d’affaires publiques qui accompagne gouvernements, institutions et acteurs du développement — en mobilisant des ressources, en structurant des projets publics et en bâtissant la confiance dont dépend tout progrès durable.",
@@ -89,12 +92,13 @@ const jsonld = {
   description={copy.heroSub}
   jsonld={jsonld}
 >
-  <!-- HERO — cinematic full-bleed carousel -->
-  <header class="hero hero-cine theme-black" data-autoplay="6500">
+  <!-- HERO — cinematic full-bleed, art-directed -->
+  <header class:list={["hero", "hero-cine", "theme-black", !heroMulti && "hero-single"]} data-autoplay="6500">
     <div class="hero-slides" aria-hidden="true">
-      {heroSlides.map((key, i) => (
+      {heroSlides.map((slide, i) => (
         <div class:list={["hero-slide", i === 0 && "active"]} data-i={i}>
-          <Image src={img(key)} alt="" widths={[900, 1600, 2400]} sizes="100vw" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+          <Image class="hero-bg hero-bg-wide" src={img(slide.wide)} alt="" widths={[1200, 1680, 2400]} sizes="100vw" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+          <Image class="hero-bg hero-bg-tall" src={img(slide.tall)} alt="" widths={[640, 941, 1200]} sizes="100vw" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
         </div>
       ))}
     </div>
@@ -114,9 +118,13 @@ const jsonld = {
     </div>
 
     <div class="hero-cine-foot">
-      <div class="hero-count"><span class="hc-cur">01</span> <span class="hc-sep">/</span> <span class="hc-total">{String(heroSlides.length).padStart(2, '0')}</span></div>
+      {heroMulti && (
+        <div class="hero-count"><span class="hc-cur">01</span> <span class="hc-sep">/</span> <span class="hc-total">{String(heroSlides.length).padStart(2, '0')}</span></div>
+      )}
       <div class="hero-prog"><span class="hero-prog-fill"></span></div>
-      <button class="hero-next" type="button" aria-label={copy.nextLabel}><span aria-hidden="true">→</span></button>
+      {heroMulti && (
+        <button class="hero-next" type="button" aria-label={copy.nextLabel}><span aria-hidden="true">→</span></button>
+      )}
     </div>
   </header>
 

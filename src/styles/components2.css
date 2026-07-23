@@ -45,8 +45,10 @@
   .hero-slides { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
   .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s var(--ease); will-change: opacity; }
   .hero-slide.active { opacity: 1; }
-  .hero-slide img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
-  .hero-slide.active img { animation: heroKen 8s var(--ease) forwards; }
+  .hero-slide .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-bg-wide { object-position: 60% 45%; }
+  .hero-bg-tall { display: none; object-position: 50% 42%; }
+  .hero-slide.active .hero-bg { animation: heroKen 9s var(--ease) forwards; }
   @keyframes heroKen { from { transform: scale(1.001); } to { transform: scale(1.075); } }
 
   .hero-scrim {
@@ -119,6 +121,14 @@
     transition: background 0.4s var(--ease), color 0.4s var(--ease), border-color 0.4s var(--ease);
   }
   .hero-next:hover { background: var(--gold); border-color: transparent; color: var(--ink); }
+
+  /* single-background hero: rail becomes a quiet architectural hairline */
+  .hero-single .hero-prog { background: var(--on-dark-14); }
+  .hero-single .hero-prog-fill { display: none; }
+  .hero-single .hero-prog::after {
+    content: ''; position: absolute; left: 0; top: 0; height: 100%;
+    width: clamp(60px, 12vw, 160px); background: linear-gradient(90deg, var(--gold), transparent);
+  }
 
   /* interior page hero */
   .page-hero { position: relative; overflow: hidden; isolation: isolate; padding: clamp(160px, 24vh, 300px) var(--pad-x) clamp(90px, 14vh, 170px); }
