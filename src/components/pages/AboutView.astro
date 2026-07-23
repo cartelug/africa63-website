@@ -4,12 +4,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Eyebrow from '../Eyebrow.astro';
 import CtaTex from '../CtaTex.astro';
 import { img } from '../../lib/images';
+import { getTeam } from '../../lib/content';
 import { useTranslations, localizePath, type Lang } from '../../i18n/ui';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const L = (p: string) => localizePath(p, lang);
+
+const team = await getTeam(lang);
 
 const c = lang === 'fr' ? {
   eyebrow: 'À propos d’Africa 63', h1: 'Bâti sur la confiance. Enraciné en Afrique.',
@@ -21,6 +24,8 @@ const c = lang === 'fr' ? {
     'Africa 63 facilite la mobilisation d’investissements durables et le développement de projets publics structurés. Nous fournissons un conseil juridique aux entreprises, promouvons le leadership et la bonne gouvernance, et livrons des programmes de formation qui renforcent la capacité institutionnelle et opérationnelle.',
     'Surtout, nous facilitons la collaboration — entre gouvernements, entreprises, partenaires au développement et communautés. Nous croyons que les résultats les plus durables se bâtissent non sur une transaction unique, mais sur des relations de confiance entretenues dans le temps.',
   ],
+  leadEye: 'La direction', leadHead: 'Orientation stratégique.<br>Discipline financière.<br>Exécution numérique.',
+  leadSub: 'Une équipe dirigeante resserrée, responsable de la stratégie, de la gouvernance financière et des systèmes qui mènent le conseil jusqu’à la livraison.',
   believeEye: 'Ce que nous croyons', believeHead: 'Des principes qui guident le travail.',
   values: [
     ['Confiance d’abord', 'La crédibilité se gagne — par les preuves, la discrétion et la constance. Nous laissons parler la qualité du travail et la force des relations.'],
@@ -34,6 +39,15 @@ const c = lang === 'fr' ? {
     ['2022', 'Ambassade de Suède × LYREC', 'Appui au partenariat renforçant la participation des jeunes à la gouvernance pour le développement durable en RD Congo.'],
     ['En cours', 'Développement durable', 'Contribution à des projets de développement durable, de renforcement de capacités et de consolidation institutionnelle.'],
   ],
+  engEye: 'Engagements de haut niveau', engHead: 'Le dialogue là où<br>se prennent les décisions.',
+  engIntro: 'Africa 63 dialogue avec les plus hautes autorités diplomatiques et politiques de la région. Les personnalités ci-dessous sont des figures publiques externes, présentées dans le cadre d’engagements institutionnels réels.',
+  engagements: [
+    { photo: 'alyson-king', name: 'Alyson King OBE', desc: 'Ancienne Ambassadrice du Royaume-Uni en République démocratique du Congo (2023–2026)', tag: 'Dialogue diplomatique', caption: 'Engagement de haut niveau avec Alyson King OBE, ancienne Ambassadrice du Royaume-Uni en République démocratique du Congo.' },
+    { photo: 'augustin-kabuya', name: 'Augustin Kabuya Tshilumba', desc: 'Leader politique congolais · Membre de l’Assemblée nationale', tag: 'Dialogue politique', caption: 'Engagement de haut niveau avec Augustin Kabuya Tshilumba, leader politique congolais et membre de l’Assemblée nationale.' },
+  ],
+  engDisclaimer: 'Les portraits présentés sous « Engagements de haut niveau » illustrent des interactions diplomatiques et institutionnelles réelles. Les personnes figurant ici sont des personnalités publiques externes — ni membres du personnel, ni conseillers, ni partenaires, ni soutiens d’Africa 63.',
+  engExternal: 'Personnalité publique externe',
+  focusLabel: 'Domaines',
   ctaEye: 'Travailler avec nous', ctaHead: 'Bâtissons quelque chose<br>de durable.',
   ctaSub: 'Du premier échange à la livraison, Africa 63 s’associe aux institutions prêtes à faire avancer le continent.',
 } : {
@@ -46,6 +60,8 @@ const c = lang === 'fr' ? {
     'Africa 63 facilitates the mobilisation of sustainable investments and the development of structured public projects. We provide legal advisory to commercial companies, promote leadership and good governance in public management, and deliver training programmes that strengthen institutional and operational capacity.',
     'Above all, we facilitate collaboration — between governments, businesses, development partners, and the communities they serve. We believe the most durable outcomes are built not on a single transaction, but on relationships of trust maintained over time.',
   ],
+  leadEye: 'Leadership', leadHead: 'Strategic direction.<br>Financial discipline.<br>Digital execution.',
+  leadSub: 'A compact senior team accountable for strategy, financial governance, and the systems that carry advisory work through to delivery.',
   believeEye: 'What We Believe', believeHead: 'Principles that guide the work.',
   values: [
     ['Trust First', 'Credibility is earned — through evidence, discretion, and consistency. We let the quality of the work, and the strength of our relationships, speak.'],
@@ -59,6 +75,15 @@ const c = lang === 'fr' ? {
     ['2022', 'Embassy of Sweden × LYREC', 'Supported the partnership strengthening youth participation in governance for sustainable development in DR Congo — extending civil-society reach across Central Congo, Kwilu, and Central Kasaï.'],
     ['Ongoing', 'Sustainable Development', 'Contributed to projects focused on sustainable development, capacity building, and institutional strengthening — the foundations of long-term public value.'],
   ],
+  engEye: 'Leadership Engagements', engHead: 'Dialogue at the level<br>where decisions are made.',
+  engIntro: 'Africa 63 engages senior diplomatic and political leadership across the region. The figures below are external public figures, presented in the context of real institutional engagements.',
+  engagements: [
+    { photo: 'alyson-king', name: 'Alyson King OBE', desc: 'Former British Ambassador to the Democratic Republic of the Congo (2023–2026)', tag: 'Diplomatic Dialogue', caption: 'Leadership engagement with Alyson King OBE, former British Ambassador to the Democratic Republic of the Congo.' },
+    { photo: 'augustin-kabuya', name: 'Augustin Kabuya Tshilumba', desc: 'Congolese political leader · Member of the National Assembly', tag: 'Political Dialogue', caption: 'Leadership engagement with Augustin Kabuya Tshilumba, Congolese political leader and Member of the National Assembly.' },
+  ],
+  engDisclaimer: 'Portraits shown under Leadership Engagements represent real diplomatic and institutional interactions. The individuals featured are external public figures — not staff, advisers, partners, or endorsers of Africa 63.',
+  engExternal: 'External Public Figure',
+  focusLabel: 'Focus',
   ctaEye: 'Work With Us', ctaHead: 'Let’s Build Something Lasting.',
   ctaSub: 'From the first conversation to delivery, Africa 63 partners with institutions ready to move the continent forward.',
 };
@@ -89,18 +114,40 @@ const c = lang === 'fr' ? {
     </div>
   </section>
 
-  <section class="theme-black" style="padding:clamp(70px,10vh,120px) var(--pad-x)">
+  <!-- ── LEADERSHIP ─────────────────────────────────────────── -->
+  <section class="section theme-black seam-gold" id="leadership">
     <div class="container">
-      <figure class="img-band reveal" style="aspect-ratio:16/8">
-        <Image src={img('africa1')} alt="Africa 63 engagement in Kinshasa, DR Congo" widths={[900,1600,2400]} sizes="100vw" loading="lazy" />
-        <figcaption class="cap">Kinshasa · Embassy of Sweden Engagement</figcaption>
-      </figure>
+      <div class="lead-head">
+        <Eyebrow num="02" class="reveal">{c.leadEye}</Eyebrow>
+        <h2 class="kinetic-header reveal mt-4" data-splitting set:html={c.leadHead}></h2>
+        <p class="lead-intro reveal">{c.leadSub}</p>
+      </div>
+      <div class="lead-grid">
+        {team.map((m, i) => (
+          <article class="lead-card reveal" data-delay={(i * 0.1).toString()}>
+            <div class="lead-photo">
+              <span class="lead-index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <Image src={img(m.data.photo)} alt={m.data.name} widths={[420, 720]} sizes="(max-width: 760px) 88vw, 340px" loading="lazy" />
+            </div>
+            <div class="lead-meta">
+              <h3 class="lead-name">{m.data.name}</h3>
+              <div class="lead-role">{m.data.role}</div>
+              {m.data.short && <p class="lead-bio">{m.data.short}</p>}
+              {m.data.focus?.length > 0 && (
+                <ul class="lead-focus" aria-label={c.focusLabel}>
+                  {m.data.focus.map((f) => <li>{f}</li>)}
+                </ul>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section class="section theme-black seam-gold">
+  <section class="section theme-black">
     <div class="container">
-      <Eyebrow num="02" class="reveal">{c.believeEye}</Eyebrow>
+      <Eyebrow num="03" class="reveal">{c.believeEye}</Eyebrow>
       <h2 class="kinetic-header reveal mb-6 mt-4" data-splitting>{c.believeHead}</h2>
       <div class="trio">
         {c.values.map(([h, p], i) => (
@@ -112,13 +159,41 @@ const c = lang === 'fr' ? {
 
   <section class="section theme-white melt-blur-black">
     <div class="container">
-      <Eyebrow num="03" class="reveal">{c.trackEye}</Eyebrow>
+      <Eyebrow num="04" class="reveal">{c.trackEye}</Eyebrow>
       <h2 class="kinetic-header reveal mt-4" data-splitting style="margin-bottom:56px">{c.trackHead}</h2>
       <div class="timeline">
         {c.timeline.map(([y, h, p]) => (
           <div class="tl-item reveal"><div class="tl-year">{y}</div><div class="tl-body"><h4>{h}</h4><p>{p}</p></div></div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- ── LEADERSHIP ENGAGEMENTS (external public figures) ────── -->
+  <section class="section theme-black seam-gold" id="engagements">
+    <div class="container">
+      <div class="lead-head">
+        <Eyebrow num="05" class="reveal">{c.engEye}</Eyebrow>
+        <h2 class="kinetic-header reveal mt-4" data-splitting set:html={c.engHead}></h2>
+        <p class="lead-intro reveal">{c.engIntro}</p>
+      </div>
+      <div class="eng-grid">
+        {c.engagements.map((e) => (
+          <figure class="eng-card reveal">
+            <div class="eng-photo">
+              <span class="eng-tag">{e.tag}</span>
+              <Image src={img(e.photo)} alt={`Leadership engagement — ${e.name}`} widths={[520, 900]} sizes="(max-width: 900px) 92vw, 520px" loading="lazy" />
+            </div>
+            <figcaption class="eng-meta">
+              <div class="eng-external">{c.engExternal}</div>
+              <div class="eng-name">{e.name}</div>
+              <div class="eng-desc">{e.desc}</div>
+              <p class="eng-caption">{e.caption}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="eng-disclaimer reveal">{c.engDisclaimer}</p>
     </div>
   </section>
 

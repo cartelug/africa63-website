@@ -27,6 +27,13 @@ import fally07 from '../assets/images/events/fally-07.jpg';
 import fally08 from '../assets/images/events/fally-08.jpg';
 import fallyMedia from '../assets/images/events/fally-media.jpg';
 
+// Leadership portraits — real A63 team + external engagement figures
+import nathanMubembe from '../assets/images/team/nathan-mubembe.png';
+import mubembeTwaibu from '../assets/images/team/mubembe-twaibu.png';
+import neezaAmani from '../assets/images/team/neeza-amani.png';
+import alysonKing from '../assets/images/team/alyson-king.png';
+import augustinKabuya from '../assets/images/team/augustin-kabuya.png';
+
 export const images: Record<string, ImageMetadata> = {
   africa1, africa2, africa3, africa4,
   'hero-boardroom': heroBoardroom,
@@ -47,6 +54,11 @@ export const images: Record<string, ImageMetadata> = {
   'fally-07': fally07,
   'fally-08': fally08,
   'fally-media': fallyMedia,
+  'nathan-mubembe': nathanMubembe,
+  'mubembe-twaibu': mubembeTwaibu,
+  'neeza-amani': neezaAmani,
+  'alyson-king': alysonKing,
+  'augustin-kabuya': augustinKabuya,
 };
 
 export function img(key: string): ImageMetadata {

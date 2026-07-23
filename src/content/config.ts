@@ -61,6 +61,8 @@ const team = defineCollection({
     role: z.string(),
     order: z.number().default(0),
     photo: z.string(),
+    short: z.string().optional(),
+    focus: z.array(z.string()).default([]),
     linkedin: z.string().optional(),
     placeholder: z.boolean().default(false),
   }),

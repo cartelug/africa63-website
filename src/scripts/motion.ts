@@ -268,6 +268,21 @@ function initFooter() {
   }
 }
 
+// ── LEADERSHIP / ENGAGEMENT PORTRAITS (clip-path wipe) ──────
+function initLeadership() {
+  const portraits = document.querySelectorAll<HTMLElement>('.lead-photo img, .eng-photo img');
+  if (reduced) { gsap.set(portraits, { clipPath: 'none' }); return; }
+  portraits.forEach((im) => {
+    gsap.fromTo(im,
+      { clipPath: 'inset(0 0 101% 0)', scale: 1.16 },
+      {
+        clipPath: 'inset(0 0 0% 0)', scale: 1,
+        duration: 1.35, ease: 'expo.out',
+        scrollTrigger: { trigger: im, start: 'top 88%', once: true },
+      });
+  });
+}
+
 // ── MAGNETIC (gsap.quickTo) ─────────────────────────────────
 function initMagnetic() {
   if (!fine || reduced) return;
@@ -344,6 +359,7 @@ function init() {
   initImgBands();
   initMarquee();
   initFooter();
+  initLeadership();
   initMagnetic();
   initCursor();
   initAnchors();

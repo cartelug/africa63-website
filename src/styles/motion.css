@@ -69,6 +69,12 @@
      GSAP sets initial hidden state inline only when it will animate it. */
   .no-motion .reveal, html:not(.js) .reveal { opacity: 1 !important; transform: none !important; }
 
+  /* Leadership / engagement portraits: pre-hide the clip so the GSAP wipe never
+     flashes. Reveal instantly when JS/motion is unavailable or reduced. */
+  html.js .lead-photo img, html.js .eng-photo img { clip-path: inset(0 0 101% 0); }
+  .no-motion .lead-photo img, .no-motion .eng-photo img,
+  html:not(.js) .lead-photo img, html:not(.js) .eng-photo img { clip-path: none !important; }
+
   /* CSS-only marquee fallback (no GSAP) */
   .no-motion .partner-track { animation: cssMarquee 32s linear infinite; }
   @keyframes cssMarquee { to { transform: translateX(-50%); } }
@@ -91,6 +97,7 @@
       scroll-behavior: auto !important;
     }
     .reveal, .hero-inner > *, .kinetic-header .char { opacity: 1 !important; transform: none !important; }
+    .lead-photo img, .eng-photo img { clip-path: none !important; }
     .no-motion .partner-track { animation: none !important; }
     #loader { display: none !important; }
   }
