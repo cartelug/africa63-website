@@ -97,6 +97,39 @@ function initLenis() {
 }
 
 // ── NAV + BACK TO TOP ───────────────────────────────────────
+// ── MOBILE DRAWER STATE (elements looked up live — DOM is swapped per nav) ──
+function navIsOpen() { return !!document.getElementById('mobileNav')?.classList.contains('open'); }
+function setNav(open: boolean) {
+  document.getElementById('mobileNav')?.classList.toggle('open', open);
+  document.getElementById('navToggle')?.setAttribute('aria-expanded', String(open));
+  // scroll lock + hamburger→X are handled in CSS via html.nav-open and
+  // .nav-toggle[aria-expanded]; JS only toggles state + scroll lock.
+  document.documentElement.classList.toggle('nav-open', open);
+  if (open) S.lenis?.stop(); else S.lenis?.start();
+}
+
+// Persistent chrome interactions bound ONCE via delegation on `document`.
+// `document` survives Astro View Transitions, so the hamburger, drawer links,
+// and back-to-top always respond — even in the gap between a page swap and the
+// next per-page init(). This is what fixes the "toggle sometimes doesn't react".
+function bindChromeOnce() {
+  if ((window as any).__a63Chrome) return;
+  (window as any).__a63Chrome = true;
+
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (t.closest('#navToggle')) { e.preventDefault(); setNav(!navIsOpen()); return; }
+    if (t.closest('#mobileNav a')) { setNav(false); return; }        // let nav proceed
+    if (t.closest('#toTop')) {
+      e.preventDefault();
+      if (S.lenis) S.lenis.scrollTo(0, { duration: 1.2 });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && navIsOpen()) setNav(false); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 820 && navIsOpen()) setNav(false); });
+}
+
 function initChrome() {
   const nav = document.getElementById('nav');
   const toTop = document.getElementById('toTop');
@@ -109,36 +142,8 @@ function initChrome() {
   onScroll();
   S.cleanup.push(() => window.removeEventListener('scroll', onScroll));
 
-  toTop?.addEventListener('click', () => {
-    if (S.lenis) S.lenis.scrollTo(0, { duration: 1.2 });
-    else window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // ── MOBILE DRAWER (CSS-driven, cannot get stuck) ──
-  const toggle = document.getElementById('navToggle');
-  const drawer = document.getElementById('mobileNav');
-  const setOpen = (open: boolean) => {
-    drawer?.classList.toggle('open', open);
-    toggle?.setAttribute('aria-expanded', String(open));
-    // scroll lock + hamburger→X are both handled in CSS via html.nav-open
-    // and .nav-toggle[aria-expanded]; JS only toggles state + smooth scroll.
-    document.documentElement.classList.toggle('nav-open', open);
-    if (open) S.lenis?.stop(); else S.lenis?.start();
-  };
-  toggle?.addEventListener('click', () => setOpen(!drawer?.classList.contains('open')));
-  drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
-
-  const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
-  document.addEventListener('keydown', onKey);
-  const onResize = () => { if (window.innerWidth > 820 && drawer?.classList.contains('open')) setOpen(false); };
-  window.addEventListener('resize', onResize);
-  // ensure a clean state on (re)init and after any navigation
-  setOpen(false);
-  S.cleanup.push(() => {
-    document.removeEventListener('keydown', onKey);
-    window.removeEventListener('resize', onResize);
-    document.documentElement.classList.remove('nav-open');
-  });
+  // guarantee a clean, closed drawer on every (re)init / navigation
+  setNav(false);
 }
 
 // ── SPLITTING + KINETIC HEADERS ─────────────────────────────
@@ -366,6 +371,11 @@ function init() {
   requestAnimationFrame(() => ScrollTrigger.refresh());
 }
 
+// Bind persistent chrome (mobile drawer, back-to-top) immediately at module
+// load — independent of the per-page init lifecycle, so the hamburger reacts
+// from the first paint and never falls into a re-init timing gap.
+bindChromeOnce();
+
 // ── PRELOADER: first genuine page load only ─────────────────
 if (!(window as any).__a63Pre) {
   (window as any).__a63Pre = true;
@@ -377,7 +387,7 @@ if (!(window as any).__a63Pre) {
 let started = false;
 const boot = () => { if (started) teardown(); started = true; init(); };
 document.addEventListener('astro:page-load', boot);
-document.addEventListener('astro:before-swap', () => { if (started) teardown(); });
+document.addEventListener('astro:before-swap', () => { setNav(false); if (started) teardown(); });
 // After every navigation swap, guarantee no leftover preloader is shown.
 // Runs before the browser paints the new page, so there is never a flash.
 document.addEventListener('astro:after-swap', () => {
