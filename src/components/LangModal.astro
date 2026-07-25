@@ -1,0 +1,265 @@
+---
+// First-visit language chooser (home page only).
+// English + French are native site translations; every other language is
+// rendered on the fly via Google Translate's proxy (translate.goog).
+import { localizePath, type Lang } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const homeEn = localizePath('/', 'en');
+const homeFr = localizePath('/', 'fr');
+
+// { code (Google Translate tl), english name, native name }
+const LANGS: [string, string, string][] = [
+  ['en', 'English', 'English'],
+  ['fr', 'French', 'Français'],
+  ['es', 'Spanish', 'Español'],
+  ['pt', 'Portuguese', 'Português'],
+  ['ar', 'Arabic', 'العربية'],
+  ['sw', 'Swahili', 'Kiswahili'],
+  ['ln', 'Lingala', 'Lingála'],
+  ['lg', 'Luganda', 'Luganda'],
+  ['rw', 'Kinyarwanda', 'Ikinyarwanda'],
+  ['zh-CN', 'Chinese (Simplified)', '中文（简体）'],
+  ['zh-TW', 'Chinese (Traditional)', '中文（繁體）'],
+  ['hi', 'Hindi', 'हिन्दी'],
+  ['de', 'German', 'Deutsch'],
+  ['ru', 'Russian', 'Русский'],
+  ['ja', 'Japanese', '日本語'],
+  ['ko', 'Korean', '한국어'],
+  ['it', 'Italian', 'Italiano'],
+  ['nl', 'Dutch', 'Nederlands'],
+  ['tr', 'Turkish', 'Türkçe'],
+  ['pl', 'Polish', 'Polski'],
+  ['uk', 'Ukrainian', 'Українська'],
+  ['fa', 'Persian', 'فارسی'],
+  ['ur', 'Urdu', 'اردو'],
+  ['bn', 'Bengali', 'বাংলা'],
+  ['pa', 'Punjabi', 'ਪੰਜਾਬੀ'],
+  ['ta', 'Tamil', 'தமிழ்'],
+  ['te', 'Telugu', 'తెలుగు'],
+  ['ml', 'Malayalam', 'മലയാളം'],
+  ['kn', 'Kannada', 'ಕನ್ನಡ'],
+  ['mr', 'Marathi', 'मराठी'],
+  ['gu', 'Gujarati', 'ગુજરાતી'],
+  ['th', 'Thai', 'ไทย'],
+  ['vi', 'Vietnamese', 'Tiếng Việt'],
+  ['id', 'Indonesian', 'Bahasa Indonesia'],
+  ['ms', 'Malay', 'Bahasa Melayu'],
+  ['fil', 'Filipino', 'Filipino'],
+  ['he', 'Hebrew', 'עברית'],
+  ['el', 'Greek', 'Ελληνικά'],
+  ['ro', 'Romanian', 'Română'],
+  ['hu', 'Hungarian', 'Magyar'],
+  ['cs', 'Czech', 'Čeština'],
+  ['sv', 'Swedish', 'Svenska'],
+  ['da', 'Danish', 'Dansk'],
+  ['fi', 'Finnish', 'Suomi'],
+  ['no', 'Norwegian', 'Norsk'],
+  ['sk', 'Slovak', 'Slovenčina'],
+  ['bg', 'Bulgarian', 'Български'],
+  ['sr', 'Serbian', 'Српски'],
+  ['hr', 'Croatian', 'Hrvatski'],
+  ['sl', 'Slovenian', 'Slovenščina'],
+  ['lt', 'Lithuanian', 'Lietuvių'],
+  ['lv', 'Latvian', 'Latviešu'],
+  ['et', 'Estonian', 'Eesti'],
+  ['ca', 'Catalan', 'Català'],
+  ['gl', 'Galician', 'Galego'],
+  ['eu', 'Basque', 'Euskara'],
+  ['sq', 'Albanian', 'Shqip'],
+  ['mk', 'Macedonian', 'Македонски'],
+  ['bs', 'Bosnian', 'Bosanski'],
+  ['is', 'Icelandic', 'Íslenska'],
+  ['ga', 'Irish', 'Gaeilge'],
+  ['cy', 'Welsh', 'Cymraeg'],
+  ['af', 'Afrikaans', 'Afrikaans'],
+  ['zu', 'Zulu', 'isiZulu'],
+  ['xh', 'Xhosa', 'isiXhosa'],
+  ['st', 'Sesotho', 'Sesotho'],
+  ['sn', 'Shona', 'chiShona'],
+  ['ny', 'Chichewa', 'Chichewa'],
+  ['so', 'Somali', 'Soomaali'],
+  ['am', 'Amharic', 'አማርኛ'],
+  ['ti', 'Tigrinya', 'ትግርኛ'],
+  ['om', 'Oromo', 'Afaan Oromoo'],
+  ['ha', 'Hausa', 'Hausa'],
+  ['yo', 'Yoruba', 'Yorùbá'],
+  ['ig', 'Igbo', 'Igbo'],
+  ['ak', 'Twi', 'Twi'],
+  ['ee', 'Ewe', 'Eʋegbe'],
+  ['bm', 'Bambara', 'Bamanankan'],
+  ['mg', 'Malagasy', 'Malagasy'],
+  ['ne', 'Nepali', 'नेपाली'],
+  ['si', 'Sinhala', 'සිංහල'],
+  ['my', 'Burmese', 'မြန်မာ'],
+  ['km', 'Khmer', 'ខ្មែរ'],
+  ['lo', 'Lao', 'ລາວ'],
+  ['ka', 'Georgian', 'ქართული'],
+  ['hy', 'Armenian', 'Հայերեն'],
+  ['az', 'Azerbaijani', 'Azərbaycan'],
+  ['kk', 'Kazakh', 'Қазақ'],
+  ['uz', 'Uzbek', 'Oʻzbek'],
+  ['ky', 'Kyrgyz', 'Кыргызча'],
+  ['tg', 'Tajik', 'Тоҷикӣ'],
+  ['mn', 'Mongolian', 'Монгол'],
+  ['ps', 'Pashto', 'پښتو'],
+  ['ku', 'Kurdish', 'Kurdî'],
+  ['be', 'Belarusian', 'Беларуская'],
+  ['lb', 'Luxembourgish', 'Lëtzebuergesch'],
+  ['mt', 'Maltese', 'Malti'],
+  ['la', 'Latin', 'Latina'],
+  ['eo', 'Esperanto', 'Esperanto'],
+  ['ht', 'Haitian Creole', 'Kreyòl Ayisyen'],
+];
+---
+<div id="langModal" class="lang-modal" role="dialog" aria-modal="true" aria-labelledby="langTitle" hidden data-home-en={homeEn} data-home-fr={homeFr}>
+  <div class="lm-panel">
+    <button class="lm-close" type="button" aria-label="Close">×</button>
+    <div class="lm-head">
+      <div class="lm-eyebrow">Africa 63</div>
+      <h2 id="langTitle" class="lm-title">Select your language</h2>
+      <p class="lm-sub">Choisissez votre langue · اختر لغتك · 选择您的语言 · Chagua lugha yako</p>
+      <input id="lmSearch" class="lm-search" type="text" placeholder="Search 100+ languages…" autocomplete="off" aria-label="Search languages" />
+    </div>
+    <div class="lm-list" id="lmList">
+      {LANGS.map(([code, en, native]) => (
+        <button class="lm-item" type="button" data-code={code} data-search={`${en} ${native} ${code}`.toLowerCase()}>
+          <span class="lm-native">{native}</span>
+          <span class="lm-en">{en}{(code === 'en' || code === 'fr') && <em class="lm-badge">Original</em>}</span>
+        </button>
+      ))}
+      <p class="lm-empty" id="lmEmpty" hidden>No match — try another spelling.</p>
+    </div>
+    <div class="lm-foot">
+      <button class="lm-skip" type="button">Continue in English <span aria-hidden="true">→</span></button>
+      <span class="lm-note">Languages beyond English &amp; French are machine-translated.</span>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    function build(code, el) {
+      // en / fr are native site routes
+      if (code === 'en') return el.dataset.homeEn;
+      if (code === 'fr') return el.dataset.homeFr;
+      // everything else: Google Translate live proxy of the English site
+      var host = location.hostname.replace(/-/g, '--').replace(/\./g, '-') + '.translate.goog';
+      var path = el.dataset.homeEn || '/';
+      return location.protocol + '//' + host + path + '?_x_tr_sl=en&_x_tr_tl=' + code + '&_x_tr_hl=' + code + '&_x_tr_pto=wapp';
+    }
+    function init() {
+      var modal = document.getElementById('langModal');
+      if (!modal || modal.dataset.bound) return;
+      // only on the home page, and only once
+      var path = location.pathname.replace(/\/+$/, '/');
+      var base = (modal.dataset.homeEn || '/');
+      var isHome = path === base || path === base.replace(/\/$/, '') || path === (modal.dataset.homeFr || '');
+      if (!isHome) return;
+      if (localStorage.getItem('a63-lang-chosen')) return;
+      modal.dataset.bound = '1';
+
+      var search = document.getElementById('lmSearch');
+      var empty = document.getElementById('lmEmpty');
+      var items = Array.prototype.slice.call(modal.querySelectorAll('.lm-item'));
+
+      function open() { modal.hidden = false; requestAnimationFrame(function () { modal.classList.add('open'); }); document.documentElement.style.overflow = 'hidden'; }
+      function remember() { try { localStorage.setItem('a63-lang-chosen', '1'); } catch (e) {} }
+      function close() { modal.classList.remove('open'); document.documentElement.style.overflow = ''; setTimeout(function () { modal.hidden = true; }, 320); }
+
+      modal.querySelector('.lm-close').addEventListener('click', function () { remember(); close(); });
+      modal.querySelector('.lm-skip').addEventListener('click', function () { remember(); close(); });
+      modal.addEventListener('click', function (e) { if (e.target === modal) { remember(); close(); } });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) { remember(); close(); } });
+
+      items.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          remember();
+          window.location.href = build(btn.dataset.code, modal);
+        });
+      });
+
+      search.addEventListener('input', function () {
+        var q = search.value.trim().toLowerCase();
+        var shown = 0;
+        items.forEach(function (btn) {
+          var match = !q || btn.dataset.search.indexOf(q) !== -1;
+          btn.style.display = match ? '' : 'none';
+          if (match) shown++;
+        });
+        empty.hidden = shown > 0;
+      });
+
+      open();
+      setTimeout(function () { try { search.focus({ preventScroll: true }); } catch (e) {} }, 360);
+    }
+    document.addEventListener('astro:page-load', init);
+    if (document.readyState !== 'loading') init();
+    else document.addEventListener('DOMContentLoaded', init);
+  })();
+</script>
+
+<style>
+  .lang-modal {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: clamp(16px, 4vw, 40px);
+    background: rgba(10, 9, 7, 0.86); backdrop-filter: blur(10px);
+    opacity: 0; transition: opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lang-modal.open { opacity: 1; }
+  .lm-panel {
+    position: relative; width: min(880px, 100%); max-height: 88vh;
+    display: flex; flex-direction: column;
+    background: linear-gradient(180deg, #100e0b, #0a0908);
+    border: 1px solid rgba(201, 165, 105, 0.22); border-radius: 6px;
+    box-shadow: 0 40px 120px -30px rgba(0, 0, 0, 0.8);
+    transform: translateY(18px) scale(0.985); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+  }
+  .lang-modal.open .lm-panel { transform: none; }
+  .lm-close {
+    position: absolute; top: 14px; right: 16px; z-index: 2;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: transparent; border: 1px solid rgba(244, 241, 234, 0.16);
+    color: #f4f1ea; font-size: 1.3rem; line-height: 1; cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .lm-close:hover { background: rgba(201, 165, 105, 0.9); border-color: transparent; color: #0a0908; }
+  .lm-head { padding: clamp(26px, 4vw, 40px) clamp(24px, 4vw, 44px) 18px; }
+  .lm-eyebrow { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.34em; text-transform: uppercase; color: #d8be84; }
+  .lm-title { font-family: var(--serif); font-weight: 400; font-size: clamp(1.7rem, 3.6vw, 2.5rem); color: #f4f1ea; margin: 12px 0 6px; letter-spacing: -0.01em; }
+  .lm-sub { font-size: 0.86rem; color: rgba(244, 241, 234, 0.55); line-height: 1.5; }
+  .lm-search {
+    margin-top: 20px; width: 100%; padding: 14px 18px;
+    background: rgba(244, 241, 234, 0.04); border: 1px solid rgba(244, 241, 234, 0.14);
+    border-radius: 3px; color: #f4f1ea; font-family: var(--sans); font-size: 0.95rem;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .lm-search::placeholder { color: rgba(244, 241, 234, 0.4); }
+  .lm-search:focus { outline: none; border-color: rgba(201, 165, 105, 0.6); background: rgba(201, 165, 105, 0.06); }
+  .lm-list {
+    padding: 6px clamp(20px, 4vw, 40px) clamp(20px, 3vw, 32px);
+    overflow-y: auto;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px;
+  }
+  .lm-item {
+    display: flex; flex-direction: column; gap: 2px; text-align: left;
+    padding: 11px 14px; cursor: pointer;
+    background: transparent; border: 1px solid rgba(244, 241, 234, 0.08); border-radius: 3px;
+    transition: border-color 0.25s, background 0.25s, transform 0.25s;
+  }
+  .lm-item:hover { border-color: rgba(201, 165, 105, 0.45); background: rgba(201, 165, 105, 0.06); transform: translateY(-1px); }
+  .lm-native { font-family: var(--serif); font-size: 1.06rem; color: #f4f1ea; line-height: 1.2; }
+  .lm-en { font-size: 0.72rem; letter-spacing: 0.02em; color: rgba(244, 241, 234, 0.5); display: flex; align-items: center; gap: 8px; }
+  .lm-badge { font-style: normal; font-size: 0.56rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #0a0908; background: #d8be84; padding: 2px 6px; border-radius: 100px; }
+  .lm-empty { grid-column: 1 / -1; color: rgba(244, 241, 234, 0.5); padding: 20px 4px; }
+  .lm-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    padding: 16px clamp(24px, 4vw, 44px); border-top: 1px solid rgba(244, 241, 234, 0.08);
+  }
+  .lm-skip { background: transparent; border: none; cursor: pointer; color: #f4f1ea; font-family: var(--sans); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; }
+  .lm-skip:hover { color: #d8be84; }
+  .lm-note { font-size: 0.68rem; color: rgba(244, 241, 234, 0.4); }
+  @media (prefers-reduced-motion: reduce) { .lang-modal, .lm-panel { transition: none; } }
+</style>
