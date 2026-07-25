@@ -10,11 +10,12 @@ export const site = {
   email: 'hello@theafrica63.com',
   locality: 'Kinshasa',
   country: 'CD',
-  socials: [
-    { label: 'LinkedIn', short: 'LI', href: 'https://www.linkedin.com/' },
-    { label: 'Instagram', short: 'IG', href: 'https://www.instagram.com/' },
-    { label: 'X / Twitter', short: 'X', href: 'https://x.com/' },
-  ],
+  // Hidden until real A63 profiles exist. To re-enable, add entries back here —
+  // the footer and mobile-nav social rows render automatically when non-empty.
+  //   { label: 'LinkedIn',  short: 'LI', href: 'https://www.linkedin.com/company/…' },
+  //   { label: 'Instagram', short: 'IG', href: 'https://www.instagram.com/…' },
+  //   { label: 'X / Twitter', short: 'X', href: 'https://x.com/…' },
+  socials: [] as { label: string; short: string; href: string }[],
 };
 
 // Primary nav — keys resolve through the i18n catalog.

@@ -59,8 +59,10 @@ const c = lang === 'fr' ? {
 
       <div class="reveal" data-delay="0.08">
         <div class="form">
-          <form id="contactForm">
-            <!-- Web3Forms: replace access_key with your key from https://web3forms.com -->
+          <form id="contactForm" data-mailto={site.email}>
+            <!-- Web3Forms: paste the access key generated for hello@theafrica63.com
+                 at https://web3forms.com. Until then the form falls back to a
+                 pre-filled email to the address in data-mailto. -->
             <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
             <input type="hidden" name="subject" value="New enquiry — theafrica63.com" />
             <input type="hidden" name="from_name" value="Africa 63 Website" />
@@ -106,12 +108,31 @@ const c = lang === 'fr' ? {
         var err = document.getElementById('formError');
         if (form.querySelector('[name="botcheck"]').checked) return;
         var key = form.querySelector('[name="access_key"]').value;
+        var hasKey = key && key !== 'YOUR_WEB3FORMS_ACCESS_KEY';
+        var f = Object.fromEntries(new FormData(form));
+
+        // Fallback (no Web3Forms key yet): open a pre-filled email so the form
+        // is never a dead end. Upgrades to seamless AJAX once a key is set.
+        if (!hasKey) {
+          var to = form.dataset.mailto || '';
+          var subject = 'Website enquiry — ' + (f.name || '');
+          var body =
+            'Name: ' + (f.name || '') + '\n' +
+            'Email: ' + (f.email || '') + '\n' +
+            'Organisation: ' + (f.organisation || '') + '\n' +
+            'Area: ' + (f.area || '') + '\n\n' +
+            (f.message || '');
+          window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+          document.getElementById('formSuccess').classList.add('show');
+          form.style.display = 'none';
+          return;
+        }
+
         btn.style.opacity = '0.7'; btn.style.pointerEvents = 'none';
         try {
-          if (!key || key === 'YOUR_WEB3FORMS_ACCESS_KEY') throw new Error('no-key');
           var res = await fetch('https://api.web3forms.com/submit', {
             method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify(Object.fromEntries(new FormData(form))),
+            body: JSON.stringify(f),
           });
           var data = await res.json();
           if (!data.success) throw new Error('failed');

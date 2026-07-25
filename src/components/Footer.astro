@@ -51,11 +51,13 @@ const year = 2026;
           <li><a href={L('/contact')}>{t('footer.office')}</a></li>
           <li><a href={site.brandUrl}>theafrica63.com</a></li>
         </ul>
-        <div class="footer-socials">
-          {site.socials.map((s) => (
-            <a href={s.href} class="f-soc" aria-label={s.label} target="_blank" rel="noopener">{s.short}</a>
-          ))}
-        </div>
+        {site.socials.length > 0 && (
+          <div class="footer-socials">
+            {site.socials.map((s) => (
+              <a href={s.href} class="f-soc" aria-label={s.label} target="_blank" rel="noopener">{s.short}</a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
    </div>

@@ -64,9 +64,11 @@ const t = useTranslations(lang);
         </div>
       </div>
       <div class="mn-foot-row">
-        <div class="mn-socials">
-          {site.socials.map((s) => <a href={s.href} aria-label={s.label} target="_blank" rel="noopener">{s.short}</a>)}
-        </div>
+        {site.socials.length > 0 && (
+          <div class="mn-socials">
+            {site.socials.map((s) => <a href={s.href} aria-label={s.label} target="_blank" rel="noopener">{s.short}</a>)}
+          </div>
+        )}
         <div class="lang-switch mn-lang">
           <a href={localizePath(path, 'en')} class={lang === 'en' ? 'active' : ''}>EN</a>
           <span class="sep">/</span>
