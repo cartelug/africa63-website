@@ -1,24 +1,31 @@
 ---
-// First-visit language chooser (home page only).
-// English + French are native site translations; every other language is
-// rendered on the fly via Google Translate's proxy (translate.goog).
+// Language picker — built to current localization-UX guidance:
+//  · native names (autonyms), never flags (flags = countries, not languages)
+//  · reachable at any time from a globe control, not only a first-visit prompt
+//  · browser language detected and *suggested*, never force-redirected
+//  · lang/dir on every option so screen readers pronounce and scripts render right
+//  · full dialog a11y: focus trap, focus restore, Escape, arrow-key navigation
+// English + French are native site translations; other languages are served
+// through Google Translate's live proxy and labelled as machine-translated.
 import { localizePath, type Lang } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const homeEn = localizePath('/', 'en');
 const homeFr = localizePath('/', 'fr');
 
-// { code (Google Translate tl), english name, native name }
+const RTL = new Set(['ar', 'he', 'fa', 'ur', 'ps', 'ku', 'sd', 'yi']);
+
+// [ Google Translate code, English name, native name (autonym) ]
 const LANGS: [string, string, string][] = [
   ['en', 'English', 'English'],
   ['fr', 'French', 'Français'],
-  ['es', 'Spanish', 'Español'],
-  ['pt', 'Portuguese', 'Português'],
-  ['ar', 'Arabic', 'العربية'],
   ['sw', 'Swahili', 'Kiswahili'],
   ['ln', 'Lingala', 'Lingála'],
   ['lg', 'Luganda', 'Luganda'],
   ['rw', 'Kinyarwanda', 'Ikinyarwanda'],
+  ['ar', 'Arabic', 'العربية'],
+  ['pt', 'Portuguese', 'Português'],
+  ['es', 'Spanish', 'Español'],
   ['zh-CN', 'Chinese (Simplified)', '中文（简体）'],
   ['zh-TW', 'Chinese (Traditional)', '中文（繁體）'],
   ['hi', 'Hindi', 'हिन्दी'],
@@ -114,85 +121,182 @@ const LANGS: [string, string, string][] = [
 ---
 <div id="langModal" class="lang-modal" role="dialog" aria-modal="true" aria-labelledby="langTitle" hidden data-home-en={homeEn} data-home-fr={homeFr}>
   <div class="lm-panel">
-    <button class="lm-close" type="button" aria-label="Close">×</button>
+    <button class="lm-close" type="button" aria-label="Close language chooser">×</button>
     <div class="lm-head">
       <div class="lm-eyebrow">Africa 63</div>
       <h2 id="langTitle" class="lm-title">Select your language</h2>
-      <p class="lm-sub">Choisissez votre langue · اختر لغتك · 选择您的语言 · Chagua lugha yako</p>
-      <input id="lmSearch" class="lm-search" type="text" placeholder="Search 100+ languages…" autocomplete="off" aria-label="Search languages" />
+      <p class="lm-sub" lang="mul">Choisissez votre langue · <span lang="ar" dir="rtl">اختر لغتك</span> · <span lang="zh-CN">选择您的语言</span> · <span lang="sw">Chagua lugha yako</span></p>
+      <input id="lmSearch" class="lm-search" type="search" placeholder="Search 100 languages…" autocomplete="off" aria-label="Search languages" aria-controls="lmList" />
     </div>
-    <div class="lm-list" id="lmList">
-      {LANGS.map(([code, en, native]) => (
-        <button class="lm-item" type="button" data-code={code} data-search={`${en} ${native} ${code}`.toLowerCase()}>
-          <span class="lm-native">{native}</span>
-          <span class="lm-en">{en}{(code === 'en' || code === 'fr') && <em class="lm-badge">Original</em>}</span>
-        </button>
-      ))}
-      <p class="lm-empty" id="lmEmpty" hidden>No match — try another spelling.</p>
+
+    <div class="lm-scroll">
+      <div class="lm-suggest" id="lmSuggest" hidden>
+        <div class="lm-group-label">Suggested for you</div>
+        <div class="lm-list" id="lmSuggestList"></div>
+      </div>
+      <div class="lm-group-label" id="lmAllLabel">All languages</div>
+      <div class="lm-list" id="lmList" role="listbox" aria-label="Languages">
+        {LANGS.map(([code, en, native]) => (
+          <button
+            class="lm-item" type="button" role="option" aria-selected="false"
+            data-code={code} data-en={en} data-native={native}
+            data-native-site={code === 'en' || code === 'fr' ? '1' : undefined}
+            data-search={`${en} ${native} ${code}`.toLowerCase()}
+          >
+            <span class="lm-native" lang={code} dir={RTL.has(code) ? 'rtl' : undefined}>{native}</span>
+            <span class="lm-en">{en}{(code === 'en' || code === 'fr') && <em class="lm-badge">Original</em>}</span>
+          </button>
+        ))}
+        <p class="lm-empty" id="lmEmpty" hidden>No match — try another spelling.</p>
+      </div>
     </div>
+
     <div class="lm-foot">
       <button class="lm-skip" type="button">Continue in English <span aria-hidden="true">→</span></button>
-      <span class="lm-note">Languages beyond English &amp; French are machine-translated.</span>
+      <span class="lm-note">Beyond English &amp; French, pages are machine-translated.</span>
     </div>
   </div>
 </div>
 
 <script is:inline>
   (function () {
-    function build(code, el) {
-      // en / fr are native site routes
-      if (code === 'en') return el.dataset.homeEn;
-      if (code === 'fr') return el.dataset.homeFr;
-      // everything else: Google Translate live proxy of the English site
+    var modal, panel, search, empty, listEl, suggestWrap, suggestList, allLabel, lastFocus;
+
+    function urlFor(code) {
+      if (code === 'en') return modal.dataset.homeEn;
+      if (code === 'fr') return modal.dataset.homeFr;
       var host = location.hostname.replace(/-/g, '--').replace(/\./g, '-') + '.translate.goog';
-      var path = el.dataset.homeEn || '/';
-      return location.protocol + '//' + host + path + '?_x_tr_sl=en&_x_tr_tl=' + code + '&_x_tr_hl=' + code + '&_x_tr_pto=wapp';
+      var path = modal.dataset.homeEn || '/';
+      return location.protocol + '//' + host + path +
+        '?_x_tr_sl=en&_x_tr_tl=' + code + '&_x_tr_hl=' + code + '&_x_tr_pto=wapp';
     }
+    function remember(code) { try { localStorage.setItem('a63-lang-chosen', code || '1'); } catch (e) {} }
+    function items() { return Array.prototype.slice.call(modal.querySelectorAll('.lm-item')); }
+
+    function open(trigger) {
+      lastFocus = trigger || document.activeElement;
+      modal.hidden = false;
+      requestAnimationFrame(function () { modal.classList.add('open'); });
+      document.documentElement.style.overflow = 'hidden';
+      setTimeout(function () { try { search.focus({ preventScroll: true }); } catch (e) {} }, 340);
+    }
+    function close() {
+      modal.classList.remove('open');
+      document.documentElement.style.overflow = '';
+      setTimeout(function () { modal.hidden = true; }, 320);
+      if (lastFocus && lastFocus.focus) { try { lastFocus.focus({ preventScroll: true }); } catch (e) {} }
+    }
+    function dismiss() { remember(); close(); }
+
+    // Suggest the visitor's browser language — never redirect automatically.
+    function buildSuggestion() {
+      var navLangs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'en']);
+      var all = items();
+      var picked = null;
+      for (var i = 0; i < navLangs.length && !picked; i++) {
+        var tag = String(navLangs[i]);
+        var base = tag.split('-')[0].toLowerCase();
+        for (var j = 0; j < all.length; j++) {
+          var c = all[j].dataset.code.toLowerCase();
+          if (c === tag.toLowerCase() || c === base || c.split('-')[0] === base) { picked = all[j]; break; }
+        }
+      }
+      // English is the page default — only suggest when it differs
+      if (!picked || picked.dataset.code === 'en') return;
+      var clone = picked.cloneNode(true);
+      clone.classList.add('is-suggested');
+      suggestList.appendChild(clone);
+      suggestWrap.hidden = false;
+    }
+
+    function bindItem(btn) {
+      btn.addEventListener('click', function () {
+        remember(btn.dataset.code);
+        window.location.href = urlFor(btn.dataset.code);
+      });
+    }
+
+    // roving arrow-key navigation across visible options
+    function onArrow(e) {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      var visible = items().filter(function (b) { return b.offsetParent !== null; });
+      if (!visible.length) return;
+      var idx = visible.indexOf(document.activeElement);
+      e.preventDefault();
+      var next = e.key === 'ArrowDown'
+        ? (idx < 0 ? 0 : Math.min(idx + 1, visible.length - 1))
+        : (idx <= 0 ? 0 : idx - 1);
+      visible[next].focus();
+    }
+
+    // focus trap — required for role="dialog" aria-modal="true"
+    function onTab(e) {
+      if (e.key !== 'Tab') return;
+      var f = panel.querySelectorAll('button, input, [href], [tabindex]:not([tabindex="-1"])');
+      var vis = Array.prototype.filter.call(f, function (el) { return el.offsetParent !== null; });
+      if (!vis.length) return;
+      var first = vis[0], last = vis[vis.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+
     function init() {
-      var modal = document.getElementById('langModal');
-      if (!modal || modal.dataset.bound) return;
-      // only on the home page, and only once
-      var path = location.pathname.replace(/\/+$/, '/');
-      var base = (modal.dataset.homeEn || '/');
-      var isHome = path === base || path === base.replace(/\/$/, '') || path === (modal.dataset.homeFr || '');
-      if (!isHome) return;
-      if (localStorage.getItem('a63-lang-chosen')) return;
+      modal = document.getElementById('langModal');
+      if (!modal) return;
+
+      // (re)bind the globe triggers on every page render
+      Array.prototype.forEach.call(document.querySelectorAll('[data-lang-open]'), function (t) {
+        if (t.dataset.lmBound) return;
+        t.dataset.lmBound = '1';
+        t.addEventListener('click', function (e) { e.preventDefault(); open(t); });
+      });
+
+      if (modal.dataset.bound) return;
       modal.dataset.bound = '1';
 
-      var search = document.getElementById('lmSearch');
-      var empty = document.getElementById('lmEmpty');
-      var items = Array.prototype.slice.call(modal.querySelectorAll('.lm-item'));
+      panel = modal.querySelector('.lm-panel');
+      search = document.getElementById('lmSearch');
+      empty = document.getElementById('lmEmpty');
+      listEl = document.getElementById('lmList');
+      suggestWrap = document.getElementById('lmSuggest');
+      suggestList = document.getElementById('lmSuggestList');
+      allLabel = document.getElementById('lmAllLabel');
 
-      function open() { modal.hidden = false; requestAnimationFrame(function () { modal.classList.add('open'); }); document.documentElement.style.overflow = 'hidden'; }
-      function remember() { try { localStorage.setItem('a63-lang-chosen', '1'); } catch (e) {} }
-      function close() { modal.classList.remove('open'); document.documentElement.style.overflow = ''; setTimeout(function () { modal.hidden = true; }, 320); }
-
-      modal.querySelector('.lm-close').addEventListener('click', function () { remember(); close(); });
-      modal.querySelector('.lm-skip').addEventListener('click', function () { remember(); close(); });
-      modal.addEventListener('click', function (e) { if (e.target === modal) { remember(); close(); } });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) { remember(); close(); } });
-
-      items.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          remember();
-          window.location.href = build(btn.dataset.code, modal);
-        });
+      modal.querySelector('.lm-close').addEventListener('click', dismiss);
+      modal.querySelector('.lm-skip').addEventListener('click', dismiss);
+      modal.addEventListener('click', function (e) { if (e.target === modal) dismiss(); });
+      document.addEventListener('keydown', function (e) {
+        if (modal.hidden) return;
+        if (e.key === 'Escape') { dismiss(); return; }
+        onTab(e); onArrow(e);
       });
+
+      buildSuggestion();
+      items().forEach(bindItem);
 
       search.addEventListener('input', function () {
         var q = search.value.trim().toLowerCase();
         var shown = 0;
-        items.forEach(function (btn) {
+        Array.prototype.forEach.call(listEl.querySelectorAll('.lm-item'), function (btn) {
           var match = !q || btn.dataset.search.indexOf(q) !== -1;
           btn.style.display = match ? '' : 'none';
           if (match) shown++;
         });
         empty.hidden = shown > 0;
+        // hide the suggestion + heading while actively searching
+        if (suggestWrap && suggestList.children.length) suggestWrap.hidden = !!q;
+        allLabel.hidden = !!q;
       });
 
-      open();
-      setTimeout(function () { try { search.focus({ preventScroll: true }); } catch (e) {} }, 360);
+      // First visit to the home page → offer the choice up front.
+      var p = location.pathname.replace(/\/+$/, '/');
+      var base = modal.dataset.homeEn || '/';
+      var isHome = p === base || p === base.replace(/\/$/, '') || p === (modal.dataset.homeFr || '');
+      var chosen = null;
+      try { chosen = localStorage.getItem('a63-lang-chosen'); } catch (e) {}
+      if (isHome && !chosen) open(null);
     }
+
     document.addEventListener('astro:page-load', init);
     if (document.readyState !== 'loading') init();
     else document.addEventListener('DOMContentLoaded', init);
@@ -200,6 +304,10 @@ const LANGS: [string, string, string][] = [
 </script>
 
 <style>
+  /* `display:flex` below would override the [hidden] attribute's display:none,
+     leaving an invisible full-screen layer that swallows every click on the
+     page. Keep this rule first and never remove it. */
+  .lang-modal[hidden] { display: none; }
   .lang-modal {
     position: fixed; inset: 0; z-index: 9999;
     display: flex; align-items: center; justify-content: center;
@@ -226,7 +334,7 @@ const LANGS: [string, string, string][] = [
     transition: background 0.3s, border-color 0.3s;
   }
   .lm-close:hover { background: rgba(201, 165, 105, 0.9); border-color: transparent; color: #0a0908; }
-  .lm-head { padding: clamp(26px, 4vw, 40px) clamp(24px, 4vw, 44px) 18px; }
+  .lm-head { padding: clamp(26px, 4vw, 40px) clamp(24px, 4vw, 44px) 16px; }
   .lm-eyebrow { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.34em; text-transform: uppercase; color: #d8be84; }
   .lm-title { font-family: var(--serif); font-weight: 400; font-size: clamp(1.7rem, 3.6vw, 2.5rem); color: #f4f1ea; margin: 12px 0 6px; letter-spacing: -0.01em; }
   .lm-sub { font-size: 0.86rem; color: rgba(244, 241, 234, 0.55); line-height: 1.5; }
@@ -238,19 +346,28 @@ const LANGS: [string, string, string][] = [
   }
   .lm-search::placeholder { color: rgba(244, 241, 234, 0.4); }
   .lm-search:focus { outline: none; border-color: rgba(201, 165, 105, 0.6); background: rgba(201, 165, 105, 0.06); }
-  .lm-list {
-    padding: 6px clamp(20px, 4vw, 40px) clamp(20px, 3vw, 32px);
-    overflow-y: auto;
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px;
+
+  .lm-scroll { overflow-y: auto; padding: 0 clamp(20px, 4vw, 40px) clamp(20px, 3vw, 32px); }
+  .lm-group-label {
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(244, 241, 234, 0.42); padding: 16px 2px 10px;
   }
+  .lm-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
   .lm-item {
     display: flex; flex-direction: column; gap: 2px; text-align: left;
     padding: 11px 14px; cursor: pointer;
     background: transparent; border: 1px solid rgba(244, 241, 234, 0.08); border-radius: 3px;
     transition: border-color 0.25s, background 0.25s, transform 0.25s;
   }
-  .lm-item:hover { border-color: rgba(201, 165, 105, 0.45); background: rgba(201, 165, 105, 0.06); transform: translateY(-1px); }
+  .lm-item:hover, .lm-item:focus-visible {
+    border-color: rgba(201, 165, 105, 0.45); background: rgba(201, 165, 105, 0.06);
+    transform: translateY(-1px); outline: none;
+  }
+  .lm-item:focus-visible { box-shadow: 0 0 0 2px rgba(201, 165, 105, 0.5); }
+  .lm-item.is-suggested { border-color: rgba(201, 165, 105, 0.5); background: rgba(201, 165, 105, 0.09); }
   .lm-native { font-family: var(--serif); font-size: 1.06rem; color: #f4f1ea; line-height: 1.2; }
+  .lm-native[dir='rtl'] { direction: rtl; text-align: left; }
   .lm-en { font-size: 0.72rem; letter-spacing: 0.02em; color: rgba(244, 241, 234, 0.5); display: flex; align-items: center; gap: 8px; }
   .lm-badge { font-style: normal; font-size: 0.56rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #0a0908; background: #d8be84; padding: 2px 6px; border-radius: 100px; }
   .lm-empty { grid-column: 1 / -1; color: rgba(244, 241, 234, 0.5); padding: 20px 4px; }
@@ -261,5 +378,8 @@ const LANGS: [string, string, string][] = [
   .lm-skip { background: transparent; border: none; cursor: pointer; color: #f4f1ea; font-family: var(--sans); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; }
   .lm-skip:hover { color: #d8be84; }
   .lm-note { font-size: 0.68rem; color: rgba(244, 241, 234, 0.4); }
-  @media (prefers-reduced-motion: reduce) { .lang-modal, .lm-panel { transition: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .lang-modal, .lm-panel { transition: none; }
+    .lm-item { transition: none; }
+  }
 </style>

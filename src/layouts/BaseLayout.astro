@@ -4,6 +4,7 @@ import SEO from '../components/SEO.astro';
 import Preloader from '../components/Preloader.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import LangModal from '../components/LangModal.astro';
 import { useTranslations, type Lang } from '../i18n/ui';
 import '../styles/global.css';
 
@@ -43,6 +44,8 @@ const t = useTranslations(lang);
     <Footer {lang} />
 
     <button class="to-top" id="toTop" aria-label={t('common.backToTop')}>↑</button>
+
+    <LangModal {lang} />
 
     <script>
       import '../scripts/motion.ts';

@@ -7,7 +7,6 @@ import WorkCard from '../WorkCard.astro';
 import PartnerMarquee from '../PartnerMarquee.astro';
 import InsightCard from '../InsightCard.astro';
 import CtaTex from '../CtaTex.astro';
-import LangModal from '../LangModal.astro';
 import { img } from '../../lib/images';
 import { getServices, getCaseStudies, getInsights, bareSlug } from '../../lib/content';
 import { useTranslations, localizePath, asset, type Lang } from '../../i18n/ui';
@@ -241,6 +240,4 @@ const jsonld = {
 
   <!-- CTA -->
   <CtaTex lang={lang} eyebrow={copy.ctaEye} heading={copy.ctaHead} sub={copy.ctaSub} />
-
-  <LangModal lang={lang} />
 </BaseLayout>
