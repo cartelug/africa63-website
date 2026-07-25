@@ -79,6 +79,9 @@ const copy = lang === 'fr' ? {
   ctaSub: 'Whether you are mobilising resources, structuring a public project, or strengthening an institution — let’s start the conversation.',
 };
 
+// headline split into words for the masked reveal; last word is the gold accent
+const heroWords = copy.heroTitle.split(/\s+/);
+
 const jsonld = {
   '@context': 'https://schema.org', '@type': 'Organization', name: site.name, alternateName: 'A63',
   url: site.domain + L('/'), logo: `${site.domain}${asset('/assets/logo/africa63-full-logo.PNG')}`,
@@ -103,14 +106,21 @@ const jsonld = {
       ))}
     </div>
     <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-bloom" aria-hidden="true"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="hero-vignette" aria-hidden="true"></div>
 
     <div class="hero-cine-inner">
       <div class="hero-eyebrow-2">
-        <span>{copy.heroEyebrow1}</span>
-        <span>{copy.heroEyebrow2}</span>
+        <span class="hw"><span class="hw-in" style="transition-delay:0.20s">{copy.heroEyebrow1}</span></span>
+        <span class="hw"><span class="hw-in" style="transition-delay:0.27s">{copy.heroEyebrow2}</span></span>
       </div>
-      <h1 class="hero-cine-title kinetic-header" data-splitting>{copy.heroTitle}</h1>
-      <p class="hero-cine-sub">{copy.heroSubA}<br>{copy.heroSubB}</p>
+      <h1 class="hero-cine-title" aria-label={copy.heroTitle}>
+        {heroWords.map((w, i) => (
+          <span class="hw"><span class:list={["hw-in", i === heroWords.length - 1 && "hw-accent"]} style={`transition-delay:${(0.34 + i * 0.06).toFixed(3)}s`}>{w}</span></span>
+        ))}
+      </h1>
+      <p class="hero-cine-sub"><span class="hs-line" style="transition-delay:0.62s">{copy.heroSubA}</span><span class="hs-line" style="transition-delay:0.70s">{copy.heroSubB}</span></p>
       <div class="hero-cine-actions">
         <a href={L('/about')} class="btn-gold" data-magnetic><span>{copy.heroCta}</span><span class="arrow">→</span></a>
         <a href={L('/work')} class="hero-play"><span class="hp-tri" aria-hidden="true"></span><span>{copy.heroPlay}</span></a>

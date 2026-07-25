@@ -79,18 +79,42 @@
   .no-motion .partner-track { animation: cssMarquee 32s linear infinite; }
   @keyframes cssMarquee { to { transform: translateX(-50%); } }
 
-  /* hero content entrance when ready */
-  .hero-inner > *, .hero-cine-inner > * { opacity: 0; transform: translateY(24px); }
-  .hero-ready .hero-inner > *, .hero-ready .hero-cine-inner > * { opacity: 1; transform: none; transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
-  .hero-ready .hero-inner > *:nth-child(1), .hero-ready .hero-cine-inner > *:nth-child(1) { transition-delay: 0.05s; }
-  .hero-ready .hero-inner > *:nth-child(2), .hero-ready .hero-cine-inner > *:nth-child(2) { transition-delay: 0.15s; }
-  .hero-ready .hero-inner > *:nth-child(3), .hero-ready .hero-cine-inner > *:nth-child(3) { transition-delay: 0.25s; }
-  .hero-ready .hero-inner > *:nth-child(4), .hero-ready .hero-cine-inner > *:nth-child(4) { transition-delay: 0.35s; }
-  html:not(.js) .hero-inner > *, html:not(.js) .hero-cine-inner > * { opacity: 1; transform: none; }
-  /* the footer controls fade in with the hero too */
-  .hero-cine-foot { opacity: 0; transition: opacity 0.9s var(--ease) 0.45s; }
-  .hero-ready .hero-cine-foot { opacity: 1; }
-  html:not(.js) .hero-cine-foot { opacity: 1; }
+  /* hero content entrance when ready.
+     The cine hero's eyebrow / title / sub run their own masked reveals below,
+     so the generic fade-up is scoped to the remaining direct children. */
+  .hero-inner > * { opacity: 0; transform: translateY(24px); }
+  .hero-ready .hero-inner > * { opacity: 1; transform: none; transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .hero-ready .hero-inner > *:nth-child(1) { transition-delay: 0.05s; }
+  .hero-ready .hero-inner > *:nth-child(2) { transition-delay: 0.15s; }
+  .hero-ready .hero-inner > *:nth-child(3) { transition-delay: 0.25s; }
+  .hero-ready .hero-inner > *:nth-child(4) { transition-delay: 0.35s; }
+  html:not(.js) .hero-inner > * { opacity: 1; transform: none; }
+
+  .hero-cine-inner > .hero-cine-actions { opacity: 0; transform: translateY(22px); }
+  .hero-ready .hero-cine-inner > .hero-cine-actions { opacity: 1; transform: none; transition: opacity 0.9s var(--ease) 0.8s, transform 0.9s var(--ease) 0.8s; }
+  html:not(.js) .hero-cine-inner > .hero-cine-actions { opacity: 1; transform: none; }
+
+  /* masked word + line reveals (cine hero).
+     Hidden state uses `.js` (not `html.js`) so the `.hero-ready` reveal — a body
+     class of equal specificity — wins by source order once the hero is ready. */
+  .js .hw-in { transform: translateY(118%); transition: transform 1.05s var(--ease-expo); }
+  .hero-ready .hw-in { transform: none; }
+  .js .hero-cine-sub .hs-line { opacity: 0; transform: translateY(16px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .hero-ready .hero-cine-sub .hs-line { opacity: 1; transform: none; }
+  html:not(.js) .hw-in, html:not(.js) .hero-cine-sub .hs-line { transform: none; opacity: 1; }
+
+  /* bottom hairline draws in */
+  .js .hero-cine-foot .hero-prog { transform: scaleX(0); transform-origin: left; transition: transform 1.3s var(--ease-expo) 0.5s; }
+  .hero-ready .hero-cine-foot .hero-prog { transform: scaleX(1); }
+  html:not(.js) .hero-cine-foot .hero-prog { transform: none; }
+
+  /* film-grain flicker */
+  .hero-grain { animation: grainShift 0.9s steps(4) infinite; }
+  @keyframes grainShift {
+    0% { background-position: 0 0; } 25% { background-position: -40px 20px; }
+    50% { background-position: 30px -30px; } 75% { background-position: -20px -40px; }
+    100% { background-position: 40px 10px; }
+  }
 
   /* ── REDUCED MOTION ─────────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
@@ -101,6 +125,9 @@
       scroll-behavior: auto !important;
     }
     .reveal, .hero-inner > *, .kinetic-header .char { opacity: 1 !important; transform: none !important; }
+    .hw-in, .hero-cine-sub .hs-line, .hero-cine-inner > .hero-cine-actions,
+    .hero-cine-foot .hero-prog { opacity: 1 !important; transform: none !important; }
+    .hero-slide .hero-bg, .hero-grain { animation: none !important; }
     .lead-photo img { clip-path: none !important; }
     .no-motion .partner-track { animation: none !important; }
     #loader { display: none !important; }

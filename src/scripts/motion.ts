@@ -326,6 +326,33 @@ function initHeroCarousel() {
   S.cleanup.push(stop);
 }
 
+// ── CINEMATIC HERO MOTION (scroll parallax + cursor bloom) ──
+function initHeroCineMotion() {
+  const hero = document.querySelector<HTMLElement>('.hero-cine');
+  if (!hero || reduced) return;
+
+  const slides = hero.querySelector<HTMLElement>('.hero-slides');
+  const inner = hero.querySelector<HTMLElement>('.hero-cine-inner');
+  const bloom = hero.querySelector<HTMLElement>('.hero-bloom');
+
+  // depth parallax on scroll (GPU transforms only)
+  if (slides) gsap.to(slides, { yPercent: 10, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+  if (inner) gsap.to(inner, { yPercent: -16, opacity: 0.15, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom 24%', scrub: true } });
+
+  // warm bloom drifts toward the cursor (desktop / fine pointer only)
+  if (bloom && fine) {
+    const xTo = gsap.quickTo(bloom, 'xPercent', { duration: 0.9, ease: 'power3.out' });
+    const yTo = gsap.quickTo(bloom, 'yPercent', { duration: 0.9, ease: 'power3.out' });
+    const onMove = (e: MouseEvent) => {
+      const r = hero.getBoundingClientRect();
+      xTo(((e.clientX - r.left) / r.width - 0.5) * 7);
+      yTo(((e.clientY - r.top) / r.height - 0.5) * 7);
+    };
+    hero.addEventListener('mousemove', onMove);
+    S.cleanup.push(() => hero.removeEventListener('mousemove', onMove));
+  }
+}
+
 // ── ENGAGEMENT SLIDESHOW (scroll-snap + dots + arrows + autoplay) ──
 function initEngageSlider() {
   document.querySelectorAll<HTMLElement>('.engage-slider').forEach((slider) => {
@@ -465,6 +492,7 @@ function init() {
   initFooter();
   initLeadership();
   initHeroCarousel();
+  initHeroCineMotion();
   initEngageSlider();
   initMagnetic();
   initCursor();

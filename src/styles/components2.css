@@ -42,21 +42,48 @@
     padding: clamp(120px, 16vh, 190px) 0 0;
     min-height: 100svh;
   }
-  .hero-slides { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+  .hero-slides { position: absolute; inset: -14% 0; z-index: -2; overflow: hidden; will-change: transform; }
   .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s var(--ease); will-change: opacity; }
   .hero-slide.active { opacity: 1; }
   .hero-slide .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero-bg-wide { object-position: 60% 45%; }
   .hero-bg-tall { display: none; object-position: 50% 42%; }
-  .hero-slide.active .hero-bg { animation: heroKen 9s var(--ease) forwards; }
-  @keyframes heroKen { from { transform: scale(1.001); } to { transform: scale(1.075); } }
+  .hero-slide.active .hero-bg { animation: heroKen 28s var(--ease) infinite alternate; }
+  @keyframes heroKen { from { transform: scale(1.02) translate3d(0,0,0); } to { transform: scale(1.10) translate3d(-1.6%, -1%, 0); } }
 
   .hero-scrim {
     position: absolute; inset: 0; z-index: -1;
     background:
-      linear-gradient(102deg, rgba(var(--ink-rgb), 0.94) 0%, rgba(var(--ink-rgb), 0.74) 24%, rgba(var(--ink-rgb), 0.30) 50%, rgba(var(--ink-rgb), 0.10) 70%, rgba(var(--ink-rgb), 0.42) 100%),
-      linear-gradient(to top, rgba(var(--ink-rgb), 0.90) 0%, rgba(var(--ink-rgb), 0.18) 32%, rgba(var(--ink-rgb), 0) 56%);
+      linear-gradient(102deg, rgba(var(--ink-rgb), 0.95) 0%, rgba(var(--ink-rgb), 0.80) 22%, rgba(var(--ink-rgb), 0.34) 48%, rgba(var(--ink-rgb), 0.10) 70%, rgba(var(--ink-rgb), 0.44) 100%),
+      linear-gradient(to top, rgba(var(--ink-rgb), 0.92) 0%, rgba(var(--ink-rgb), 0.20) 34%, rgba(var(--ink-rgb), 0) 58%);
   }
+  /* warm light-bloom over the sunlit opening — drifts with the cursor */
+  .hero-bloom {
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(38% 48% at 74% 43%, rgba(var(--gold-light-rgb), 0.30), rgba(var(--gold-rgb), 0.06) 46%, transparent 68%);
+    mix-blend-mode: screen; opacity: 0.85; will-change: transform;
+  }
+  /* fine film grain */
+  .hero-grain {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    opacity: 0.06; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 170px 170px;
+  }
+  /* cinematic vignette */
+  .hero-vignette {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(125% 105% at 50% 46%, transparent 52%, rgba(var(--ink-rgb), 0.55) 100%);
+  }
+
+  /* ── masked word / line reveal ──────────────────────────── */
+  .hw { display: inline-block; overflow: hidden; vertical-align: top; }
+  .hw-in { display: inline-block; will-change: transform; }
+  .hero-eyebrow-2 .hw { overflow: hidden; }
+  .hero-cine-title .hw { margin: -0.06em 0.26em -0.18em 0; padding: 0.06em 0 0.18em; }
+  .hero-cine-title .hw:last-child { margin-right: 0; }
+  .hw-accent { font-style: italic; color: var(--gold-light); }
+  .hero-cine-sub .hs-line { display: block; }
 
   .hero-cine-inner { position: relative; z-index: 2; margin-top: auto; max-width: min(820px, 100%); padding: 0 var(--pad-x); }
   .hero-eyebrow-2 {

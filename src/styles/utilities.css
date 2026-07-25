@@ -55,6 +55,8 @@
     /* hero art direction: portrait crop on mobile */
     .hero-bg-wide { display: none; }
     .hero-bg-tall { display: block; }
+    /* light-bloom sits over the sunlit opening in the tall crop */
+    .hero-bloom { background: radial-gradient(46% 30% at 66% 30%, rgba(var(--gold-light-rgb), 0.30), rgba(var(--gold-rgb), 0.06) 48%, transparent 70%); }
     .svc-row { grid-template-columns: 44px 1fr auto; gap: 12px 20px; }
     .svc-row p { grid-column: 2 / -1; }
     .svc-icon { width: 32px; height: 32px; }
